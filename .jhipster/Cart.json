@@ -1,0 +1,22 @@
+{
+  "name": "Cart",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "productCart",
+      "otherEntityRelationshipName": "cart",
+      "relationshipName": "lines"
+    }
+  ],
+  "entityTableName": "cart",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211105020243"
+}

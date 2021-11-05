@@ -1,0 +1,10 @@
+{
+  "ecomApp": {
+    "Role": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "STAFF": "STAFF",
+      "CLIENT": "CLIENT"
+    }
+  }
+}

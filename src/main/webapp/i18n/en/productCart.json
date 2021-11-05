@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "productCart": {
+      "home": {
+        "title": "Product Carts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Product Cart",
+        "createOrEditLabel": "Create or edit a Product Cart",
+        "notFound": "No Product Carts found"
+      },
+      "created": "A new Product Cart is created with identifier {{ param }}",
+      "updated": "A Product Cart is updated with identifier {{ param }}",
+      "deleted": "A Product Cart is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Product Cart {{ id }}?"
+      },
+      "detail": {
+        "title": "Product Cart"
+      },
+      "id": "ID",
+      "quantity": "Quantity",
+      "product": "Product",
+      "cart": "Cart"
+    }
+  }
+}

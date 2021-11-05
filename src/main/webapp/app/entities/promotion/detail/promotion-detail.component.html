@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="promotion">
+      <h2 data-cy="promotionDetailsHeading"><span jhiTranslate="ecomApp.promotion.detail.title">Promotion</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ promotion.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotion.startDate">Start Date</span></dt>
+        <dd>
+          <span>{{ promotion.startDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotion.endDate">End Date</span></dt>
+        <dd>
+          <span>{{ promotion.endDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotion.reductionPercentage">Reduction Percentage</span></dt>
+        <dd>
+          <span>{{ promotion.reductionPercentage }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotion.products">Products</span></dt>
+        <dd>
+          <span *ngFor="let products of promotion.products; let last = last">
+            <a [routerLink]="['/product', products?.id, 'view']">{{ products.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/promotion', promotion.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

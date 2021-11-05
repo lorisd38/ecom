@@ -1,7 +1,7 @@
 package com.m2gi.ecom.web.rest;
 
-import com.m2gi.ecom.service.UserService;
 import com.m2gi.ecom.service.dto.UserDTO;
+import com.m2gi.ecom.service.impl.UserService;
 import java.util.*;
 import java.util.Collections;
 import org.slf4j.Logger;

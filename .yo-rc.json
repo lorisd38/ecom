@@ -42,6 +42,20 @@
     "devServerPort": 4200,
     "clientPackageManager": "npm",
     "languages": ["fr", "en"],
-    "enableGradleEnterprise": false
+    "enableGradleEnterprise": false,
+    "entities": [
+      "Address",
+      "Order",
+      "Product",
+      "Promotion",
+      "Cart",
+      "ProductOrder",
+      "ProductCart",
+      "Category",
+      "Recipe",
+      "Tag",
+      "UserDetails"
+    ],
+    "lastLiquibaseTimestamp": 1636077769000
   }
 }
