@@ -25,11 +25,11 @@ public class ProductCart implements Serializable {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "lines" }, allowSetters = true)
     private Cart cart;
 

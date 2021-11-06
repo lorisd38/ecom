@@ -47,11 +47,11 @@ public class Product implements Serializable {
     @Column(name = "weight", precision = 21, scale = 2)
     private BigDecimal weight;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_product__tags",
         joinColumns = @JoinColumn(name = "product_id"),
@@ -60,7 +60,7 @@ public class Product implements Serializable {
     @JsonIgnoreProperties(value = { "products", "preferencesOfs" }, allowSetters = true)
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private Set<Recipe> recipes = new HashSet<>();
 
@@ -68,7 +68,7 @@ public class Product implements Serializable {
      * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
     @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private Set<Promotion> promotions = new HashSet<>();
 
@@ -76,7 +76,7 @@ public class Product implements Serializable {
      * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
     @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "favorites")
+    @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "address", "user", "favorites", "preferences" }, allowSetters = true)
     private Set<UserDetails> favoritesOfs = new HashSet<>();
 

@@ -33,16 +33,16 @@ public class UserDetails implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Address address;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @MapsId
     @JoinColumn(name = "id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_user_details__favorites",
         joinColumns = @JoinColumn(name = "user_details_id"),
@@ -51,7 +51,7 @@ public class UserDetails implements Serializable {
     @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Set<Product> favorites = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_user_details__preferences",
         joinColumns = @JoinColumn(name = "user_details_id"),

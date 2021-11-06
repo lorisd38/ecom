@@ -31,7 +31,7 @@ public class Tag implements Serializable {
      * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
     @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
@@ -39,7 +39,7 @@ public class Tag implements Serializable {
      * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
     @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "preferences")
+    @ManyToMany(mappedBy = "preferences", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "address", "user", "favorites", "preferences" }, allowSetters = true)
     private Set<UserDetails> preferencesOfs = new HashSet<>();
 
