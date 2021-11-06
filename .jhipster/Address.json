@@ -1,0 +1,36 @@
+{
+  "name": "Address",
+  "fields": [
+    {
+      "fieldName": "road",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "postalCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "country",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "additionalDetails",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "address",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211105020239"
+}

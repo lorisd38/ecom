@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import com.m2gi.ecom.IntegrationTest;
 import com.m2gi.ecom.config.Constants;
 import com.m2gi.ecom.domain.User;
+import com.m2gi.ecom.service.impl.MailService;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

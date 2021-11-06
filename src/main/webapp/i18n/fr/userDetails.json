@@ -1,0 +1,30 @@
+{
+  "ecomApp": {
+    "userDetails": {
+      "home": {
+        "title": "UserDetails",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau User Details",
+        "createOrEditLabel": "Créer ou éditer un User Details",
+        "notFound": "Aucun User Details trouvé"
+      },
+      "created": "Un nouveau User Details a été créé avec l'identifiant {{ param }}",
+      "updated": "Le User Details avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le User Details avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le User Details {{ id }} ?"
+      },
+      "detail": {
+        "title": "User Details"
+      },
+      "id": "ID",
+      "role": "Role",
+      "birthDate": "Birth Date",
+      "phoneNumber": "Phone Number",
+      "address": "Address",
+      "user": "User",
+      "favorites": "Favorites",
+      "preferences": "Preferences"
+    }
+  }
+}

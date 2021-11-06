@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
-import com.m2gi.ecom.service.MailService;
+import com.m2gi.ecom.service.impl.MailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

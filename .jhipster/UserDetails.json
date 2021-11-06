@@ -1,0 +1,61 @@
+{
+  "name": "UserDetails",
+  "fields": [
+    {
+      "fieldName": "role",
+      "fieldType": "Role",
+      "fieldValues": "ADMIN,STAFF,CLIENT",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "address",
+      "otherEntityRelationshipName": "userDetails",
+      "relationshipName": "address",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "details",
+      "relationshipName": "user",
+      "ownerSide": true,
+      "useJPADerivedIdentifier": true,
+      "id": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "favoritesOf",
+      "relationshipName": "favorites",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "preferencesOf",
+      "relationshipName": "preferences",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "user_details",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211105020249"
+}

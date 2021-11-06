@@ -1,0 +1,38 @@
+{
+  "name": "Tag",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "tags",
+      "javadoc": "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.",
+      "relationshipName": "products",
+      "ownerSide": false
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "preferences",
+      "javadoc": "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.",
+      "relationshipName": "preferencesOf",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "tag",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211105020248"
+}
