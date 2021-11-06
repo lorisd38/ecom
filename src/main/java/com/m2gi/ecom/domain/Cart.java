@@ -21,7 +21,7 @@ public class Cart implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = { "product", "cart" }, allowSetters = true)
     private Set<ProductCart> lines = new HashSet<>();
 

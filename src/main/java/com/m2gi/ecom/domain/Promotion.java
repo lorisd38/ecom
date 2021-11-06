@@ -36,7 +36,7 @@ public class Promotion implements Serializable {
     @Column(name = "reduction_percentage", precision = 21, scale = 2, nullable = false)
     private BigDecimal reductionPercentage;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "rel_promotion__products",
         joinColumns = @JoinColumn(name = "promotion_id"),

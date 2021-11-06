@@ -42,7 +42,7 @@ public class UserDetails implements Serializable {
     @JoinColumn(name = "id")
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "rel_user_details__favorites",
         joinColumns = @JoinColumn(name = "user_details_id"),
@@ -51,7 +51,7 @@ public class UserDetails implements Serializable {
     @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Set<Product> favorites = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "rel_user_details__preferences",
         joinColumns = @JoinColumn(name = "user_details_id"),

@@ -35,7 +35,7 @@ public class Recipe implements Serializable {
     @Column(name = "image_path")
     private String imagePath;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "rel_recipe__products",
         joinColumns = @JoinColumn(name = "recipe_id"),
