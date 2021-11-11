@@ -16,4 +16,4 @@ const productsRoute: Routes = [
   imports: [RouterModule.forChild(productsRoute)],
   exports: [RouterModule],
 })
-export class ProductRoutingModule {}
+export class ProductsRoutingModule {}
