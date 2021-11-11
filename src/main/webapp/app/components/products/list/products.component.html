@@ -1,0 +1,74 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductsHeading">
+    <span jhiTranslate="ecomApp.product.home.title">Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="ecomApp.product.home.refreshListLabel">Refresh List</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+    <span jhiTranslate="ecomApp.product.home.notFound">No products found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.description">Description</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.origin">Origin</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.brand">Brand</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.imagePath">Image Path</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.price">Price</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.weight">Weight</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.category">Category</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.tags">Tags</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/product', product.id, 'view']">{{ product.id }}</a>
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.origin }}</td>
+          <td>{{ product.brand }}</td>
+          <td>{{ product.imagePath }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.weight }}</td>
+          <td>
+            <div *ngIf="product.category">
+              <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <span *ngFor="let tags of product.tags; let last = last">
+              <a class="form-control-static" [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <!--              Left as an example of what to do-->
+              <!--              <button type="submit" (click)="delete(product)" class="btn btn-primary btn-sm" data-cy="entityDeleteButton">-->
+              <!--                <fa-icon icon="times"></fa-icon>-->
+              <!--                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
+              <!--              </button>-->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
