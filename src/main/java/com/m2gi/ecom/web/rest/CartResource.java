@@ -2,20 +2,25 @@ package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.ProductCart;
+import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
+import com.m2gi.ecom.repository.UserRepository;
 import com.m2gi.ecom.service.CartService;
 import com.m2gi.ecom.service.ProductCartService;
+import com.m2gi.ecom.service.impl.UserService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -185,10 +190,16 @@ public class CartResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/carts/product")
-    public ResponseEntity<ProductCart> createProductCart(@Valid @RequestBody ProductCart productCart) throws URISyntaxException {
+    public ResponseEntity<ProductCart> createProductCart(
+        @Valid @RequestBody ProductCart productCart,
+        Authentication authentication,
+        UserRepository userRepo
+    ) throws URISyntaxException {
         log.debug("REST request to save ProductCart : {}", productCart);
         if (productCart.getCart() == null || productCart.getCart().getId() == null) {
             Cart cart = new Cart();
+            User user = userRepo.findOneByLogin(authentication.getName()).orElse(null);
+            //cart.setUser(user.get);
             Cart result = cartService.save(cart);
             productCart.setCart(result);
         }
