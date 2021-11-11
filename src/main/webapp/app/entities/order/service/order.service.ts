@@ -76,12 +76,14 @@ export class OrderService {
   protected convertDateFromClient(order: IOrder): IOrder {
     return Object.assign({}, order, {
       paymentDate: order.paymentDate?.isValid() ? order.paymentDate.toJSON() : undefined,
+      receptionDate: order.receptionDate?.isValid() ? order.receptionDate.toJSON() : undefined,
     });
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
       res.body.paymentDate = res.body.paymentDate ? dayjs(res.body.paymentDate) : undefined;
+      res.body.receptionDate = res.body.receptionDate ? dayjs(res.body.receptionDate) : undefined;
     }
     return res;
   }
@@ -90,6 +92,7 @@ export class OrderService {
     if (res.body) {
       res.body.forEach((order: IOrder) => {
         order.paymentDate = order.paymentDate ? dayjs(order.paymentDate) : undefined;
+        order.receptionDate = order.receptionDate ? dayjs(order.receptionDate) : undefined;
       });
     }
     return res;

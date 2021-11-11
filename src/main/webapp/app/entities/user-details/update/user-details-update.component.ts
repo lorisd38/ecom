@@ -11,6 +11,8 @@ import { IAddress } from 'app/entities/address/address.model';
 import { AddressService } from 'app/entities/address/service/address.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { ICart } from 'app/entities/cart/cart.model';
+import { CartService } from 'app/entities/cart/service/cart.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ITag } from 'app/entities/tag/tag.model';
@@ -27,6 +29,7 @@ export class UserDetailsUpdateComponent implements OnInit {
 
   addressesCollection: IAddress[] = [];
   usersSharedCollection: IUser[] = [];
+  cartsCollection: ICart[] = [];
   productsSharedCollection: IProduct[] = [];
   tagsSharedCollection: ITag[] = [];
 
@@ -37,6 +40,7 @@ export class UserDetailsUpdateComponent implements OnInit {
     phoneNumber: [],
     address: [],
     user: [],
+    cart: [],
     favorites: [],
     preferences: [],
   });
@@ -45,6 +49,7 @@ export class UserDetailsUpdateComponent implements OnInit {
     protected userDetailsService: UserDetailsService,
     protected addressService: AddressService,
     protected userService: UserService,
+    protected cartService: CartService,
     protected productService: ProductService,
     protected tagService: TagService,
     protected activatedRoute: ActivatedRoute,
@@ -78,6 +83,10 @@ export class UserDetailsUpdateComponent implements OnInit {
   }
 
   trackUserById(index: number, item: IUser): number {
+    return item.id!;
+  }
+
+  trackCartById(index: number, item: ICart): number {
     return item.id!;
   }
 
@@ -138,12 +147,14 @@ export class UserDetailsUpdateComponent implements OnInit {
       phoneNumber: userDetails.phoneNumber,
       address: userDetails.address,
       user: userDetails.user,
+      cart: userDetails.cart,
       favorites: userDetails.favorites,
       preferences: userDetails.preferences,
     });
 
     this.addressesCollection = this.addressService.addAddressToCollectionIfMissing(this.addressesCollection, userDetails.address);
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, userDetails.user);
+    this.cartsCollection = this.cartService.addCartToCollectionIfMissing(this.cartsCollection, userDetails.cart);
     this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(
       this.productsSharedCollection,
       ...(userDetails.favorites ?? [])
@@ -165,6 +176,12 @@ export class UserDetailsUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
+    this.cartService
+      .query({ filter: 'user-is-null' })
+      .pipe(map((res: HttpResponse<ICart[]>) => res.body ?? []))
+      .pipe(map((carts: ICart[]) => this.cartService.addCartToCollectionIfMissing(carts, this.editForm.get('cart')!.value)))
+      .subscribe((carts: ICart[]) => (this.cartsCollection = carts));
 
     this.productService
       .query()
@@ -192,6 +209,7 @@ export class UserDetailsUpdateComponent implements OnInit {
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
       address: this.editForm.get(['address'])!.value,
       user: this.editForm.get(['user'])!.value,
+      cart: this.editForm.get(['cart'])!.value,
       favorites: this.editForm.get(['favorites'])!.value,
       preferences: this.editForm.get(['preferences'])!.value,
     };

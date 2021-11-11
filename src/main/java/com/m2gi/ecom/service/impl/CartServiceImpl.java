@@ -5,6 +5,8 @@ import com.m2gi.ecom.repository.CartRepository;
 import com.m2gi.ecom.service.CartService;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,19 @@ public class CartServiceImpl implements CartService {
     public List<Cart> findAll() {
         log.debug("Request to get all Carts");
         return cartRepository.findAll();
+    }
+
+    /**
+     *  Get all the carts where User is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<Cart> findAllWhereUserIsNull() {
+        log.debug("Request to get all carts where User is null");
+        return StreamSupport
+            .stream(cartRepository.findAll().spliterator(), false)
+            .filter(cart -> cart.getUser() == null)
+            .collect(Collectors.toList());
     }
 
     @Override

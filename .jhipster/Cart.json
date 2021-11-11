@@ -7,6 +7,13 @@
       "otherEntityName": "productCart",
       "otherEntityRelationshipName": "cart",
       "relationshipName": "lines"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "cart",
+      "relationshipName": "user",
+      "ownerSide": false
     }
   ],
   "entityTableName": "cart",

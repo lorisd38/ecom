@@ -42,6 +42,11 @@ public class UserDetails implements Serializable {
     @JoinColumn(name = "id")
     private User user;
 
+    @JsonIgnoreProperties(value = { "lines", "user" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Cart cart;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "rel_user_details__favorites",
@@ -137,6 +142,19 @@ public class UserDetails implements Serializable {
 
     public UserDetails user(User user) {
         this.setUser(user);
+        return this;
+    }
+
+    public Cart getCart() {
+        return this.cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public UserDetails cart(Cart cart) {
+        this.setCart(cart);
         return this;
     }
 

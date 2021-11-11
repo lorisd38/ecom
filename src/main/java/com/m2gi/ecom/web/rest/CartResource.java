@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,10 +135,15 @@ public class CartResource {
     /**
      * {@code GET  /carts} : get all the carts.
      *
+     * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of carts in body.
      */
     @GetMapping("/carts")
-    public List<Cart> getAllCarts() {
+    public List<Cart> getAllCarts(@RequestParam(required = false) String filter) {
+        if ("user-is-null".equals(filter)) {
+            log.debug("REST request to get all Carts where user is null");
+            return cartService.findAllWhereUserIsNull();
+        }
         log.debug("REST request to get all Carts");
         return cartService.findAll();
     }

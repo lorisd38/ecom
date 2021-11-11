@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "receptionDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "promoCode",
       "fieldType": "String"
     },

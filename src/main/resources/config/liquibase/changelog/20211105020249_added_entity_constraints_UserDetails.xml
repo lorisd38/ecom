@@ -20,6 +20,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="cart_id"
+                                 baseTableName="user_details"
+                                 constraintName="fk_user_details__cart_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cart"/>
+
         <addForeignKeyConstraint baseColumnNames="user_details_id"
                                  baseTableName="rel_user_details__favorites"
                                  constraintName="fk_rel_user_details__favorites__user_details_id"

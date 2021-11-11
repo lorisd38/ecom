@@ -21,6 +21,7 @@ export class OrderUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     paymentDate: [null, [Validators.required]],
+    receptionDate: [null, [Validators.required]],
     promoCode: [],
     totalPrice: [null, [Validators.required]],
   });
@@ -32,6 +33,7 @@ export class OrderUpdateComponent implements OnInit {
       if (order.id === undefined) {
         const today = dayjs().startOf('day');
         order.paymentDate = today;
+        order.receptionDate = today;
       }
 
       this.updateForm(order);
@@ -75,6 +77,7 @@ export class OrderUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: order.id,
       paymentDate: order.paymentDate ? order.paymentDate.format(DATE_TIME_FORMAT) : null,
+      receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
       promoCode: order.promoCode,
       totalPrice: order.totalPrice,
     });
@@ -86,6 +89,9 @@ export class OrderUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       paymentDate: this.editForm.get(['paymentDate'])!.value
         ? dayjs(this.editForm.get(['paymentDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      receptionDate: this.editForm.get(['receptionDate'])!.value
+        ? dayjs(this.editForm.get(['receptionDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
       promoCode: this.editForm.get(['promoCode'])!.value,
       totalPrice: this.editForm.get(['totalPrice'])!.value,

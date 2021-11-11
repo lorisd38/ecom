@@ -77,7 +77,7 @@ public class Product implements Serializable {
      */
     @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
     @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "address", "user", "favorites", "preferences" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)
     private Set<UserDetails> favoritesOfs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
