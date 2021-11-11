@@ -27,6 +27,14 @@
         </a>
       </li>
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/products" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="external-link"></fa-icon>
+            <span jhiTranslate="global.menu.products">Products</span>
+          </span>
+        </a>
+      </li>
       <li
         *ngSwitchCase="true"
         ngbDropdown
