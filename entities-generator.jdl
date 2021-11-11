@@ -8,6 +8,7 @@ entity Address {
 
 entity Order(jhi_order) {
 	paymentDate Instant required,
+	receptionDate Instant required,
     promoCode String,
     totalPrice BigDecimal required
 }
@@ -78,23 +79,24 @@ relationship ManyToOne {
 
 relationship ManyToMany {
   Recipe{products} to Product{recipes},
-  Product{tags} to 
+  Product{tags} to
   /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{products},
-  Promotion{products} to 
+  Promotion{products} to
   /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Product{promotions},
-  UserDetails{favorites} to 
+  UserDetails{favorites} to
   /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Product{favoritesOf},
-  UserDetails{preferences} to 
+  UserDetails{preferences} to
   /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{preferencesOf}
 }
 
 relationship OneToOne {
     UserDetails{address} to Address,
-    UserDetails{user} to User{details} with jpaDerivedIdentifier
+    UserDetails{user} to User{details} with jpaDerivedIdentifier,
+    UserDetails{cart} to Cart{user}
 }
 
 service * with serviceImpl
