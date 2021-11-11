@@ -36,6 +36,12 @@
         <dd>
           <span>{{ userDetails.user?.id }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomApp.userDetails.cart">Cart</span></dt>
+        <dd>
+          <div *ngIf="userDetails.cart">
+            <a [routerLink]="['/cart', userDetails.cart?.id, 'view']">{{ userDetails.cart?.id }}</a>
+          </div>
+        </dd>
         <dt><span jhiTranslate="ecomApp.userDetails.favorites">Favorites</span></dt>
         <dd>
           <span *ngFor="let favorites of userDetails.favorites; let last = last">

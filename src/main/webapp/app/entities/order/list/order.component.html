@@ -34,6 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.order.paymentDate">Payment Date</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.order.receptionDate">Reception Date</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.order.promoCode">Promo Code</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.order.totalPrice">Total Price</span></th>
           <th scope="col"></th>
@@ -45,6 +46,7 @@
             <a [routerLink]="['/order', order.id, 'view']">{{ order.id }}</a>
           </td>
           <td>{{ order.paymentDate | formatMediumDatetime }}</td>
+          <td>{{ order.receptionDate | formatMediumDatetime }}</td>
           <td>{{ order.promoCode }}</td>
           <td>{{ order.totalPrice }}</td>
           <td class="text-right">

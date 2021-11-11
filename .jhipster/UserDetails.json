@@ -34,6 +34,13 @@
       "id": true
     },
     {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "cart",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "cart",
+      "ownerSide": true
+    },
+    {
       "relationshipType": "many-to-many",
       "otherEntityName": "product",
       "otherEntityRelationshipName": "favoritesOf",

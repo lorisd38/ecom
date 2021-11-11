@@ -72,6 +72,7 @@ class OrderGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "paymentDate":"2020-01-01T00:00:00.000Z"
+                , "receptionDate":"2020-01-01T00:00:00.000Z"
                 , "promoCode":"SAMPLE_TEXT"
                 , "totalPrice":"0"
                 }""")).asJson

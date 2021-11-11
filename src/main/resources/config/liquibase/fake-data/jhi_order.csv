@@ -1,11 +1,11 @@
-id;payment_date;promo_code;total_price
-1;2021-11-04T14:24:41;monitor;90598
-2;2021-11-04T07:35:48;holistic Peso Handcrafted;92349
-3;2021-11-04T07:31:11;Berkshire Buckinghamshire;96360
-4;2021-11-04T11:16:22;circuit Account Outdoors;59476
-5;2021-11-04T16:17:12;synergize;89808
-6;2021-11-04T08:19:43;Account online mindshare;14754
-7;2021-11-04T15:21:05;c multi-tasking;3657
-8;2021-11-04T06:43:08;Cotton olive a;59271
-9;2021-11-04T05:29:57;Franche-Comté;49428
-10;2021-11-04T19:44:32;Bedfordshire;9978
+id;payment_date;reception_date;promo_code;total_price
+1;2021-11-04T14:24:41;2021-11-04T18:18:43;input synthesize Technicien;57039
+2;2021-11-04T09:54:03;2021-11-05T00:32:39;salmon c Berkshire;48734
+3;2021-11-04T07:20:42;2021-11-04T14:03:23;Auto Salad open-source;87119
+4;2021-11-04T14:43:25;2021-11-04T11:46:12;Tools Account;70320
+5;2021-11-04T11:16:34;2021-11-04T14:35:26;online mindshare;14754
+6;2021-11-04T15:21:05;2021-11-04T11:52:06;b deposit solid;38593
+7;2021-11-04T05:49:49;2021-11-04T21:26:09;web-enabled Oro Awesome;30351
+8;2021-11-04T14:10:52;2021-11-04T19:44:32;Bedfordshire;9978
+9;2021-11-04T19:11:43;2021-11-04T04:20:12;Table impactful;73672
+10;2021-11-05T00:59:40;2021-11-04T09:46:49;a RSS channels;61507

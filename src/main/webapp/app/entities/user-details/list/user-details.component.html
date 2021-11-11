@@ -38,6 +38,7 @@
           <th scope="col"><span jhiTranslate="ecomApp.userDetails.phoneNumber">Phone Number</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.userDetails.address">Address</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.userDetails.user">User</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.userDetails.cart">Cart</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.userDetails.favorites">Favorites</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.userDetails.preferences">Preferences</span></th>
           <th scope="col"></th>
@@ -58,6 +59,11 @@
           </td>
           <td>
             {{ userDetails.user?.id }}
+          </td>
+          <td>
+            <div *ngIf="userDetails.cart">
+              <a [routerLink]="['/cart', userDetails.cart?.id, 'view']">{{ userDetails.cart?.id }}</a>
+            </div>
           </td>
           <td>
             <span *ngFor="let favorites of userDetails.favorites; let last = last">
