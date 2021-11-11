@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
+import { ProductCart } from '../../../entities/product-cart/product-cart.model';
+import { ProductToCartService } from '../service/product-to-cart.service';
 
 @Component({
   selector: 'jhi-products',
@@ -13,7 +15,11 @@ export class ProductsComponent implements OnInit {
   products?: IProduct[];
   isLoading = false;
 
-  constructor(protected productService: ProductService, protected modalService: NgbModal) {}
+  constructor(
+    protected productService: ProductService,
+    protected modalService: NgbModal,
+    protected productToCartService: ProductToCartService
+  ) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -35,5 +41,12 @@ export class ProductsComponent implements OnInit {
 
   trackId(index: number, item: IProduct): number {
     return item.id!;
+  }
+
+  addToCart(item: IProduct): void {
+    const productCart = new ProductCart();
+    productCart.product = item;
+    productCart.quantity = 1;
+    this.productToCartService.create(productCart);
   }
 }

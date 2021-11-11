@@ -1,14 +1,17 @@
 package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.repository.CartRepository;
 import com.m2gi.ecom.service.CartService;
+import com.m2gi.ecom.service.ProductCartService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,9 +36,12 @@ public class CartResource {
 
     private final CartService cartService;
 
+    private final ProductCartService productCartService;
+
     private final CartRepository cartRepository;
 
-    public CartResource(CartService cartService, CartRepository cartRepository) {
+    public CartResource(ProductCartService productCartService, CartService cartService, CartRepository cartRepository) {
+        this.productCartService = productCartService;
         this.cartService = cartService;
         this.cartRepository = cartRepository;
     }
@@ -164,5 +170,31 @@ public class CartResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /carts/product} : Create a new productCart.
+     *
+     * @param productCart the productCart to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productCart, or with status {@code 400 (Bad Request)} if the productCart has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/carts/product")
+    public ResponseEntity<ProductCart> createProductCart(@Valid @RequestBody ProductCart productCart) throws URISyntaxException {
+        log.debug("REST request to save ProductCart : {}", productCart);
+        if (productCart.getCart() == null || productCart.getCart().getId() == null) {
+            Cart cart = new Cart();
+            Cart result = cartService.save(cart);
+            productCart.setCart(result);
+        }
+        if (productCart.getId() != null) {
+            throw new BadRequestAlertException("A new productCart cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        ProductCart result = productCartService.save(productCart);
+
+        return ResponseEntity
+            .created(new URI("/api/product-carts/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }

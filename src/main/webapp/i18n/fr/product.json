@@ -5,17 +5,17 @@
         "title": "Products",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un nouveau Product",
-        "createOrEditLabel": "Créer ou éditer un Product",
+        "createOrEditLabel": "Créer ou éditer un Produit",
         "notFound": "Aucun Product trouvé"
       },
       "created": "Un nouveau Product a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Product avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Product avec l'identifiant {{ param }} a été supprimé",
+      "updated": "Le Produit avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Produit avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Product {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Produit {{ id }} ?"
       },
       "detail": {
-        "title": "Product"
+        "title": "Produit"
       },
       "id": "ID",
       "name": "Name",
@@ -29,7 +29,8 @@
       "tags": "Tags",
       "recipes": "Recipes",
       "promotions": "Promotions",
-      "favoritesOf": "Favorites Of"
+      "favoritesOf": "Favorites Of",
+      "addToCart": "Ajouter au panier"
     }
   }
 }

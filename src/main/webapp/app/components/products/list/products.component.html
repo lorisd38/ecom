@@ -60,11 +60,10 @@
           </td>
           <td class="text-right">
             <div class="btn-group">
-              <!--              Left as an example of what to do-->
-              <!--              <button type="submit" (click)="delete(product)" class="btn btn-primary btn-sm" data-cy="entityDeleteButton">-->
-              <!--                <fa-icon icon="times"></fa-icon>-->
-              <!--                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
-              <!--              </button>-->
+              <button type="submit" (click)="addToCart(product)" class="btn btn-primary btn-sm" data-cy="entityAddTodCartButton">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="ecomApp.product.addToCart">Ajouter au panier</span>
+              </button>
             </div>
           </td>
         </tr>
