@@ -18,7 +18,8 @@
         "title": "Cart"
       },
       "id": "ID",
-      "lines": "Lines"
+      "lines": "Lines",
+      "user": "User"
     }
   }
 }

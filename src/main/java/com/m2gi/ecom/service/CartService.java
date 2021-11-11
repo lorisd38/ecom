@@ -30,6 +30,12 @@ public interface CartService {
      * @return the list of entities.
      */
     List<Cart> findAll();
+    /**
+     * Get all the Cart where User is {@code null}.
+     *
+     * @return the {@link List} of entities.
+     */
+    List<Cart> findAllWhereUserIsNull();
 
     /**
      * Get the "id" cart.

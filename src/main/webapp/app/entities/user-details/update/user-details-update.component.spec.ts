@@ -14,6 +14,8 @@ import { AddressService } from 'app/entities/address/service/address.service';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { ICart } from 'app/entities/cart/cart.model';
+import { CartService } from 'app/entities/cart/service/cart.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ITag } from 'app/entities/tag/tag.model';
@@ -28,6 +30,7 @@ describe('UserDetails Management Update Component', () => {
   let userDetailsService: UserDetailsService;
   let addressService: AddressService;
   let userService: UserService;
+  let cartService: CartService;
   let productService: ProductService;
   let tagService: TagService;
 
@@ -45,6 +48,7 @@ describe('UserDetails Management Update Component', () => {
     userDetailsService = TestBed.inject(UserDetailsService);
     addressService = TestBed.inject(AddressService);
     userService = TestBed.inject(UserService);
+    cartService = TestBed.inject(CartService);
     productService = TestBed.inject(ProductService);
     tagService = TestBed.inject(TagService);
 
@@ -87,6 +91,24 @@ describe('UserDetails Management Update Component', () => {
       expect(userService.query).toHaveBeenCalled();
       expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
       expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should call cart query and add missing value', () => {
+      const userDetails: IUserDetails = { id: 456 };
+      const cart: ICart = { id: 20046 };
+      userDetails.cart = cart;
+
+      const cartCollection: ICart[] = [{ id: 64963 }];
+      jest.spyOn(cartService, 'query').mockReturnValue(of(new HttpResponse({ body: cartCollection })));
+      const expectedCollection: ICart[] = [cart, ...cartCollection];
+      jest.spyOn(cartService, 'addCartToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ userDetails });
+      comp.ngOnInit();
+
+      expect(cartService.query).toHaveBeenCalled();
+      expect(cartService.addCartToCollectionIfMissing).toHaveBeenCalledWith(cartCollection, cart);
+      expect(comp.cartsCollection).toEqual(expectedCollection);
     });
 
     it('Should call Product query and add missing value', () => {
@@ -133,6 +155,8 @@ describe('UserDetails Management Update Component', () => {
       userDetails.address = address;
       const user: IUser = { id: 76901 };
       userDetails.user = user;
+      const cart: ICart = { id: 57717 };
+      userDetails.cart = cart;
       const favorites: IProduct = { id: 44010 };
       userDetails.favorites = [favorites];
       const preferences: ITag = { id: 94713 };
@@ -144,6 +168,7 @@ describe('UserDetails Management Update Component', () => {
       expect(comp.editForm.value).toEqual(expect.objectContaining(userDetails));
       expect(comp.addressesCollection).toContain(address);
       expect(comp.usersSharedCollection).toContain(user);
+      expect(comp.cartsCollection).toContain(cart);
       expect(comp.productsSharedCollection).toContain(favorites);
       expect(comp.tagsSharedCollection).toContain(preferences);
     });
@@ -226,6 +251,14 @@ describe('UserDetails Management Update Component', () => {
       it('Should return tracked User primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackUserById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackCartById', () => {
+      it('Should return tracked Cart primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackCartById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });
