@@ -9,6 +9,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'ecomApp.product.home.title' },
         loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
       },
+      {
+        path: 'panier',
+        data: { pageTitle: 'ecomApp.product.home.title' },
+        loadChildren: () => import('./cart/cart.module').then(m => m.CartModule),
+      },
     ]),
   ],
 })
