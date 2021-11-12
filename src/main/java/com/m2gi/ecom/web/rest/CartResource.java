@@ -1,6 +1,7 @@
 package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
@@ -183,29 +184,28 @@ public class CartResource {
     }
 
     /**
-     * {@code POST  /carts/product} : Create a new productCart.
+     * {@code POST  /cart/product/:id} : Create a new productCart with product "id".
      *
-     * @param productCart the productCart to create.
+     * @param product the product that should create a productCart.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productCart, or with status {@code 400 (Bad Request)} if the productCart has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/carts/product")
+    @PostMapping("/cart/product/{id}")
     public ResponseEntity<ProductCart> createProductCart(
-        @Valid @RequestBody ProductCart productCart,
+        @Valid @RequestBody Product product,
         Authentication authentication,
         UserRepository userRepo
     ) throws URISyntaxException {
-        log.debug("REST request to save ProductCart : {}", productCart);
-        if (productCart.getCart() == null || productCart.getCart().getId() == null) {
-            Cart cart = new Cart();
-            User user = userRepo.findOneByLogin(authentication.getName()).orElse(null);
-            //cart.setUser(user.get);
-            Cart result = cartService.save(cart);
-            productCart.setCart(result);
+        log.debug("REST request to add product to a productCart to Cart : {}", product);
+        if (product.getId() != null) {
+            throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (productCart.getId() != null) {
-            throw new BadRequestAlertException("A new productCart cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+        Optional<User> user = userRepo.findOneByLogin(authentication.getName());
+        ProductCart productCart = new ProductCart();
+        productCart.setCart(null);
+        productCart.setProduct(product);
+        productCart.setQuantity(1);
+
         ProductCart result = productCartService.save(productCart);
 
         return ResponseEntity

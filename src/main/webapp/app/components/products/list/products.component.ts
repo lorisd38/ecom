@@ -43,10 +43,7 @@ export class ProductsComponent implements OnInit {
     return item.id!;
   }
 
-  addToCart(item: IProduct): void {
-    const productCart = new ProductCart();
-    productCart.product = item;
-    productCart.quantity = 1;
-    this.productToCartService.create(productCart);
+  addToCart(product: IProduct): void {
+    this.productToCartService.create(product);
   }
 }
