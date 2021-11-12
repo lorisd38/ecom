@@ -202,7 +202,7 @@ public class CartResource {
         }
         Optional<User> user = userRepo.findOneByLogin(authentication.getName());
         ProductCart productCart = new ProductCart();
-        productCart.setCart(null);
+        productCart.setCart(null); //TODO ajouter user.userdetail.getcart
         productCart.setProduct(product);
         productCart.setQuantity(1);
 
