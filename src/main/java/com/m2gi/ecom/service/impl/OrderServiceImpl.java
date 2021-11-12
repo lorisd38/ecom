@@ -41,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
                 if (order.getPaymentDate() != null) {
                     existingOrder.setPaymentDate(order.getPaymentDate());
                 }
+                if (order.getReceptionDate() != null) {
+                    existingOrder.setReceptionDate(order.getReceptionDate());
+                }
                 if (order.getPromoCode() != null) {
                     existingOrder.setPromoCode(order.getPromoCode());
                 }

@@ -23,6 +23,7 @@
       "phoneNumber": "Phone Number",
       "address": "Address",
       "user": "User",
+      "cart": "Cart",
       "favorites": "Favorites",
       "preferences": "Preferences"
     }

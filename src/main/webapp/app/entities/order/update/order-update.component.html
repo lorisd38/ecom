@@ -45,6 +45,41 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.order.receptionDate" for="field_receptionDate">Reception Date</label>
+          <div class="d-flex">
+            <input
+              id="field_receptionDate"
+              data-cy="receptionDate"
+              type="datetime-local"
+              class="form-control"
+              name="receptionDate"
+              formControlName="receptionDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="
+              editForm.get('receptionDate')!.invalid && (editForm.get('receptionDate')!.dirty || editForm.get('receptionDate')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('receptionDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('receptionDate')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="ecomApp.order.promoCode" for="field_promoCode">Promo Code</label>
           <input type="text" class="form-control" name="promoCode" id="field_promoCode" data-cy="promoCode" formControlName="promoCode" />
         </div>

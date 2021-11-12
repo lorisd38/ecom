@@ -19,6 +19,7 @@
       },
       "id": "ID",
       "paymentDate": "Payment Date",
+      "receptionDate": "Reception Date",
       "promoCode": "Promo Code",
       "totalPrice": "Total Price",
       "lines": "Lines"

@@ -17,6 +17,9 @@
             <column name="payment_date" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
+            <column name="reception_date" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
             <column name="promo_code" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -26,6 +29,7 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="jhi_order" columnName="payment_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="jhi_order" columnName="reception_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -46,6 +50,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="payment_date" type="date"/>
+            <column name="reception_date" type="date"/>
             <column name="promo_code" type="string"/>
             <column name="total_price" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

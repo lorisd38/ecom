@@ -28,6 +28,10 @@ public class Order implements Serializable {
     @Column(name = "payment_date", nullable = false)
     private Instant paymentDate;
 
+    @NotNull
+    @Column(name = "reception_date", nullable = false)
+    private Instant receptionDate;
+
     @Column(name = "promo_code")
     private String promoCode;
 
@@ -35,7 +39,7 @@ public class Order implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order")
     @JsonIgnoreProperties(value = { "product", "order" }, allowSetters = true)
     private Set<ProductOrder> lines = new HashSet<>();
 
@@ -65,6 +69,19 @@ public class Order implements Serializable {
 
     public void setPaymentDate(Instant paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public Instant getReceptionDate() {
+        return this.receptionDate;
+    }
+
+    public Order receptionDate(Instant receptionDate) {
+        this.setReceptionDate(receptionDate);
+        return this;
+    }
+
+    public void setReceptionDate(Instant receptionDate) {
+        this.receptionDate = receptionDate;
     }
 
     public String getPromoCode() {
@@ -149,6 +166,7 @@ public class Order implements Serializable {
         return "Order{" +
             "id=" + getId() +
             ", paymentDate='" + getPaymentDate() + "'" +
+            ", receptionDate='" + getReceptionDate() + "'" +
             ", promoCode='" + getPromoCode() + "'" +
             ", totalPrice=" + getTotalPrice() +
             "}";

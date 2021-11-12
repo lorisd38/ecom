@@ -26,6 +26,7 @@ describe('Order Service', () => {
     elemDefault = {
       id: 0,
       paymentDate: currentDate,
+      receptionDate: currentDate,
       promoCode: 'AAAAAAA',
       totalPrice: 0,
     };
@@ -36,6 +37,7 @@ describe('Order Service', () => {
       const returnedFromService = Object.assign(
         {
           paymentDate: currentDate.format(DATE_TIME_FORMAT),
+          receptionDate: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
@@ -52,6 +54,7 @@ describe('Order Service', () => {
         {
           id: 0,
           paymentDate: currentDate.format(DATE_TIME_FORMAT),
+          receptionDate: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
@@ -59,6 +62,7 @@ describe('Order Service', () => {
       const expected = Object.assign(
         {
           paymentDate: currentDate,
+          receptionDate: currentDate,
         },
         returnedFromService
       );
@@ -75,6 +79,7 @@ describe('Order Service', () => {
         {
           id: 1,
           paymentDate: currentDate.format(DATE_TIME_FORMAT),
+          receptionDate: currentDate.format(DATE_TIME_FORMAT),
           promoCode: 'BBBBBB',
           totalPrice: 1,
         },
@@ -84,6 +89,7 @@ describe('Order Service', () => {
       const expected = Object.assign(
         {
           paymentDate: currentDate,
+          receptionDate: currentDate,
         },
         returnedFromService
       );
@@ -99,7 +105,7 @@ describe('Order Service', () => {
       const patchObject = Object.assign(
         {
           paymentDate: currentDate.format(DATE_TIME_FORMAT),
-          totalPrice: 1,
+          promoCode: 'BBBBBB',
         },
         new Order()
       );
@@ -109,6 +115,7 @@ describe('Order Service', () => {
       const expected = Object.assign(
         {
           paymentDate: currentDate,
+          receptionDate: currentDate,
         },
         returnedFromService
       );
@@ -125,6 +132,7 @@ describe('Order Service', () => {
         {
           id: 1,
           paymentDate: currentDate.format(DATE_TIME_FORMAT),
+          receptionDate: currentDate.format(DATE_TIME_FORMAT),
           promoCode: 'BBBBBB',
           totalPrice: 1,
         },
@@ -134,6 +142,7 @@ describe('Order Service', () => {
       const expected = Object.assign(
         {
           paymentDate: currentDate,
+          receptionDate: currentDate,
         },
         returnedFromService
       );
@@ -183,7 +192,7 @@ describe('Order Service', () => {
       });
 
       it('should add only unique Order to an array', () => {
-        const orderArray: IOrder[] = [{ id: 123 }, { id: 456 }, { id: 19267 }];
+        const orderArray: IOrder[] = [{ id: 123 }, { id: 456 }, { id: 98623 }];
         const orderCollection: IOrder[] = [{ id: 123 }];
         expectedResult = service.addOrderToCollectionIfMissing(orderCollection, ...orderArray);
         expect(expectedResult).toHaveLength(3);
