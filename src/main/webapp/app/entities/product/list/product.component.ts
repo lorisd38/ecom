@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from '../product.model';
 import { ProductService } from '../service/product.service';
 import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
+import {ICart} from "../../cart/cart.model";
 
 @Component({
   selector: 'jhi-product',
@@ -13,6 +14,7 @@ import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.co
 export class ProductComponent implements OnInit {
   products?: IProduct[];
   isLoading = false;
+  actualCart?: ICart; //TODO
 
   constructor(protected productService: ProductService, protected modalService: NgbModal) {}
 
