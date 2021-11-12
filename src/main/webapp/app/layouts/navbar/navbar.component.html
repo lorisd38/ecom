@@ -18,6 +18,14 @@
   </a>
   <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/panier" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="bars"></fa-icon>
+            <span jhiTranslate="global.menu.entities.cart">Panier</span>
+          </span>
+        </a>
+      </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
           <span>
