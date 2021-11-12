@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
-import { ProductCart } from '../../../entities/product-cart/product-cart.model';
 import { ProductToCartService } from '../service/product-to-cart.service';
 
 @Component({
@@ -44,8 +43,9 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: IProduct): void {
-    if (product.id != undefined)
-      //TODO Gestion erreur product id undefined
+    if (product.id !== undefined) {
+      // TODO Gestion erreur product id undefined
       this.productToCartService.create(product.id);
+    }
   }
 }
