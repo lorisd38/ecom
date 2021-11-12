@@ -44,6 +44,8 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: IProduct): void {
-    this.productToCartService.create(product);
+    if (product.id != undefined)
+      //TODO Gestion erreur product id undefined
+      this.productToCartService.create(product.id);
   }
 }

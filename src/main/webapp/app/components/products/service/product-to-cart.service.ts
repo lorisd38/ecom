@@ -3,7 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { IProduct } from '../../../entities/product/product.model';
 
 export type EntityResponseType = HttpResponse<IProductCart>;
 export type EntityArrayResponseType = HttpResponse<IProductCart[]>;
@@ -14,7 +13,7 @@ export class ProductToCartService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(product: IProduct): Observable<EntityResponseType> {
-    return this.http.post<IProductCart>(`${this.resourceUrl}/${product.id}`, product, { observe: 'response' });
+  create(idProduct: number): Observable<EntityResponseType> {
+    return this.http.post<IProductCart>(`${this.resourceUrl}/${idProduct}`, null, { observe: 'response' });
   }
 }
