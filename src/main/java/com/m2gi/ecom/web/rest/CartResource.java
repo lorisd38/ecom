@@ -1,19 +1,28 @@
 package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.ProductCart;
+import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
+import com.m2gi.ecom.repository.UserRepository;
 import com.m2gi.ecom.service.CartService;
+import com.m2gi.ecom.service.ProductCartService;
+import com.m2gi.ecom.service.ProductService;
+import com.m2gi.ecom.service.impl.UserService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -34,9 +43,24 @@ public class CartResource {
 
     private final CartService cartService;
 
+    private final ProductCartService productCartService;
+
     private final CartRepository cartRepository;
 
-    public CartResource(CartService cartService, CartRepository cartRepository) {
+    private final UserRepository userRepo;
+
+    private final ProductService productService;
+
+    public CartResource(
+        ProductService productService,
+        UserRepository userRepo,
+        ProductCartService productCartService,
+        CartService cartService,
+        CartRepository cartRepository
+    ) {
+        this.productService = productService;
+        this.userRepo = userRepo;
+        this.productCartService = productCartService;
         this.cartService = cartService;
         this.cartRepository = cartRepository;
     }
@@ -170,5 +194,33 @@ public class CartResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /cart/product/:id} : Create a new productCart with product "id".
+     *
+     * @param idProduct the id of product that should create a productCart.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productCart, or with status {@code 400 (Bad Request)} if the productCart has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/cart/product/{id}")
+    public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct, Authentication authentication)
+        throws URISyntaxException {
+        log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
+        if (idProduct != null) {
+            throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        User user = userRepo.findOneByLogin(authentication.getName()).get();
+        ProductCart productCart = new ProductCart();
+        productCart.setCart(null); //TODO ajouter user.userdetail.getcart
+        productCart.setProduct(productService.findOne(idProduct).get());
+        productCart.setQuantity(1);
+
+        ProductCart result = productCartService.save(productCart);
+
+        return ResponseEntity
+            .created(new URI("/api/product-carts/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }
