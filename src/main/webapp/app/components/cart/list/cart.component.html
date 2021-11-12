@@ -1,0 +1,18 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductsHeading">
+    <span jhiTranslate="global.menu.entities.cart">Cart</span>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="cart?.lines?.length === 0">
+    <span jhiTranslate="ecomApp.cart.home.notFound">Empty card</span>
+  </div>
+
+  <!--TO DO-->
+  <!--Body table!-->
+
+
+</div>
