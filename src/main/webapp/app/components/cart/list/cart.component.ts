@@ -12,6 +12,7 @@ import { CartService } from '../service/cart.service';
 export class CartComponent implements OnInit {
   cart?: ICart | null;
   isLoading = false;
+  total = '0';
 
   constructor(public cartService: CartService) {
     // do nothing.
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cart = res.body ?? null;
+        this.calcTotal();
       },
       () => {
         this.isLoading = false;
@@ -40,16 +42,16 @@ export class CartComponent implements OnInit {
     );
   }
 
-  calcTotal(): string {
-    let total = 0.0;
+  calcTotal(): void {
+    let tt = 0.0;
     if (this.cart?.lines != null) {
       for (const lineProduct of this.cart.lines) {
         if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-          total += lineProduct.quantity * lineProduct.product.price;
+          tt += lineProduct.quantity * lineProduct.product.price;
         }
       }
     }
-    return total.toLocaleString();
+    this.total = tt.toLocaleString();
   }
 
   delete(product: IProductCart): void {
