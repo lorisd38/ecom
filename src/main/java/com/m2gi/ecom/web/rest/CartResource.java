@@ -1,7 +1,6 @@
 package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
-import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
@@ -10,20 +9,16 @@ import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
 import com.m2gi.ecom.service.ProductCartService;
 import com.m2gi.ecom.service.ProductService;
-import com.m2gi.ecom.service.impl.UserService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -205,17 +200,16 @@ public class CartResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/cart/product/{id}")
-    public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct, Authentication authentication)
-        throws URISyntaxException {
+    public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
         log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
 
-        User user = userRepo.findOneByLogin(authentication.getName()).get();
-        ProductCart productCart = new ProductCart();
-        productCart.setCart(null); //TODO ajouter user.userdetail.getcart
+        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        final ProductCart productCart = new ProductCart();
+        productCart.setCart(user.getDetails().getCart());
         productCart.setProduct(productService.findOne(idProduct).get());
         productCart.setQuantity(1);
 
-        ProductCart result = productCartService.save(productCart);
+        final ProductCart result = productCartService.save(productCart);
 
         return ResponseEntity
             .created(new URI("/api/product-carts/" + result.getId()))
@@ -224,12 +218,12 @@ public class CartResource {
     }
 
     /**
-     * {@code GET  /product-carts} : get all the productCarts.
+     * {@code GET  /cart} : get the current authenticated user's cart.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productCarts in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
      */
     @GetMapping("/cart")
-    public ResponseEntity<Cart> getAllProductCarts() {
+    public ResponseEntity<Cart> getCartForCurrentUser() {
         log.debug("REST request to get all ProductCarts");
         Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
         return ResponseUtil.wrapOrNotFound(cart);

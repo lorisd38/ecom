@@ -1,6 +1,7 @@
 package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.m2gi.ecom.config.Constants;
 import java.io.Serializable;
 import java.time.Instant;
@@ -88,6 +89,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     )
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @JsonIgnoreProperties(value = { "user", "favorites", "preferences" }, allowSetters = true)
+    @OneToOne(mappedBy = "user")
+    private UserDetails details;
 
     public Long getId() {
         return id;
@@ -192,6 +197,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public void setDetails(UserDetails details) {
+        this.details = details;
+    }
+
+    public UserDetails getDetails() {
+        return details;
     }
 
     @Override

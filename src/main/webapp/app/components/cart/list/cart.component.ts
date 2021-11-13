@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {Cart, ICart} from "../../../entities/cart/cart.model";
-import {IProduct, Product} from "../../../entities/product/product.model";
-import {IProductCart, ProductCart} from "../../../entities/product-cart/product-cart.model";
-import {CartService} from "../../../entities/cart/service/cart.service";
-import {HttpResponse} from "@angular/common/http";
+import { ICart } from '../../../entities/cart/cart.model';
+import { IProductCart, ProductCart } from '../../../entities/product-cart/product-cart.model';
+import { HttpResponse } from '@angular/common/http';
+import { CartService } from '../service/cart.service';
+import { isUndefined } from 'webpack-merge/dist/utils';
 
 @Component({
   selector: 'jhi-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit{
-  cart?: ICart|null = new Cart(1,[]);
+export class CartComponent implements OnInit {
+  cart?: ICart | null;
   isLoading = false;
 
   constructor(public cartService: CartService) {
@@ -28,7 +28,7 @@ export class CartComponent implements OnInit{
   }
 
   loadAll(): void {
-    this.isLoading=true;
+    this.isLoading = true;
 
     this.cartService.queryOneCart().subscribe(
       (res: HttpResponse<ICart>) => {
@@ -41,9 +41,9 @@ export class CartComponent implements OnInit{
     );
   }
 
-  delete(product: IProductCart):void{
+  delete(product: IProductCart): void {
     // TODO: delete product from cart
-    console.error("Hello delete!");
+    console.error('Hello delete!');
   }
 
   trackId(index: number, item: IProductCart): number {

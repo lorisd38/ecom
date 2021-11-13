@@ -45,7 +45,7 @@ export class ProductsComponent implements OnInit {
   addToCart(product: IProduct): void {
     if (product.id !== undefined) {
       // TODO Gestion erreur product id undefined
-      this.productToCartService.create(product.id);
+      this.productToCartService.create(product.id).subscribe();
     }
   }
 }

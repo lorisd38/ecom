@@ -29,7 +29,7 @@ public class ProductCart implements Serializable {
     @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "lines" }, allowSetters = true)
     private Cart cart;
 
