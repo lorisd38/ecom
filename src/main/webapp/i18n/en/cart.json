@@ -17,6 +17,7 @@
       "detail": {
         "title": "Cart"
       },
+      "empty": "Empty cart",
       "id": "ID",
       "lines": "Lines",
       "user": "User"
