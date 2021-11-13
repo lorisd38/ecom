@@ -6,6 +6,7 @@ import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
 import com.m2gi.ecom.repository.UserRepository;
+import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
 import com.m2gi.ecom.service.ProductCartService;
 import com.m2gi.ecom.service.ProductService;
@@ -207,9 +208,7 @@ public class CartResource {
     public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct, Authentication authentication)
         throws URISyntaxException {
         log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
-        if (idProduct != null) {
-            throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+
         User user = userRepo.findOneByLogin(authentication.getName()).get();
         ProductCart productCart = new ProductCart();
         productCart.setCart(null); //TODO ajouter user.userdetail.getcart
@@ -222,5 +221,17 @@ public class CartResource {
             .created(new URI("/api/product-carts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code GET  /product-carts} : get all the productCarts.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productCarts in body.
+     */
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getAllProductCarts() {
+        log.debug("REST request to get all ProductCarts");
+        Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
+        return ResponseUtil.wrapOrNotFound(cart);
     }
 }

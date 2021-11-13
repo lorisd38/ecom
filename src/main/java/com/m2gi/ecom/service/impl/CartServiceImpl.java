@@ -67,6 +67,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<Cart> findOneWithEagerRelationshipsByLogin(String login) {
+        log.debug("Request to get Cart with login: {}", login);
+        return cartRepository.findOneWithEagerRelationshipsByLogin(login);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Cart> findOne(Long id) {
         log.debug("Request to get Cart : {}", id);
         return cartRepository.findById(id);
