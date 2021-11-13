@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ICart } from '../../../entities/cart/cart.model';
-import { IProductCart, ProductCart } from '../../../entities/product-cart/product-cart.model';
+import { IProductCart } from '../../../entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../service/cart.service';
-import { isUndefined } from 'webpack-merge/dist/utils';
 
 @Component({
   selector: 'jhi-cart',
@@ -13,6 +12,7 @@ import { isUndefined } from 'webpack-merge/dist/utils';
 export class CartComponent implements OnInit {
   cart?: ICart | null;
   isLoading = false;
+  total = '0';
 
   constructor(public cartService: CartService) {
     // do nothing.
@@ -34,11 +34,24 @@ export class CartComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cart = res.body ?? null;
+        this.calcTotal();
       },
       () => {
         this.isLoading = false;
       }
     );
+  }
+
+  calcTotal(): void {
+    let tt = 0.0;
+    if (this.cart?.lines != null) {
+      for (const lineProduct of this.cart.lines) {
+        if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+          tt += lineProduct.quantity * lineProduct.product.price;
+        }
+      }
+    }
+    this.total = tt.toLocaleString();
   }
 
   delete(product: IProductCart): void {
