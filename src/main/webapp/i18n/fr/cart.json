@@ -17,6 +17,7 @@
       "detail": {
         "title": "Cart"
       },
+      "empty": "Panier vide",
       "id": "ID",
       "lines": "Lines",
       "user": "User"
