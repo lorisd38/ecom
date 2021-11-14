@@ -228,4 +228,28 @@ public class CartResource {
         Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
         return ResponseUtil.wrapOrNotFound(cart);
     }
+
+    /**
+     * {@code PATCH  /cart/decrease/:id} : Update productCart with product "id"
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @PatchMapping("/cart/decrease/{id}")
+    public ResponseEntity<Cart> decreaseProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
+        log.debug("REST request to decrease quatity of ProductCarts");
+        Optional<Cart> cart = cartService.decreaseQuantityProductCartByLogin(SecurityUtils.getCurrentUserLogin().get(), idProduct);
+        return ResponseUtil.wrapOrNotFound(cart);
+    }
+
+    /**
+     * {@code PATCH  /cart/increase/:id} : Update productCart with product "id"
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @PatchMapping("/cart/increase/{id}")
+    public ResponseEntity<Cart> increaseProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
+        log.debug("REST request to increase quatity of ProductCarts");
+        Optional<Cart> cart = cartService.decreaseQuantityProductCartByLogin(SecurityUtils.getCurrentUserLogin().get(), idProduct);
+        return ResponseUtil.wrapOrNotFound(cart);
+    }
 }
