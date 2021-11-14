@@ -41,25 +41,9 @@ public interface CartService {
     /**
      * Get the cart by login
      * @param login
-     * @return
+     * @return the {@link List} of entities.
      */
     Optional<Cart> findOneWithEagerRelationshipsByLogin(String login);
-
-    /**
-     * Increase quantity of "id" product of cart by login
-     * @param login
-     * @param id
-     * @return
-     */
-    Optional<Cart> increaseQuantityProductCartByLogin(String login, Long id);
-
-    /**
-     * Decrease quantity of "id" product of cart by login
-     * @param login
-     * @param id
-     * @return
-     */
-    Optional<Cart> decreaseQuantityProductCartByLogin(String login, Long id);
 
     /**
      * Get the "id" cart.

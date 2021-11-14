@@ -20,11 +20,8 @@ export class CartService {
     return this.http.get<ICart>(this.resourceUrlCart, { params: options, observe: 'response' });
   }
 
-  queryDecreaseProduct(idProduct: number): Observable<EntityResponseType> {
-    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/decrease/${idProduct}`, null, { observe: 'response' });
-  }
-
-  queryIncreaseProduct(idProduct: number): Observable<EntityResponseType> {
-    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/increase/${idProduct}`, null, { observe: 'response' });
+  queryQuantityProductCart(idProduct: number, quantity: number): Observable<EntityResponseType> {
+    const options = createRequestOption(quantity);
+    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/product/${idProduct}`, null, { params: options, observe: 'response' });
   }
 }

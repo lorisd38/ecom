@@ -66,25 +66,23 @@ export class ProductsComponent implements OnInit {
     return itemId != null ? this.productsPresent.includes(itemId) : false;
   }
 
-  decreaseProduct(item: IProduct): void {
-    return;
+  updateQuantityProduct(item: IProduct, quantity: number): void {
+    if (item.id != null) {
+      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe();
+    }
   }
 
-  increaseProduct(item: IProduct): void {
-    return;
-  }
-
-  quantityProduct(item: IProduct): string {
+  quantityProduct(item: IProduct): number {
     if (this.cart?.lines != null) {
       for (const lineProduct of this.cart.lines) {
         if (lineProduct.product?.id === item.id) {
           if (lineProduct.quantity != null) {
-            return lineProduct.quantity.toString();
+            return lineProduct.quantity;
           }
         }
       }
     }
-    return '?';
+    return 0;
   }
 
   ngOnInit(): void {

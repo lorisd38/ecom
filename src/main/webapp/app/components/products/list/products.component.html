@@ -68,7 +68,7 @@
             <ng-template #elseBlock>
               <button
                 type="submit"
-                (click)="increaseProduct(product)"
+                (click)="updateQuantityProduct(product, quantityProduct(product))"
                 class="btn btn-primary btn-sm"
                 data-cy="entityIncreaseProductCartButton"
               >
@@ -77,7 +77,7 @@
               <span>{{ quantityProduct(product) }}</span>
               <button
                 type="submit"
-                (click)="decreaseProduct(product)"
+                (click)="updateQuantityProduct(product, quantityProduct(product))"
                 class="btn btn-primary btn-sm"
                 data-cy="entityDecreaseProductCartButton"
               >
