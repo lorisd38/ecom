@@ -236,10 +236,10 @@ public class CartResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
      */
-    @PatchMapping("/cart/product/{id}/{quantity}")
+    @PatchMapping("/cart/product/{id}")
     public ResponseEntity<ProductCart> updateQuantityProductCart(
         @PathVariable(value = "id") final Long idProduct,
-        @PathVariable(value = "quantity") final int quantity
+        @RequestParam(value = "quantity") final int quantity
     ) throws URISyntaxException {
         log.debug("REST request to update quatity of ProductCarts by id of product");
         Long idProductLine = 0L;
