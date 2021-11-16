@@ -21,7 +21,7 @@ export class CartService {
   }
 
   queryQuantityProductCart(idProduct: number, quantity: number): Observable<EntityResponseType> {
-    const options = createRequestOption(quantity);
-    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/product/${idProduct}`, null, { params: options, observe: 'response' });
+    // const options = createRequestOption(quantity);
+    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/product/${idProduct}/${quantity}`, null, { observe: 'response' });
   }
 }

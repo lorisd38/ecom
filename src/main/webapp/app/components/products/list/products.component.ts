@@ -7,7 +7,6 @@ import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
 import { ICart } from '../../../entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
-
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
@@ -68,7 +67,23 @@ export class ProductsComponent implements OnInit {
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe();
+      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(res => {
+        // Reload component
+        this.ngOnInit();
+      });
+    }
+  }
+
+  updateQuantityProductByText(item: IProduct, event: any): void {
+    if (event.target.value != null && event.target.value !== '') {
+      if (!isNaN(Number(event.target.value))) {
+        if (Number(event.target.value) === 0) {
+          console.log('Supprimer article du panier');
+        } else if (Number(event.target.value) > 0) {
+          const quantity: number = event.target.value;
+          this.updateQuantityProduct(item, quantity);
+        }
+      }
     }
   }
 

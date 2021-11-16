@@ -68,18 +68,23 @@
             <ng-template #elseBlock>
               <button
                 type="submit"
-                (click)="updateQuantityProduct(product, quantityProduct(product))"
+                (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
                 class="btn btn-primary btn-sm"
-                data-cy="entityIncreaseProductCartButton"
+                data-cy="entityDecreaseProductCartButton"
               >
                 <fa-icon icon="minus"></fa-icon>
               </button>
-              <span>{{ quantityProduct(product) }}</span>
+              <input
+                type="text"
+                pattern="[0-9]*"
+                (change)="updateQuantityProductByText(product, $event)"
+                [value]="quantityProduct(product)"
+              />
               <button
                 type="submit"
-                (click)="updateQuantityProduct(product, quantityProduct(product))"
+                (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
                 class="btn btn-primary btn-sm"
-                data-cy="entityDecreaseProductCartButton"
+                data-cy="entityIncreaseProductCartButton"
               >
                 <fa-icon icon="plus"></fa-icon>
               </button>

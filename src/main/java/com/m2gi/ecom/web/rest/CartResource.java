@@ -236,10 +236,10 @@ public class CartResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
      */
-    @PatchMapping("/cart/product/{id}")
+    @PatchMapping("/cart/product/{id}/{quantity}")
     public ResponseEntity<ProductCart> updateQuantityProductCart(
         @PathVariable(value = "id") final Long idProduct,
-        @RequestParam(value = "options") final int quantity
+        @PathVariable(value = "quantity") final int quantity
     ) throws URISyntaxException {
         log.debug("REST request to update quatity of ProductCarts by id of product");
         Long idProductLine = 0L;
@@ -250,10 +250,7 @@ public class CartResource {
             if (lineProduct.getProduct().getId() == idProduct) {
                 lineProduct.setQuantity(quantity);
                 result = productCartService.save(lineProduct);
-                return ResponseEntity
-                    .created(new URI("/api/product-carts/" + result.getId()))
-                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                    .body(result);
+                return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
             }
         }
         throw new BadRequestAlertException("Erreure survenu lors de l'update de la quantite", "ProductCart", "1");
