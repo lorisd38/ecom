@@ -7,6 +7,8 @@ import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
 import { ICart } from '../../../entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { Account } from '../../../core/auth/account.model';
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
@@ -16,12 +18,14 @@ export class ProductsComponent implements OnInit {
   cart?: ICart | null;
   isLoading = false;
   productsPresent: number[] = [];
+  account: Account | null = null;
 
   constructor(
     protected productService: ProductService,
     protected modalService: NgbModal,
     protected productToCartService: ProductToCartService,
-    public cartService: CartService
+    public cartService: CartService,
+    private accountService: AccountService
   ) {}
 
   loadProduct(): void {
@@ -30,6 +34,7 @@ export class ProductsComponent implements OnInit {
     this.productService.query().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
+        this.isLoading = false;
       },
       () => {
         this.isLoading = false;
@@ -38,6 +43,7 @@ export class ProductsComponent implements OnInit {
   }
 
   loadCart(): void {
+    this.isLoading = true;
     this.cartService.queryOneCart().subscribe(
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
@@ -58,7 +64,11 @@ export class ProductsComponent implements OnInit {
 
   loadAll(): void {
     this.loadProduct();
-    this.loadCart();
+    this.accountService.getAuthenticationState().subscribe(res => {
+      if (res != null) {
+        this.loadCart();
+      }
+    });
   }
 
   isPresent(itemId?: number): boolean {
@@ -67,7 +77,7 @@ export class ProductsComponent implements OnInit {
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(res => {
+      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
         // Reload component
         this.ngOnInit();
       });
@@ -102,6 +112,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
+    this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
   }
 
   trackId(index: number, item: IProduct): number {

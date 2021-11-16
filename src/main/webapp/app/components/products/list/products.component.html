@@ -59,7 +59,7 @@
             </span>
           </td>
           <td class="text-right">
-            <div class="btn-group" *ngIf="!isPresent(product.id); else elseBlock">
+            <div class="btn-group" *ngIf="account == null || !isPresent(product.id); else elseBlock">
               <button type="submit" (click)="addToCart(product)" class="btn btn-primary btn-sm" data-cy="entityAddTodCartButton">
                 <fa-icon icon="plus"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="ecomApp.product.addToCart">Ajouter au panier</span>
