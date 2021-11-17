@@ -219,10 +219,7 @@ public class CartResource {
 
         final ProductCart result = productCartService.save(productCart);
 
-        return ResponseEntity
-            .created(new URI("/api/product-carts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
 
     /**
@@ -248,7 +245,6 @@ public class CartResource {
         @RequestParam(value = "quantity") final int quantity
     ) throws URISyntaxException {
         log.debug("REST request to update quatity of ProductCarts by id of product");
-        Long idProductLine = 0L;
         final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
         final ProductCart result;
         Cart userCart = user.getDetails().getCart();
@@ -273,16 +269,10 @@ public class CartResource {
         @RequestParam(value = "quantity") final int quantity
     ) throws URISyntaxException {
         log.debug("REST request to update quatity of ProductCarts by id of ProductCart");
-        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        Cart userCart = user.getDetails().getCart();
-
         if (!productCartRepository.existsById(idProductCart)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
-        ProductCart lineProduct = productCartRepository.getById(idProductCart);
-        lineProduct.setQuantity(quantity);
-        ProductCart result = productCartService.save(lineProduct);
+        final ProductCart result = productCartService.updateQuantity(idProductCart, quantity);
         return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
 }

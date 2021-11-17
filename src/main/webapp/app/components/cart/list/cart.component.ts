@@ -53,7 +53,11 @@ export class CartComponent implements OnInit {
     if (item.id != null) {
       this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
         // Reload component
-        this.ngOnInit();
+        if (this.cart?.lines != null) {
+          const indexProductCart = this.cart.lines.indexOf(item);
+          this.cart.lines[indexProductCart].quantity = quantity;
+          this.calcTotal();
+        }
       });
     }
   }
