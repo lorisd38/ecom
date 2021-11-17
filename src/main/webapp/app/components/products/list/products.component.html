@@ -75,6 +75,7 @@
                 <fa-icon icon="minus"></fa-icon>
               </button>
               <input
+                id="product_{{ product.id }}}"
                 type="text"
                 pattern="[0-9]*"
                 (change)="updateQuantityProductByText(product, $event)"

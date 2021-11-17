@@ -9,6 +9,7 @@ import { ICart } from '../../../entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { Account } from '../../../core/auth/account.model';
+import { IProductCart } from '../../../entities/product-cart/product-cart.model';
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
@@ -48,18 +49,23 @@ export class ProductsComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cart = res.body ?? null;
-        if (this.cart?.lines != null) {
-          for (const lineProduct of this.cart.lines) {
-            if (lineProduct.product?.id != null) {
-              this.productsPresent.push(lineProduct.product.id);
-            }
-          }
-        }
+        this.buildCartContentArray();
       },
       () => {
         this.isLoading = false;
       }
     );
+  }
+
+  buildCartContentArray(): void {
+    this.productsPresent = [];
+    if (this.cart?.lines != null) {
+      for (const lineProduct of this.cart.lines) {
+        if (lineProduct.product?.id != null) {
+          this.productsPresent.push(lineProduct.product.id);
+        }
+      }
+    }
   }
 
   loadAll(): void {
@@ -77,26 +83,32 @@ export class ProductsComponent implements OnInit {
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
-        // Reload component
-        this.ngOnInit();
-      });
+      if (quantity === 0) {
+        console.log('Supprimer article du panier (ticket-44)');
+        /* this.cartService.queryXXX(xxx).subscribe(() => {
+          // Reload component
+          this.ngOnInit();
+        });*/
+      } else if (quantity > 0) {
+        this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
+          // Reload component
+          if (this.cart?.lines != null) {
+            for (const line of this.cart.lines) {
+              if (line.product?.id === item.id) {
+                line.quantity = quantity;
+              }
+            }
+          }
+        });
+      }
     }
   }
 
   updateQuantityProductByText(item: IProduct, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
-        if (Number(event.target.value) === 0) {
-          console.log('Supprimer article du panier (ticket-44)');
-          /* this.cartService.queryXXX(xxx).subscribe(() => {
-            // Reload component
-            this.ngOnInit();
-          });*/
-        } else if (Number(event.target.value) > 0) {
-          const quantity: number = event.target.value;
-          this.updateQuantityProduct(item, quantity);
-        }
+        const quantity: number = event.target.value;
+        this.updateQuantityProduct(item, quantity);
       }
     }
   }
@@ -124,11 +136,16 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: IProduct): void {
+    let productCartToUpdate: IProductCart | null;
     if (product.id !== undefined) {
       // TODO Gestion erreur product id undefined
-      this.productToCartService.create(product.id).subscribe(() => {
+      this.productToCartService.create(product.id).subscribe((res: HttpResponse<IProductCart>) => {
         // Reload component
-        this.ngOnInit();
+        productCartToUpdate = res.body ?? null;
+        if (productCartToUpdate != null) {
+          this.cart?.lines?.push(productCartToUpdate);
+        }
+        this.buildCartContentArray();
       });
     }
   }

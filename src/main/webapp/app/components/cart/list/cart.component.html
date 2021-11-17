@@ -38,7 +38,32 @@
           <td>{{ lineProduct.product?.origin }}</td>
           <td>{{ lineProduct.product?.imagePath }}</td>
           <td>{{ lineProduct.product?.price }}</td>
-          <td>{{ lineProduct.quantity }}</td>
+          <td>
+            <div class="btn-group">
+              <button
+                type="submit"
+                (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) - 1)"
+                class="btn btn-primary btn-sm"
+                data-cy="entityDecreaseProductCartButton"
+              >
+                <fa-icon icon="minus"></fa-icon>
+              </button>
+              <input
+                type="text"
+                pattern="[0-9]*"
+                (change)="updateQuantityProductCartByText(lineProduct, $event)"
+                [value]="lineProduct.quantity ?? 0"
+              />
+              <button
+                type="submit"
+                (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) + 1)"
+                class="btn btn-primary btn-sm"
+                data-cy="entityIncreaseProductCartButton"
+              >
+                <fa-icon icon="plus"></fa-icon>
+              </button>
+            </div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" (click)="delete(lineProduct)" class="btn btn-primary btn-sm" data-cy="entityDeleteButton">
