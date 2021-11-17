@@ -77,7 +77,7 @@ export class ProductsComponent implements OnInit {
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
+      this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
         // Reload component
         this.ngOnInit();
       });

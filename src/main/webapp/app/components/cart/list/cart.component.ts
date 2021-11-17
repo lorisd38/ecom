@@ -20,11 +20,6 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
-    /*     Test du Front
-      const product: IProduct = new Product(4,"Orange","Description","France","Marque","PHOTO",3);
-      const productCart: IProductCart = new ProductCart(1,33,product);
-      this.cart = new Cart(1,[productCart]);
-    */
   }
 
   loadAll(): void {
@@ -52,6 +47,28 @@ export class CartComponent implements OnInit {
       }
     }
     this.total = tt.toLocaleString();
+  }
+
+  updateQuantityProductCart(item: IProductCart, quantity: number): void {
+    if (item.id != null) {
+      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
+        // Reload component
+        this.ngOnInit();
+      });
+    }
+  }
+
+  updateQuantityProductCartByText(item: IProductCart, event: any): void {
+    if (event.target.value != null && event.target.value !== '') {
+      if (!isNaN(Number(event.target.value))) {
+        if (Number(event.target.value) === 0) {
+          this.delete(item);
+        } else if (Number(event.target.value) > 0) {
+          const quantity: number = event.target.value;
+          this.updateQuantityProductCart(item, quantity);
+        }
+      }
+    }
   }
 
   delete(product: IProductCart): void {
