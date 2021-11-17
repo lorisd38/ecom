@@ -88,7 +88,11 @@ export class ProductsComponent implements OnInit {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
         if (Number(event.target.value) === 0) {
-          console.log('Supprimer article du panier');
+          console.log('Supprimer article du panier (ticket-44)');
+          /* this.cartService.queryXXX(xxx).subscribe(() => {
+            // Reload component
+            this.ngOnInit();
+          });*/
         } else if (Number(event.target.value) > 0) {
           const quantity: number = event.target.value;
           this.updateQuantityProduct(item, quantity);
