@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
@@ -18,5 +18,10 @@ export class CartService {
   queryOneCart(req?: any): Observable<EntityResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ICart>(this.resourceUrlCart, { params: options, observe: 'response' });
+  }
+
+  queryQuantityProductCart(idProduct: number, quantity: number): Observable<EntityResponseType> {
+    const parameters = new HttpParams().set('quantity', quantity);
+    return this.http.patch<IProductCart>(`${this.resourceUrlCart}/product/${idProduct}`, null, { params: parameters, observe: 'response' });
   }
 }

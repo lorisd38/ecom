@@ -15,9 +15,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.ws.rs.QueryParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -227,5 +229,30 @@ public class CartResource {
         log.debug("REST request to get all ProductCarts");
         Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
         return ResponseUtil.wrapOrNotFound(cart);
+    }
+
+    /**
+     * {@code PATCH  /cart/product/:id} : Update productCart with product "id"
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @PatchMapping("/cart/product/{id}")
+    public ResponseEntity<ProductCart> updateQuantityProductCart(
+        @PathVariable(value = "id") final Long idProduct,
+        @RequestParam(value = "quantity") final int quantity
+    ) throws URISyntaxException {
+        log.debug("REST request to update quatity of ProductCarts by id of product");
+        Long idProductLine = 0L;
+        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        final ProductCart result;
+        Cart userCart = user.getDetails().getCart();
+        for (ProductCart lineProduct : userCart.getLines()) {
+            if (lineProduct.getProduct().getId() == idProduct) {
+                lineProduct.setQuantity(quantity);
+                result = productCartService.save(lineProduct);
+                return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
+            }
+        }
+        throw new BadRequestAlertException("Erreure survenu lors de l'update de la quantite", "ProductCart", "1");
     }
 }

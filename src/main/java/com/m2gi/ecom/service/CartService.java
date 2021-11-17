@@ -1,10 +1,9 @@
 package com.m2gi.ecom.service;
 
 import com.m2gi.ecom.domain.Cart;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Service Interface for managing {@link Cart}.
@@ -42,10 +41,9 @@ public interface CartService {
     /**
      * Get the cart by login
      * @param login
-     * @return
+     * @return the {@link List} of entities.
      */
     Optional<Cart> findOneWithEagerRelationshipsByLogin(String login);
-
 
     /**
      * Get the "id" cart.
