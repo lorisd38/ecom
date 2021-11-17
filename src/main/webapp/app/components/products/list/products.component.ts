@@ -49,18 +49,23 @@ export class ProductsComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cart = res.body ?? null;
-        if (this.cart?.lines != null) {
-          for (const lineProduct of this.cart.lines) {
-            if (lineProduct.product?.id != null) {
-              this.productsPresent.push(lineProduct.product.id);
-            }
-          }
-        }
+        this.buildCartContentArray();
       },
       () => {
         this.isLoading = false;
       }
     );
+  }
+
+  buildCartContentArray(): void {
+    this.productsPresent = [];
+    if (this.cart?.lines != null) {
+      for (const lineProduct of this.cart.lines) {
+        if (lineProduct.product?.id != null) {
+          this.productsPresent.push(lineProduct.product.id);
+        }
+      }
+    }
   }
 
   loadAll(): void {
