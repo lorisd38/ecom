@@ -1,18 +1,27 @@
 package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.ProductCart;
+import com.m2gi.ecom.domain.User;
 import com.m2gi.ecom.repository.CartRepository;
+import com.m2gi.ecom.repository.ProductCartRepository;
+import com.m2gi.ecom.repository.UserRepository;
+import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
+import com.m2gi.ecom.service.ProductCartService;
+import com.m2gi.ecom.service.ProductService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.QueryParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -34,9 +43,28 @@ public class CartResource {
 
     private final CartService cartService;
 
+    private final ProductCartService productCartService;
+
     private final CartRepository cartRepository;
 
-    public CartResource(CartService cartService, CartRepository cartRepository) {
+    private final ProductCartRepository productCartRepository;
+
+    private final UserRepository userRepo;
+
+    private final ProductService productService;
+
+    public CartResource(
+        ProductService productService,
+        UserRepository userRepo,
+        ProductCartService productCartService,
+        ProductCartRepository productCartRepository,
+        CartService cartService,
+        CartRepository cartRepository
+    ) {
+        this.productService = productService;
+        this.userRepo = userRepo;
+        this.productCartService = productCartService;
+        this.productCartRepository = productCartRepository;
         this.cartService = cartService;
         this.cartRepository = cartRepository;
     }
@@ -170,5 +198,81 @@ public class CartResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /cart/product/:id} : Create a new productCart with product "id".
+     *
+     * @param idProduct the id of product that should create a productCart.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productCart, or with status {@code 400 (Bad Request)} if the productCart has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/cart/product/{id}")
+    public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
+        log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
+
+        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        final ProductCart productCart = new ProductCart();
+        productCart.setCart(user.getDetails().getCart());
+        productCart.setProduct(productService.findOne(idProduct).get());
+        productCart.setQuantity(1);
+
+        final ProductCart result = productCartService.save(productCart);
+
+        return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
+    }
+
+    /**
+     * {@code GET  /cart} : get the current authenticated user's cart.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCartForCurrentUser() {
+        log.debug("REST request to get all ProductCarts");
+        Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
+        return ResponseUtil.wrapOrNotFound(cart);
+    }
+
+    /**
+     * {@code PATCH  /cart/product/:id} : Update productCart with product "id"
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @PatchMapping("/cart/product/{id}")
+    public ResponseEntity<ProductCart> updateQuantityProduct(
+        @PathVariable(value = "id") final Long idProduct,
+        @RequestParam(value = "quantity") final int quantity
+    ) throws URISyntaxException {
+        log.debug("REST request to update quatity of ProductCarts by id of product");
+        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        final ProductCart result;
+        Cart userCart = user.getDetails().getCart();
+        for (ProductCart lineProduct : userCart.getLines()) {
+            if (lineProduct.getProduct().getId() == idProduct) {
+                lineProduct.setQuantity(quantity);
+                result = productCartService.save(lineProduct);
+                return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
+            }
+        }
+        throw new BadRequestAlertException("Erreure survenu lors de l'update de la quantite", ENTITY_NAME, "idnotfound");
+    }
+
+    /**
+     * {@code PATCH  /cart/productCart/:id} : Update productCart with ProductCart "id"
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @PatchMapping("/cart/productCart/{id}")
+    public ResponseEntity<ProductCart> updateQuantityProductCart(
+        @PathVariable(value = "id") final Long idProductCart,
+        @RequestParam(value = "quantity") final int quantity
+    ) throws URISyntaxException {
+        log.debug("REST request to update quatity of ProductCarts by id of ProductCart");
+        if (!productCartRepository.existsById(idProductCart)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        final ProductCart result = productCartService.updateQuantity(idProductCart, quantity);
+        return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
 }

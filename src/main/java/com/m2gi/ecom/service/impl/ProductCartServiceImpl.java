@@ -66,4 +66,13 @@ public class ProductCartServiceImpl implements ProductCartService {
         log.debug("Request to delete ProductCart : {}", id);
         productCartRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public ProductCart updateQuantity(Long id, int quantity) {
+        log.debug("Request to update ProductCart quantity : {}", id);
+        final ProductCart result = productCartRepository.findById(id).get();
+        result.setQuantity(quantity);
+        return productCartRepository.save(result);
+    }
 }

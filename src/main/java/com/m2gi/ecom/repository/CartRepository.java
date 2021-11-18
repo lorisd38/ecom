@@ -1,10 +1,8 @@
 package com.m2gi.ecom.repository;
 
 import com.m2gi.ecom.domain.Cart;
-import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.UserDetails;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,4 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {}
+public interface CartRepository extends JpaRepository<Cart, Long> {
+    @Query("select cart from Cart cart left join fetch cart.lines where cart.user.user.login =:login")
+    Optional<Cart> findOneWithEagerRelationshipsByLogin(@Param("login") String login);
+}

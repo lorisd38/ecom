@@ -22,7 +22,7 @@ public class Cart implements Serializable {
     private Long id;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = { "product", "cart" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "cart" }, allowSetters = true)
     private Set<ProductCart> lines = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)

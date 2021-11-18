@@ -24,6 +24,8 @@ public interface ProductCartService {
      */
     Optional<ProductCart> partialUpdate(ProductCart productCart);
 
+    ProductCart updateQuantity(Long id, int quantity);
+
     /**
      * Get all the productCarts.
      *
