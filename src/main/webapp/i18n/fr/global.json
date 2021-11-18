@@ -5,6 +5,7 @@
     "menu": {
       "home": "Accueil",
       "products": "Produits",
+      "payment": "Paiement",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
@@ -54,7 +55,9 @@
       "confirmpassword.label": "Confirmation du nouveau mot de passe",
       "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
       "email.label": "Email",
-      "email.placeholder": "Votre email"
+      "email.placeholder": "Votre email",
+      "code.label": "Code:",
+      "code.placeholder": "Entrez votre code içi:"
     },
     "messages": {
       "info": {

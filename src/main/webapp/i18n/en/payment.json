@@ -1,0 +1,18 @@
+{
+  "ecomApp": {
+    "payment": {
+      "title": "Payment Page !",
+      "seeCart": "See Cart",
+      "validation": "Pay",
+      "totalprice": "Total price of the cart :",
+      "finalprice": "Total after reduction :",
+      "form": {
+        "code": {
+          "label": "Code :",
+          "placeholder": "Enter your code here :"
+        },
+        "button": "Valid"
+      }
+    }
+  }
+}

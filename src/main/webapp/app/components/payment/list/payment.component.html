@@ -1,0 +1,64 @@
+<div>
+  <h2 id="page-heading" data-cy="PaymentHeading">
+    <span jhiTranslate="ecomApp.payment.title">Payment</span>
+  </h2>
+
+  <div class="col justify-content-center">
+    <div class="container">
+      <div class="row">
+        <!-- row 1 date commande -->
+        <span>date</span>
+      </div>
+      <div class="row">
+        <!-- row 2 prix total -->
+        <label class="username-label" for="code" jhiTranslate="ecomApp.payment.totalprice">Prix total du panier :</label>{{ totalPrice }}€
+      </div>
+      <div class="row">
+        <!-- row 3 champ de texte pour le code + bouton validation et affichage du prix final -->
+        <div class="col">
+          <form class="form" role="form" (ngSubmit)="useCode()" [formGroup]="paymentForm">
+            <div class="form-group">
+              <label class="username-label" for="code" jhiTranslate="ecomApp.payment.form.code.label">Your Code</label>
+              <input
+                type="text"
+                class="form-control"
+                name="code"
+                id="code"
+                placeholder="{{ 'ecomApp.payment.form.code.placeholder' | translate }}"
+                formControlName="code"
+                data-cy="code"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="col">
+          <button type="submit" class="btn btn-primary" jhiTranslate="ecomApp.payment.form.button" data-cy="submitCode">Utiliser</button>
+        </div>
+        <div class="col">
+          <label class="username-label" for="code" jhiTranslate="ecomApp.payment.finalprice">Total après réduction</label>{{ finalPrice }}
+        </div>
+      </div>
+      <div class="row">
+        <!-- row 4 bouton retour panier et bouton valider -->
+        <div class="col">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm" data-cy="seeCart">
+              <a class="nav-link" routerLink="/panier">
+                <span class="d-none d-md-inline" jhiTranslate="ecomApp.payment.seeCart">Voir panier</span>
+              </a>
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm" data-cy="paymentValidation">
+              <a class="nav-link" routerLink="/">
+                <span class="d-none d-md-inline" jhiTranslate="ecomApp.payment.validation">Valider</span>
+              </a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

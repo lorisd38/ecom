@@ -1,0 +1,18 @@
+{
+  "ecomApp": {
+    "payment": {
+      "title": "Page de paiement !",
+      "seeCart": "Voir panier",
+      "validation": "Payer",
+      "totalprice": "Prix total du panier :",
+      "finalprice": "Total après réduction :",
+      "form": {
+        "code": {
+          "label": "Code :",
+          "placeholder": "Entrez votre code içi :"
+        },
+        "button": "Valider"
+      }
+    }
+  }
+}
