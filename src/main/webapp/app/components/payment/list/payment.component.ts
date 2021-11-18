@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -21,36 +20,9 @@ export class PaymentComponent implements OnInit {
 
   constructor(protected paymentService: PaymentService, protected modalService: NgbModal, private fb: FormBuilder) {}
 
-  /*
-  loadPrice(): void{
-    this.paymentService.getTotalPrice(1).subscribe(
-       (res: HttpResponse<number>) => {
-            this.isLoading = false;
-            if(res.body != null){
-              this.totalPrice = res.body;
-              this.finalPrice = this.totalPrice
-            }
-
-       },
-       () => {
-         this.isLoading = false;
-       }
-    );
-  }
-  */
-
   ngOnInit(): void {
-    //this.loadPrice();
-    this.totalPrice = this.paymentService.getTotalPrice(1);
+    // this.totalPrice
     this.finalPrice = this.totalPrice;
-  }
-
-  getTotalPrice(): number {
-    return this.totalPrice;
-  }
-
-  getFinalPrice(): number {
-    return this.finalPrice;
   }
 
   useCode(): void {
