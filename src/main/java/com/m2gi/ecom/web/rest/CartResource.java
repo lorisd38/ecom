@@ -171,18 +171,4 @@ public class CartResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-    /**
-     * {@code GET  /carts/price/{id}} : get the price of "id" cart.
-     *
-     * @param id the id of the cart.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the cart, or with status {@code 404 (Not Found)}.
-     */
-    /*
-    @GetMapping("/carts/price/{id}")
-    public ResponseEntity<Integer> getCartPrice(@PathVariable Long id) {
-        log.debug("REST request to delete Cart : {}", id);
-        Optional<Integer> price = cartService.getPrice(id);
-        return ResponseUtil.wrapOrNotFound(price);
-    }
-    */
 }

@@ -51,7 +51,4 @@ public interface CartService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-    /*
-    Optional<Integer> getPrice(long id);
-     */
 }

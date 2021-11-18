@@ -77,11 +77,4 @@ public class CartServiceImpl implements CartService {
         log.debug("Request to delete Cart : {}", id);
         cartRepository.deleteById(id);
     }
-    /*
-    @Override
-    public Optional<Integer> getPrice(long id){
-        return cartRepository.getTotalPrice(id);
-    }
-
-     */
 }

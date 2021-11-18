@@ -14,12 +14,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
-    /*
-    @Query(
-        value = "With R1 as (select cart.lines as  from " +
-            "select sum(cart.lines.quantity * cart.lines.product.price) from Cart cart where cart.id=:id"
-    )
-    Optional<Integer> getTotalPrice(@Param("id") long id);
-    */
-}
+public interface CartRepository extends JpaRepository<Cart, Long> {}
