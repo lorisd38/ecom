@@ -4,12 +4,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { CartService } from 'app/components/cart/service/cart.service';
 
 import { PaymentService } from 'app/components/payment/service/payment.service';
+import { ICart } from '../../../entities/cart/cart.model';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-payment',
   templateUrl: './payment.component.html',
 })
 export class PaymentComponent implements OnInit {
+  cart?: ICart | null;
   totalPrice = '0';
   finalPrice = '0';
   codeUsed = '';
@@ -42,7 +45,7 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    loadAll();
+    this.loadAll();
   }
 
   calcTotal(): void {
@@ -59,8 +62,8 @@ export class PaymentComponent implements OnInit {
   }
 
   useCode(): void {
-    const code: string = this.paymentForm.get('code')!.value;
-    /*
+    /* const code: string = this.paymentForm.get('code')!.value;
+
     if (this.codeUsed === code) {
       this.finalPrice = this.totalPrice * this.paymentService.getReduction(code);
       this.codeUsed = code;
