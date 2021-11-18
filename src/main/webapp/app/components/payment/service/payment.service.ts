@@ -5,13 +5,20 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  protected resourceUrlPrice = this.applicationConfigService.getEndpointFor('api/carts/price');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/carts');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  getTotalPrice(): number {
+  getTotalPrice(id: number): number {
     return 3;
   }
+
+  /*
+  getTotalPrice(id: number): Observable<HttpResponse<number>> {
+    //return this.http.get<number>(`${this.resourceUrl}/price/${id}`, { observe: 'response' });
+    return 3;
+  }
+  */
 
   getReduction(code: string): number {
     return 0.7;
