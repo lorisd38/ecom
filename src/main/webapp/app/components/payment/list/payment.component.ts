@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CartService } from 'app/components/cart/service/cart.service';
 
 import { PaymentService } from 'app/components/payment/service/payment.service';
 
@@ -10,8 +11,8 @@ import { PaymentService } from 'app/components/payment/service/payment.service';
   templateUrl: './payment.component.html',
 })
 export class PaymentComponent implements OnInit {
-  totalPrice = -1;
-  finalPrice = -1;
+  totalPrice = '0';
+  finalPrice = '0';
   codeUsed = '';
   isLoading = true;
 
@@ -19,30 +20,43 @@ export class PaymentComponent implements OnInit {
     code: [null, [Validators.required]],
   });
 
-  constructor(protected paymentService: PaymentService, protected modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(
+    protected paymentService: PaymentService,
+    protected cartService: CartService,
+    protected modalService: NgbModal,
+    private fb: FormBuilder
+  ) {}
 
-  /*
-  loadPrice(): void{
-    this.paymentService.getTotalPrice(1).subscribe(
-       (res: HttpResponse<number>) => {
-            this.isLoading = false;
-            if(res.body != null){
-              this.totalPrice = res.body;
-              this.finalPrice = this.totalPrice
-            }
+  loadAll(): void {
+    this.isLoading = true;
 
-       },
-       () => {
-         this.isLoading = false;
-       }
+    this.cartService.queryOneCart().subscribe(
+      (res: HttpResponse<ICart>) => {
+        this.isLoading = false;
+        this.cart = res.body ?? null;
+        this.calcTotal();
+      },
+      () => {
+        this.isLoading = false;
+      }
     );
   }
-  */
 
   ngOnInit(): void {
-    //this.loadPrice();
-    this.totalPrice = this.paymentService.getTotalPrice(1);
-    this.finalPrice = this.totalPrice;
+    loadAll();
+  }
+
+  calcTotal(): void {
+    let tt = 0.0;
+    if (this.cart?.lines != null) {
+      for (const lineProduct of this.cart.lines) {
+        if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+          tt += lineProduct.quantity * lineProduct.product.price;
+        }
+      }
+    }
+    this.totalPrice = tt.toLocaleString();
+    this.finalPrice = tt.toLocaleString();
   }
 
   getTotalPrice(): number {
@@ -55,9 +69,11 @@ export class PaymentComponent implements OnInit {
 
   useCode(): void {
     const code: string = this.paymentForm.get('code')!.value;
+    /*
     if (this.codeUsed === code) {
       this.finalPrice = this.totalPrice * this.paymentService.getReduction(code);
       this.codeUsed = code;
     }
+    */
   }
 }
