@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CartService } from 'app/components/cart/service/cart.service';
@@ -57,14 +56,6 @@ export class PaymentComponent implements OnInit {
     }
     this.totalPrice = tt.toLocaleString();
     this.finalPrice = tt.toLocaleString();
-  }
-
-  getTotalPrice(): number {
-    return this.totalPrice;
-  }
-
-  getFinalPrice(): number {
-    return this.finalPrice;
   }
 
   useCode(): void {
