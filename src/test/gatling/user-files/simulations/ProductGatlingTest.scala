@@ -73,6 +73,8 @@ class ProductGatlingTest extends Simulation {
             .body(StringBody("""{
                 "name":"SAMPLE_TEXT"
                 , "description":"SAMPLE_TEXT"
+                , "quantity":"0"
+                , "version":"0"
                 , "origin":"SAMPLE_TEXT"
                 , "brand":"SAMPLE_TEXT"
                 , "imagePath":"SAMPLE_TEXT"

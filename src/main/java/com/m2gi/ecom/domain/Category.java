@@ -2,6 +2,8 @@ package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -25,8 +27,16 @@ public class Category implements Serializable {
     private String name;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
     private Category parent;
+
+    @OneToMany(mappedBy = "parent")
+    @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
+    private Set<Category> children = new HashSet<>();
+
+    @ManyToMany(mappedBy = "relatedCtegories")
+    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    private Set<Product> associatedProducts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -66,6 +76,68 @@ public class Category implements Serializable {
 
     public Category parent(Category category) {
         this.setParent(category);
+        return this;
+    }
+
+    public Set<Category> getChildren() {
+        return this.children;
+    }
+
+    public void setChildren(Set<Category> categories) {
+        if (this.children != null) {
+            this.children.forEach(i -> i.setParent(null));
+        }
+        if (categories != null) {
+            categories.forEach(i -> i.setParent(this));
+        }
+        this.children = categories;
+    }
+
+    public Category children(Set<Category> categories) {
+        this.setChildren(categories);
+        return this;
+    }
+
+    public Category addChildren(Category category) {
+        this.children.add(category);
+        category.setParent(this);
+        return this;
+    }
+
+    public Category removeChildren(Category category) {
+        this.children.remove(category);
+        category.setParent(null);
+        return this;
+    }
+
+    public Set<Product> getAssociatedProducts() {
+        return this.associatedProducts;
+    }
+
+    public void setAssociatedProducts(Set<Product> products) {
+        if (this.associatedProducts != null) {
+            this.associatedProducts.forEach(i -> i.removeRelatedCtegories(this));
+        }
+        if (products != null) {
+            products.forEach(i -> i.addRelatedCtegories(this));
+        }
+        this.associatedProducts = products;
+    }
+
+    public Category associatedProducts(Set<Product> products) {
+        this.setAssociatedProducts(products);
+        return this;
+    }
+
+    public Category addAssociatedProducts(Product product) {
+        this.associatedProducts.add(product);
+        product.getRelatedCtegories().add(this);
+        return this;
+    }
+
+    public Category removeAssociatedProducts(Product product) {
+        this.associatedProducts.remove(product);
+        product.getRelatedCtegories().remove(this);
         return this;
     }
 

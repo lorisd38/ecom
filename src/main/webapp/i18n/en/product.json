@@ -20,15 +20,19 @@
       "id": "ID",
       "name": "Name",
       "description": "Description",
+      "quantity": "Quantity",
+      "version": "Version",
       "origin": "Origin",
       "brand": "Brand",
       "imagePath": "Image Path",
       "price": "Price",
       "weight": "Weight",
       "category": "Category",
+      "relatedCtegories": "Related Ctegories",
       "tags": "Tags",
       "recipes": "Recipes",
       "promotions": "Promotions",
+      "addToCart": "Add to cart",
       "favoritesOf": "Favorites Of"
     }
   }

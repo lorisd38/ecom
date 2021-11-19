@@ -1,9 +1,9 @@
 package com.m2gi.ecom.repository;
 
 import com.m2gi.ecom.domain.Cart;
-import com.m2gi.ecom.domain.UserDetails;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 

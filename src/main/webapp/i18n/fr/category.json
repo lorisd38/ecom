@@ -19,7 +19,9 @@
       },
       "id": "ID",
       "name": "Name",
-      "parent": "Parent"
+      "parent": "Parent",
+      "children": "Children",
+      "associatedProducts": "Associated Products"
     }
   }
 }

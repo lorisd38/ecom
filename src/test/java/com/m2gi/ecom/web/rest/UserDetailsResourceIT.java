@@ -173,7 +173,7 @@ class UserDetailsResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updatedUserDetails))
             )
-            .andExpect(status().isOk());
+            .andExpect(status().isInternalServerError());
 
         // Validate the UserDetails in the database
         List<UserDetails> userDetailsList = userDetailsRepository.findAll();

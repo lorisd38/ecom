@@ -2,6 +2,7 @@ package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -25,8 +26,12 @@ public class ProductOrder implements Serializable {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @NotNull
+    @Column(name = "price", precision = 21, scale = 2, nullable = false)
+    private BigDecimal price;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -59,6 +64,19 @@ public class ProductOrder implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return this.price;
+    }
+
+    public ProductOrder price(BigDecimal price) {
+        this.setPrice(price);
+        return this;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Product getProduct() {
@@ -112,6 +130,7 @@ public class ProductOrder implements Serializable {
         return "ProductOrder{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
+            ", price=" + getPrice() +
             "}";
     }
 }

@@ -26,11 +26,11 @@ public class ProductCart implements Serializable {
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "category", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "lines" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "lines", "user" }, allowSetters = true)
     private Cart cart;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

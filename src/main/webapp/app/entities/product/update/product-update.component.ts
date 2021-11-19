@@ -26,12 +26,15 @@ export class ProductUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required]],
     description: [],
+    quantity: [null, [Validators.required]],
+    version: [null, [Validators.required]],
     origin: [],
     brand: [],
     imagePath: [],
     price: [null, [Validators.required]],
     weight: [],
     category: [],
+    relatedCtegories: [],
     tags: [],
   });
 
@@ -73,6 +76,17 @@ export class ProductUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  getSelectedCategory(option: ICategory, selectedVals?: ICategory[]): ICategory {
+    if (selectedVals) {
+      for (const selectedVal of selectedVals) {
+        if (option.id === selectedVal.id) {
+          return selectedVal;
+        }
+      }
+    }
+    return option;
+  }
+
   getSelectedTag(option: ITag, selectedVals?: ITag[]): ITag {
     if (selectedVals) {
       for (const selectedVal of selectedVals) {
@@ -108,18 +122,22 @@ export class ProductUpdateComponent implements OnInit {
       id: product.id,
       name: product.name,
       description: product.description,
+      quantity: product.quantity,
+      version: product.version,
       origin: product.origin,
       brand: product.brand,
       imagePath: product.imagePath,
       price: product.price,
       weight: product.weight,
       category: product.category,
+      relatedCtegories: product.relatedCtegories,
       tags: product.tags,
     });
 
     this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(
       this.categoriesSharedCollection,
-      product.category
+      product.category,
+      ...(product.relatedCtegories ?? [])
     );
     this.tagsSharedCollection = this.tagService.addTagToCollectionIfMissing(this.tagsSharedCollection, ...(product.tags ?? []));
   }
@@ -130,7 +148,11 @@ export class ProductUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
       .pipe(
         map((categories: ICategory[]) =>
-          this.categoryService.addCategoryToCollectionIfMissing(categories, this.editForm.get('category')!.value)
+          this.categoryService.addCategoryToCollectionIfMissing(
+            categories,
+            this.editForm.get('category')!.value,
+            ...(this.editForm.get('relatedCtegories')!.value ?? [])
+          )
         )
       )
       .subscribe((categories: ICategory[]) => (this.categoriesSharedCollection = categories));
@@ -148,12 +170,15 @@ export class ProductUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       description: this.editForm.get(['description'])!.value,
+      quantity: this.editForm.get(['quantity'])!.value,
+      version: this.editForm.get(['version'])!.value,
       origin: this.editForm.get(['origin'])!.value,
       brand: this.editForm.get(['brand'])!.value,
       imagePath: this.editForm.get(['imagePath'])!.value,
       price: this.editForm.get(['price'])!.value,
       weight: this.editForm.get(['weight'])!.value,
       category: this.editForm.get(['category'])!.value,
+      relatedCtegories: this.editForm.get(['relatedCtegories'])!.value,
       tags: this.editForm.get(['tags'])!.value,
     };
   }

@@ -46,6 +46,12 @@ class ProductResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_QUANTITY = 1;
+    private static final Integer UPDATED_QUANTITY = 2;
+
+    private static final Long DEFAULT_VERSION = 1L;
+    private static final Long UPDATED_VERSION = 2L;
+
     private static final String DEFAULT_ORIGIN = "AAAAAAAAAA";
     private static final String UPDATED_ORIGIN = "BBBBBBBBBB";
 
@@ -94,6 +100,8 @@ class ProductResourceIT {
         Product product = new Product()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
+            .quantity(DEFAULT_QUANTITY)
+            .version(DEFAULT_VERSION)
             .origin(DEFAULT_ORIGIN)
             .brand(DEFAULT_BRAND)
             .imagePath(DEFAULT_IMAGE_PATH)
@@ -112,6 +120,8 @@ class ProductResourceIT {
         Product product = new Product()
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .quantity(UPDATED_QUANTITY)
+            .version(UPDATED_VERSION)
             .origin(UPDATED_ORIGIN)
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
@@ -140,6 +150,8 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testProduct.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testProduct.getVersion()).isEqualTo(DEFAULT_VERSION);
         assertThat(testProduct.getOrigin()).isEqualTo(DEFAULT_ORIGIN);
         assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
@@ -184,6 +196,40 @@ class ProductResourceIT {
 
     @Test
     @Transactional
+    void checkQuantityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setQuantity(null);
+
+        // Create the Product, which fails.
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(product)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkVersionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setVersion(null);
+
+        // Create the Product, which fails.
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(product)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkPriceIsRequired() throws Exception {
         int databaseSizeBeforeTest = productRepository.findAll().size();
         // set the field null
@@ -213,6 +259,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION.intValue())))
             .andExpect(jsonPath("$.[*].origin").value(hasItem(DEFAULT_ORIGIN)))
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].imagePath").value(hasItem(DEFAULT_IMAGE_PATH)))
@@ -252,6 +300,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
+            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION.intValue()))
             .andExpect(jsonPath("$.origin").value(DEFAULT_ORIGIN))
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND))
             .andExpect(jsonPath("$.imagePath").value(DEFAULT_IMAGE_PATH))
@@ -281,6 +331,8 @@ class ProductResourceIT {
         updatedProduct
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .quantity(UPDATED_QUANTITY)
+            .version(UPDATED_VERSION)
             .origin(UPDATED_ORIGIN)
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
@@ -301,6 +353,8 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testProduct.getVersion()).isEqualTo(UPDATED_VERSION);
         assertThat(testProduct.getOrigin()).isEqualTo(UPDATED_ORIGIN);
         assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
@@ -376,7 +430,7 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.imagePath(UPDATED_IMAGE_PATH).price(UPDATED_PRICE);
+        partialUpdatedProduct.origin(UPDATED_ORIGIN).brand(UPDATED_BRAND);
 
         restProductMockMvc
             .perform(
@@ -392,10 +446,12 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testProduct.getOrigin()).isEqualTo(DEFAULT_ORIGIN);
-        assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
-        assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
-        assertThat(testProduct.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
+        assertThat(testProduct.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testProduct.getVersion()).isEqualTo(DEFAULT_VERSION);
+        assertThat(testProduct.getOrigin()).isEqualTo(UPDATED_ORIGIN);
+        assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
+        assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
+        assertThat(testProduct.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
         assertThat(testProduct.getWeight()).isEqualByComparingTo(DEFAULT_WEIGHT);
     }
 
@@ -414,6 +470,8 @@ class ProductResourceIT {
         partialUpdatedProduct
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .quantity(UPDATED_QUANTITY)
+            .version(UPDATED_VERSION)
             .origin(UPDATED_ORIGIN)
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
@@ -434,6 +492,8 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testProduct.getVersion()).isEqualTo(UPDATED_VERSION);
         assertThat(testProduct.getOrigin()).isEqualTo(UPDATED_ORIGIN);
         assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);

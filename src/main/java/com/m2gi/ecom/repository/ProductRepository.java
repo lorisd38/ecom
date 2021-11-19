@@ -15,14 +15,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(
-        value = "select distinct product from Product product left join fetch product.tags",
+        value = "select distinct product from Product product left join fetch product.relatedCtegories left join fetch product.tags",
         countQuery = "select count(distinct product) from Product product"
     )
     Page<Product> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct product from Product product left join fetch product.tags")
+    @Query("select distinct product from Product product left join fetch product.relatedCtegories left join fetch product.tags")
     List<Product> findAllWithEagerRelationships();
 
-    @Query("select product from Product product left join fetch product.tags where product.id =:id")
+    @Query(
+        "select product from Product product left join fetch product.relatedCtegories left join fetch product.tags where product.id =:id"
+    )
     Optional<Product> findOneWithEagerRelationships(@Param("id") Long id);
 }

@@ -20,6 +20,12 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="quantity" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="origin" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -43,6 +49,17 @@
     </changeSet>
 
     <changeSet id="20211105020241-1-relations" author="jhipster">
+
+        <createTable tableName="rel_product__related_ctegories">
+            <column name="related_ctegories_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="product_id, related_ctegories_id" tableName="rel_product__related_ctegories"/>
 
         <createTable tableName="rel_product__tags">
             <column name="tags_id" type="bigint">
@@ -75,6 +92,8 @@
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
+            <column name="quantity" type="numeric"/>
+            <column name="version" type="numeric"/>
             <column name="origin" type="string"/>
             <column name="brand" type="string"/>
             <column name="image_path" type="string"/>

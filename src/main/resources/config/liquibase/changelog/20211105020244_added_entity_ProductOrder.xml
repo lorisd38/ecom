@@ -17,6 +17,9 @@
             <column name="quantity" type="integer">
                 <constraints nullable="false" />
             </column>
+            <column name="price" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
             <column name="product_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -45,6 +48,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="quantity" type="numeric"/>
+            <column name="price" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

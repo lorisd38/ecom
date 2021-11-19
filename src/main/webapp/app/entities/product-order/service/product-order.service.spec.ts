@@ -22,6 +22,7 @@ describe('ProductOrder Service', () => {
     elemDefault = {
       id: 0,
       quantity: 0,
+      price: 0,
     };
   });
 
@@ -58,6 +59,7 @@ describe('ProductOrder Service', () => {
         {
           id: 1,
           quantity: 1,
+          price: 1,
         },
         elemDefault
       );
@@ -72,7 +74,12 @@ describe('ProductOrder Service', () => {
     });
 
     it('should partial update a ProductOrder', () => {
-      const patchObject = Object.assign({}, new ProductOrder());
+      const patchObject = Object.assign(
+        {
+          price: 1,
+        },
+        new ProductOrder()
+      );
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -90,6 +97,7 @@ describe('ProductOrder Service', () => {
         {
           id: 1,
           quantity: 1,
+          price: 1,
         },
         elemDefault
       );
@@ -141,7 +149,7 @@ describe('ProductOrder Service', () => {
       });
 
       it('should add only unique ProductOrder to an array', () => {
-        const productOrderArray: IProductOrder[] = [{ id: 123 }, { id: 456 }, { id: 89931 }];
+        const productOrderArray: IProductOrder[] = [{ id: 123 }, { id: 456 }, { id: 54083 }];
         const productOrderCollection: IProductOrder[] = [{ id: 123 }];
         expectedResult = service.addProductOrderToCollectionIfMissing(productOrderCollection, ...productOrderArray);
         expect(expectedResult).toHaveLength(3);

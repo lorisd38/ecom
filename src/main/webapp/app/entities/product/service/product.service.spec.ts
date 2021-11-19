@@ -23,6 +23,8 @@ describe('Product Service', () => {
       id: 0,
       name: 'AAAAAAA',
       description: 'AAAAAAA',
+      quantity: 0,
+      version: 0,
       origin: 'AAAAAAA',
       brand: 'AAAAAAA',
       imagePath: 'AAAAAAA',
@@ -65,6 +67,8 @@ describe('Product Service', () => {
           id: 1,
           name: 'BBBBBB',
           description: 'BBBBBB',
+          quantity: 1,
+          version: 1,
           origin: 'BBBBBB',
           brand: 'BBBBBB',
           imagePath: 'BBBBBB',
@@ -87,10 +91,11 @@ describe('Product Service', () => {
       const patchObject = Object.assign(
         {
           name: 'BBBBBB',
+          quantity: 1,
           origin: 'BBBBBB',
+          brand: 'BBBBBB',
           imagePath: 'BBBBBB',
           price: 1,
-          weight: 1,
         },
         new Product()
       );
@@ -112,6 +117,8 @@ describe('Product Service', () => {
           id: 1,
           name: 'BBBBBB',
           description: 'BBBBBB',
+          quantity: 1,
+          version: 1,
           origin: 'BBBBBB',
           brand: 'BBBBBB',
           imagePath: 'BBBBBB',
@@ -168,7 +175,7 @@ describe('Product Service', () => {
       });
 
       it('should add only unique Product to an array', () => {
-        const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 82563 }];
+        const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 82205 }];
         const productCollection: IProduct[] = [{ id: 123 }];
         expectedResult = service.addProductToCollectionIfMissing(productCollection, ...productArray);
         expect(expectedResult).toHaveLength(3);
