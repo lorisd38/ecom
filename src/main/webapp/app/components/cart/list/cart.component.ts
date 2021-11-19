@@ -51,33 +51,41 @@ export class CartComponent implements OnInit {
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
-        // Reload component
-        if (this.cart?.lines != null) {
-          const indexProductCart = this.cart.lines.indexOf(item);
-          this.cart.lines[indexProductCart].quantity = quantity;
-          this.calcTotal();
-        }
-      });
+      if (quantity !== 0) {
+        this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
+          // Reload component
+          if (this.cart?.lines != null) {
+            const indexProductCart = this.cart.lines.indexOf(item);
+            this.cart.lines[indexProductCart].quantity = quantity;
+            this.calcTotal();
+          }
+        });
+      } else {
+        this.delete(item);
+      }
     }
   }
 
   updateQuantityProductCartByText(item: IProductCart, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
-        if (Number(event.target.value) === 0) {
-          this.delete(item);
-        } else if (Number(event.target.value) > 0) {
-          const quantity: number = event.target.value;
-          this.updateQuantityProductCart(item, quantity);
-        }
+        const quantity: number = +event.target.value;
+        this.updateQuantityProductCart(item, quantity);
       }
     }
   }
 
   delete(product: IProductCart): void {
-    // TODO: delete product from cart
-    console.error('Hello delete!');
+    if (product.id != null) {
+      this.cartService.queryDeleteProductCart(product.id).subscribe(() => {
+        // Reload component
+        if (this.cart?.lines != null) {
+          const indexProductCart = this.cart.lines.indexOf(product);
+          this.cart.lines[indexProductCart].quantity = product.quantity;
+          this.calcTotal();
+        }
+      });
+    }
   }
 
   trackId(index: number, item: IProductCart): number {

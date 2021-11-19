@@ -5,9 +5,12 @@ import com.m2gi.ecom.repository.ProductCartRepository;
 import com.m2gi.ecom.service.ProductCartService;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,6 +23,9 @@ public class ProductCartServiceImpl implements ProductCartService {
     private final Logger log = LoggerFactory.getLogger(ProductCartServiceImpl.class);
 
     private final ProductCartRepository productCartRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     public ProductCartServiceImpl(ProductCartRepository productCartRepository) {
         this.productCartRepository = productCartRepository;
@@ -62,9 +68,19 @@ public class ProductCartServiceImpl implements ProductCartService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
         log.debug("Request to delete ProductCart : {}", id);
-        productCartRepository.deleteById(id);
+        //        ProductCart pC = em.find(ProductCart.class,id);
+        //        log.debug("voici l'id trouve : {}",pC);
+        //        if(pC != null){
+        //            pC.setCart(null);
+        //            pC.setProduct(null);
+        //            em.remove(pC);
+        //            // em.createNativeQuery("delete from product_cart where id=" + id).executeUpdate();
+        //        }
+
+        productCartRepository.deleteWithId(id);
     }
 
     @Override

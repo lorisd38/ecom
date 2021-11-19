@@ -84,11 +84,19 @@ export class ProductsComponent implements OnInit {
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
       if (quantity === 0) {
-        console.log('Supprimer article du panier (ticket-44)');
-        /* this.cartService.queryXXX(xxx).subscribe(() => {
-          // Reload component
-          this.ngOnInit();
-        });*/
+        const lineProduct = this.getProductCart(item);
+        if (lineProduct != null) {
+          if (lineProduct.id != null) {
+            console.log('delete');
+            this.cartService.queryDeleteProductCart(lineProduct.id).subscribe(() => {
+              // Reload component
+              if (this.cart?.lines != null) {
+                const indexProductCart = this.cart.lines.indexOf(item);
+                this.cart.lines[indexProductCart].quantity = quantity;
+              }
+            });
+          }
+        }
       } else if (quantity > 0) {
         this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
           // Reload component
@@ -107,20 +115,27 @@ export class ProductsComponent implements OnInit {
   updateQuantityProductByText(item: IProduct, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
-        const quantity: number = event.target.value;
+        const quantity: number = +event.target.value;
         this.updateQuantityProduct(item, quantity);
       }
     }
   }
-
-  quantityProduct(item: IProduct): number {
+  getProductCart(item: IProduct): IProductCart | undefined {
     if (this.cart?.lines != null) {
       for (const lineProduct of this.cart.lines) {
         if (lineProduct.product?.id === item.id) {
-          if (lineProduct.quantity != null) {
-            return lineProduct.quantity;
-          }
+          return lineProduct;
         }
+      }
+    }
+    return undefined;
+  }
+
+  quantityProduct(item: IProduct): number {
+    let lineProduct;
+    if ((lineProduct = this.getProductCart(item)) !== undefined) {
+      if (lineProduct.quantity != null) {
+        return lineProduct.quantity;
       }
     }
     return 0;
