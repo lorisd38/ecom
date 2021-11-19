@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ICart } from '../../../entities/cart/cart.model';
-import { IProductCart } from '../../../entities/product-cart/product-cart.model';
+import { getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
+import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../service/cart.service';
 
@@ -38,20 +38,12 @@ export class CartComponent implements OnInit {
   }
 
   calcTotal(): void {
-    let tt = 0.0;
-    if (this.cart?.lines != null) {
-      for (const lineProduct of this.cart.lines) {
-        if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-          tt += lineProduct.quantity * lineProduct.product.price;
-        }
-      }
-    }
-    this.total = tt.toLocaleString();
+    this.total = getTotalCartPrice(this.cart).toLocaleString();
   }
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
     if (item.id != null) {
-      if (quantity !== 0) {
+      if (quantity > 0) {
         this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
           // Reload component
           if (this.cart?.lines != null) {
@@ -60,8 +52,8 @@ export class CartComponent implements OnInit {
             this.calcTotal();
           }
         });
-      } else {
-        this.delete(item);
+      } else if (quantity === 0) {
+        this.deleteLine(item);
       }
     }
   }
@@ -75,13 +67,14 @@ export class CartComponent implements OnInit {
     }
   }
 
-  delete(product: IProductCart): void {
-    if (product.id != null) {
-      this.cartService.queryDeleteProductCart(product.id).subscribe(() => {
+  deleteLine(productCart: IProductCart): void {
+    if (productCart.id != null) {
+      this.cartService.queryDeleteProductCart(productCart.id).subscribe(() => {
         // Reload component
         if (this.cart?.lines != null) {
-          const indexProductCart = this.cart.lines.indexOf(product);
-          this.cart.lines[indexProductCart].quantity = product.quantity;
+          const indexProductCart = this.cart.lines.indexOf(productCart);
+          // Splice is a method to delete starting from <index> a given <number of elements>.
+          this.cart.lines.splice(indexProductCart, 1);
           this.calcTotal();
         }
       });
