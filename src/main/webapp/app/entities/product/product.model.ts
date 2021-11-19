@@ -8,12 +8,15 @@ export interface IProduct {
   id?: number;
   name?: string;
   description?: string | null;
+  quantity?: number;
+  version?: number;
   origin?: string | null;
   brand?: string | null;
   imagePath?: string | null;
   price?: number;
   weight?: number | null;
   category?: ICategory | null;
+  relatedCtegories?: ICategory[] | null;
   tags?: ITag[] | null;
   recipes?: IRecipe[] | null;
   promotions?: IPromotion[] | null;
@@ -25,12 +28,15 @@ export class Product implements IProduct {
     public id?: number,
     public name?: string,
     public description?: string | null,
+    public quantity?: number,
+    public version?: number,
     public origin?: string | null,
     public brand?: string | null,
     public imagePath?: string | null,
     public price?: number,
     public weight?: number | null,
     public category?: ICategory | null,
+    public relatedCtegories?: ICategory[] | null,
     public tags?: ITag[] | null,
     public recipes?: IRecipe[] | null,
     public promotions?: IPromotion[] | null,

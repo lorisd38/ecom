@@ -41,6 +41,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 if (productOrder.getQuantity() != null) {
                     existingProductOrder.setQuantity(productOrder.getQuantity());
                 }
+                if (productOrder.getPrice() != null) {
+                    existingProductOrder.setPrice(productOrder.getPrice());
+                }
 
                 return existingProductOrder;
             })

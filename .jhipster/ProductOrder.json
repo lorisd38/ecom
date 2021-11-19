@@ -6,6 +6,11 @@
       "fieldType": "Integer",
       "fieldValidateRules": ["min", "required"],
       "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [

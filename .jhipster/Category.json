@@ -11,8 +11,21 @@
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "category",
-      "otherEntityRelationshipName": "category",
+      "otherEntityRelationshipName": "children",
       "relationshipName": "parent"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "parent",
+      "relationshipName": "children"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "relatedCtegories",
+      "relationshipName": "associatedProducts",
+      "ownerSide": false
     }
   ],
   "entityTableName": "category",

@@ -1,5 +1,6 @@
 package com.m2gi.ecom.web.rest;
 
+import static com.m2gi.ecom.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -8,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.m2gi.ecom.IntegrationTest;
 import com.m2gi.ecom.domain.ProductOrder;
 import com.m2gi.ecom.repository.ProductOrderRepository;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,6 +33,9 @@ class ProductOrderResourceIT {
 
     private static final Integer DEFAULT_QUANTITY = 1;
     private static final Integer UPDATED_QUANTITY = 2;
+
+    private static final BigDecimal DEFAULT_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PRICE = new BigDecimal(2);
 
     private static final String ENTITY_API_URL = "/api/product-orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -56,7 +61,7 @@ class ProductOrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductOrder createEntity(EntityManager em) {
-        ProductOrder productOrder = new ProductOrder().quantity(DEFAULT_QUANTITY);
+        ProductOrder productOrder = new ProductOrder().quantity(DEFAULT_QUANTITY).price(DEFAULT_PRICE);
         return productOrder;
     }
 
@@ -67,7 +72,7 @@ class ProductOrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductOrder createUpdatedEntity(EntityManager em) {
-        ProductOrder productOrder = new ProductOrder().quantity(UPDATED_QUANTITY);
+        ProductOrder productOrder = new ProductOrder().quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
         return productOrder;
     }
 
@@ -90,6 +95,7 @@ class ProductOrderResourceIT {
         assertThat(productOrderList).hasSize(databaseSizeBeforeCreate + 1);
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testProductOrder.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
     }
 
     @Test
@@ -129,6 +135,23 @@ class ProductOrderResourceIT {
 
     @Test
     @Transactional
+    void checkPriceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productOrderRepository.findAll().size();
+        // set the field null
+        productOrder.setPrice(null);
+
+        // Create the ProductOrder, which fails.
+
+        restProductOrderMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(productOrder)))
+            .andExpect(status().isBadRequest());
+
+        List<ProductOrder> productOrderList = productOrderRepository.findAll();
+        assertThat(productOrderList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllProductOrders() throws Exception {
         // Initialize the database
         productOrderRepository.saveAndFlush(productOrder);
@@ -139,7 +162,8 @@ class ProductOrderResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)));
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))));
     }
 
     @Test
@@ -154,7 +178,8 @@ class ProductOrderResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productOrder.getId().intValue()))
-            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY));
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
+            .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)));
     }
 
     @Test
@@ -176,7 +201,7 @@ class ProductOrderResourceIT {
         ProductOrder updatedProductOrder = productOrderRepository.findById(productOrder.getId()).get();
         // Disconnect from session so that the updates on updatedProductOrder are not directly saved in db
         em.detach(updatedProductOrder);
-        updatedProductOrder.quantity(UPDATED_QUANTITY);
+        updatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
 
         restProductOrderMockMvc
             .perform(
@@ -191,6 +216,7 @@ class ProductOrderResourceIT {
         assertThat(productOrderList).hasSize(databaseSizeBeforeUpdate);
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testProductOrder.getPrice()).isEqualTo(UPDATED_PRICE);
     }
 
     @Test
@@ -261,7 +287,7 @@ class ProductOrderResourceIT {
         ProductOrder partialUpdatedProductOrder = new ProductOrder();
         partialUpdatedProductOrder.setId(productOrder.getId());
 
-        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY);
+        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
 
         restProductOrderMockMvc
             .perform(
@@ -276,6 +302,7 @@ class ProductOrderResourceIT {
         assertThat(productOrderList).hasSize(databaseSizeBeforeUpdate);
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testProductOrder.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
     }
 
     @Test
@@ -290,7 +317,7 @@ class ProductOrderResourceIT {
         ProductOrder partialUpdatedProductOrder = new ProductOrder();
         partialUpdatedProductOrder.setId(productOrder.getId());
 
-        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY);
+        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
 
         restProductOrderMockMvc
             .perform(
@@ -305,6 +332,7 @@ class ProductOrderResourceIT {
         assertThat(productOrderList).hasSize(databaseSizeBeforeUpdate);
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testProductOrder.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
     }
 
     @Test

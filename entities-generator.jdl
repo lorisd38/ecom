@@ -1,5 +1,5 @@
 entity Address {
-	road String,
+  road String,
     postalCode String,
     city String,
     country String,
@@ -7,24 +7,26 @@ entity Address {
 }
 
 entity Order(jhi_order) {
-	paymentDate Instant required,
-	receptionDate Instant required,
+  paymentDate Instant required,
+  receptionDate Instant required,
     promoCode String,
     totalPrice BigDecimal required
 }
 
 entity Product {
-	name String required,
+  name String required,
     description String,
+    quantity Integer required,
+    version Long required,
     origin String,
     brand String,
-	imagePath String,
+  imagePath String,
     price BigDecimal required,
     weight BigDecimal
 }
 
 entity Promotion {
-	startDate Instant required,
+  startDate Instant required,
     endDate Instant required,
     reductionPercentage BigDecimal required
 }
@@ -33,36 +35,37 @@ entity Cart {
 }
 
 entity ProductOrder {
-	quantity Integer min(1) required
+  quantity Integer min(1) required,
+    price BigDecimal required
 }
 
 entity ProductCart {
-	quantity Integer min(1) required
+  quantity Integer min(1) required
 }
 
 entity Category {
-	name String required,
+  name String required,
 }
 
 entity Recipe {
-	name String required,
+  name String required,
     description String,
     steps String,
-	imagePath String
+  imagePath String
 }
 
 entity Tag {
-	name String required
+  name String required
 }
 
 entity UserDetails {
-	role Role required,
+  role Role required,
     birthDate LocalDate,
     phoneNumber String
 }
 
 enum Role {
-	ADMIN, STAFF, CLIENT
+  ADMIN, STAFF, CLIENT
 }
 
 relationship OneToMany {
@@ -71,14 +74,15 @@ relationship OneToMany {
 }
 
 relationship ManyToOne {
-	Category{parent} to Category,
-	Product{category} to Category,
+  Category{parent} to Category{children},
+  Product{category} to Category,
     ProductOrder{product} to Product,
     ProductCart{product} to Product
 }
 
 relationship ManyToMany {
   Recipe{products} to Product{recipes},
+  Product{relatedCtegories} to Category{associatedProducts},
   Product{tags} to
   /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{products},

@@ -72,6 +72,7 @@ class ProductOrderGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "quantity":"0"
+                , "price":"0"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_productOrder_url"))).exitHereIfFailed

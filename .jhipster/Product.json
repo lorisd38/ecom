@@ -11,6 +11,16 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "quantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "version",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "origin",
       "fieldType": "String"
     },
@@ -38,6 +48,13 @@
       "otherEntityName": "category",
       "otherEntityRelationshipName": "product",
       "relationshipName": "category"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "associatedProducts",
+      "relationshipName": "relatedCtegories",
+      "ownerSide": true
     },
     {
       "relationshipType": "many-to-many",

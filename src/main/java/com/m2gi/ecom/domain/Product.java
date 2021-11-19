@@ -31,6 +31,15 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @NotNull
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @NotNull
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
     @Column(name = "origin")
     private String origin;
 
@@ -48,8 +57,17 @@ public class Product implements Serializable {
     private BigDecimal weight;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
     private Category category;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_product__related_ctegories",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "related_ctegories_id")
+    )
+    @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
+    private Set<Category> relatedCtegories = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -119,6 +137,32 @@ public class Product implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getQuantity() {
+        return this.quantity;
+    }
+
+    public Product quantity(Integer quantity) {
+        this.setQuantity(quantity);
+        return this;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Long getVersion() {
+        return this.version;
+    }
+
+    public Product version(Long version) {
+        this.setVersion(version);
+        return this;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public String getOrigin() {
@@ -196,6 +240,31 @@ public class Product implements Serializable {
 
     public Product category(Category category) {
         this.setCategory(category);
+        return this;
+    }
+
+    public Set<Category> getRelatedCtegories() {
+        return this.relatedCtegories;
+    }
+
+    public void setRelatedCtegories(Set<Category> categories) {
+        this.relatedCtegories = categories;
+    }
+
+    public Product relatedCtegories(Set<Category> categories) {
+        this.setRelatedCtegories(categories);
+        return this;
+    }
+
+    public Product addRelatedCtegories(Category category) {
+        this.relatedCtegories.add(category);
+        category.getAssociatedProducts().add(this);
+        return this;
+    }
+
+    public Product removeRelatedCtegories(Category category) {
+        this.relatedCtegories.remove(category);
+        category.getAssociatedProducts().remove(this);
         return this;
     }
 
@@ -343,6 +412,8 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", quantity=" + getQuantity() +
+            ", version=" + getVersion() +
             ", origin='" + getOrigin() + "'" +
             ", brand='" + getBrand() + "'" +
             ", imagePath='" + getImagePath() + "'" +

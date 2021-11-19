@@ -22,6 +22,14 @@
         <dd>
           <span>{{ product.description }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomApp.product.quantity">Quantity</span></dt>
+        <dd>
+          <span>{{ product.quantity }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.product.version">Version</span></dt>
+        <dd>
+          <span>{{ product.version }}</span>
+        </dd>
         <dt><span jhiTranslate="ecomApp.product.origin">Origin</span></dt>
         <dd>
           <span>{{ product.origin }}</span>
@@ -47,6 +55,13 @@
           <div *ngIf="product.category">
             <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
           </div>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.product.relatedCtegories">Related Ctegories</span></dt>
+        <dd>
+          <span *ngFor="let relatedCtegories of product.relatedCtegories; let last = last">
+            <a [routerLink]="['/category', relatedCtegories?.id, 'view']">{{ relatedCtegories.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
         </dd>
         <dt><span jhiTranslate="ecomApp.product.tags">Tags</span></dt>
         <dd>

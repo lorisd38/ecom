@@ -47,10 +47,12 @@ describe('Product Management Update Component', () => {
       const product: IProduct = { id: 456 };
       const category: ICategory = { id: 52954 };
       product.category = category;
+      const relatedCtegories: ICategory[] = [{ id: 63621 }];
+      product.relatedCtegories = relatedCtegories;
 
-      const categoryCollection: ICategory[] = [{ id: 63621 }];
+      const categoryCollection: ICategory[] = [{ id: 32126 }];
       jest.spyOn(categoryService, 'query').mockReturnValue(of(new HttpResponse({ body: categoryCollection })));
-      const additionalCategories = [category];
+      const additionalCategories = [category, ...relatedCtegories];
       const expectedCollection: ICategory[] = [...additionalCategories, ...categoryCollection];
       jest.spyOn(categoryService, 'addCategoryToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -83,8 +85,10 @@ describe('Product Management Update Component', () => {
 
     it('Should update editForm', () => {
       const product: IProduct = { id: 456 };
-      const category: ICategory = { id: 32126 };
+      const category: ICategory = { id: 61642 };
       product.category = category;
+      const relatedCtegories: ICategory = { id: 84852 };
+      product.relatedCtegories = [relatedCtegories];
       const tags: ITag = { id: 8647 };
       product.tags = [tags];
 
@@ -93,6 +97,7 @@ describe('Product Management Update Component', () => {
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(product));
       expect(comp.categoriesSharedCollection).toContain(category);
+      expect(comp.categoriesSharedCollection).toContain(relatedCtegories);
       expect(comp.tagsSharedCollection).toContain(tags);
     });
   });
@@ -180,6 +185,32 @@ describe('Product Management Update Component', () => {
   });
 
   describe('Getting selected relationships', () => {
+    describe('getSelectedCategory', () => {
+      it('Should return option if no Category is selected', () => {
+        const option = { id: 123 };
+        const result = comp.getSelectedCategory(option);
+        expect(result === option).toEqual(true);
+      });
+
+      it('Should return selected Category for according option', () => {
+        const option = { id: 123 };
+        const selected = { id: 123 };
+        const selected2 = { id: 456 };
+        const result = comp.getSelectedCategory(option, [selected2, selected]);
+        expect(result === selected).toEqual(true);
+        expect(result === selected2).toEqual(false);
+        expect(result === option).toEqual(false);
+      });
+
+      it('Should return option if this Category is not selected', () => {
+        const option = { id: 123 };
+        const selected = { id: 456 };
+        const result = comp.getSelectedCategory(option, [selected]);
+        expect(result === option).toEqual(true);
+        expect(result === selected).toEqual(false);
+      });
+    });
+
     describe('getSelectedTag', () => {
       it('Should return option if no Tag is selected', () => {
         const option = { id: 123 };

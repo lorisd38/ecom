@@ -34,6 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.quantity">Quantity</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productOrder.price">Price</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.product">Product</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.order">Order</span></th>
           <th scope="col"></th>
@@ -45,6 +46,7 @@
             <a [routerLink]="['/product-order', productOrder.id, 'view']">{{ productOrder.id }}</a>
           </td>
           <td>{{ productOrder.quantity }}</td>
+          <td>{{ productOrder.price }}</td>
           <td>
             <div *ngIf="productOrder.product">
               <a [routerLink]="['/product', productOrder.product?.id, 'view']">{{ productOrder.product?.id }}</a>

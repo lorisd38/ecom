@@ -25,6 +25,7 @@ export class ProductOrderUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     quantity: [null, [Validators.required, Validators.min(1)]],
+    price: [null, [Validators.required]],
     product: [],
     order: [],
   });
@@ -90,6 +91,7 @@ export class ProductOrderUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: productOrder.id,
       quantity: productOrder.quantity,
+      price: productOrder.price,
       product: productOrder.product,
       order: productOrder.order,
     });
@@ -122,6 +124,7 @@ export class ProductOrderUpdateComponent implements OnInit {
       ...new ProductOrder(),
       id: this.editForm.get(['id'])!.value,
       quantity: this.editForm.get(['quantity'])!.value,
+      price: this.editForm.get(['price'])!.value,
       product: this.editForm.get(['product'])!.value,
       order: this.editForm.get(['order'])!.value,
     };

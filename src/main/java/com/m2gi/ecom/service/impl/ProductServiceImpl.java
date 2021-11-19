@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
                 if (product.getDescription() != null) {
                     existingProduct.setDescription(product.getDescription());
                 }
+                if (product.getQuantity() != null) {
+                    existingProduct.setQuantity(product.getQuantity());
+                }
+                if (product.getVersion() != null) {
+                    existingProduct.setVersion(product.getVersion());
+                }
                 if (product.getOrigin() != null) {
                     existingProduct.setOrigin(product.getOrigin());
                 }
