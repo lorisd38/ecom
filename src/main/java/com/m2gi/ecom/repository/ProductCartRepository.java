@@ -1,7 +1,9 @@
 package com.m2gi.ecom.repository;
 
 import com.m2gi.ecom.domain.ProductCart;
+import java.lang.annotation.Native;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductCartRepository extends JpaRepository<ProductCart, Long> {}
+public interface ProductCartRepository extends JpaRepository<ProductCart, Long> {
+    @Modifying
+    @Query("delete from ProductCart p where p.id=:id")
+    void deleteWithId(@Param("id") long id);
+}

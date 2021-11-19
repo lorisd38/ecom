@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ICart } from '../../../entities/cart/cart.model';
-import { IProductCart } from '../../../entities/product-cart/product-cart.model';
+import { getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
+import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../service/cart.service';
 
@@ -38,46 +38,47 @@ export class CartComponent implements OnInit {
   }
 
   calcTotal(): void {
-    let tt = 0.0;
-    if (this.cart?.lines != null) {
-      for (const lineProduct of this.cart.lines) {
-        if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-          tt += lineProduct.quantity * lineProduct.product.price;
-        }
-      }
-    }
-    this.total = tt.toLocaleString();
+    this.total = getTotalCartPrice(this.cart).toLocaleString();
   }
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
     if (item.id != null) {
-      this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
-        // Reload component
-        if (this.cart?.lines != null) {
-          const indexProductCart = this.cart.lines.indexOf(item);
-          this.cart.lines[indexProductCart].quantity = quantity;
-          this.calcTotal();
-        }
-      });
+      if (quantity > 0) {
+        this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
+          // Reload component
+          if (this.cart?.lines != null) {
+            const indexProductCart = this.cart.lines.indexOf(item);
+            this.cart.lines[indexProductCart].quantity = quantity;
+            this.calcTotal();
+          }
+        });
+      } else if (quantity === 0) {
+        this.deleteLine(item);
+      }
     }
   }
 
   updateQuantityProductCartByText(item: IProductCart, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
-        if (Number(event.target.value) === 0) {
-          this.delete(item);
-        } else if (Number(event.target.value) > 0) {
-          const quantity: number = event.target.value;
-          this.updateQuantityProductCart(item, quantity);
-        }
+        const quantity: number = +event.target.value;
+        this.updateQuantityProductCart(item, quantity);
       }
     }
   }
 
-  delete(product: IProductCart): void {
-    // TODO: delete product from cart
-    console.error('Hello delete!');
+  deleteLine(productCart: IProductCart): void {
+    if (productCart.id != null) {
+      this.cartService.queryDeleteProductCart(productCart.id).subscribe(() => {
+        // Reload component
+        if (this.cart?.lines != null) {
+          const indexProductCart = this.cart.lines.indexOf(productCart);
+          // Splice is a method to delete starting from <index> a given <number of elements>.
+          this.cart.lines.splice(indexProductCart, 1);
+          this.calcTotal();
+        }
+      });
+    }
   }
 
   trackId(index: number, item: IProductCart): number {

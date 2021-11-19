@@ -5,11 +5,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import { ICart } from '../../../entities/cart/cart.model';
+import { ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
-import { AccountService } from '../../../core/auth/account.service';
-import { Account } from '../../../core/auth/account.model';
-import { IProductCart } from '../../../entities/product-cart/product-cart.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { IProductCart } from 'app/entities/product-cart/product-cart.model';
+
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
@@ -18,7 +19,7 @@ export class ProductsComponent implements OnInit {
   products?: IProduct[];
   cart?: ICart | null;
   isLoading = false;
-  productsPresent: number[] = [];
+  productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
 
   constructor(
@@ -28,6 +29,11 @@ export class ProductsComponent implements OnInit {
     public cartService: CartService,
     private accountService: AccountService
   ) {}
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+  }
 
   loadProduct(): void {
     this.isLoading = true;
@@ -49,7 +55,7 @@ export class ProductsComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cart = res.body ?? null;
-        this.buildCartContentArray();
+        this.buildCartContentMap();
       },
       () => {
         this.isLoading = false;
@@ -57,14 +63,10 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  buildCartContentArray(): void {
-    this.productsPresent = [];
+  buildCartContentMap(): void {
+    this.productsMap.clear();
     if (this.cart?.lines != null) {
-      for (const lineProduct of this.cart.lines) {
-        if (lineProduct.product?.id != null) {
-          this.productsPresent.push(lineProduct.product.id);
-        }
-      }
+      this.cart.lines.forEach(lineProduct => this.productsMap.set(lineProduct.product!.id!, lineProduct));
     }
   }
 
@@ -77,29 +79,22 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  isPresent(itemId?: number): boolean {
-    return itemId != null ? this.productsPresent.includes(itemId) : false;
+  isPresent(productId?: number): boolean {
+    return this.productsMap.has(<number>productId);
   }
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
     if (item.id != null) {
-      if (quantity === 0) {
-        console.log('Supprimer article du panier (ticket-44)');
-        /* this.cartService.queryXXX(xxx).subscribe(() => {
-          // Reload component
-          this.ngOnInit();
-        });*/
-      } else if (quantity > 0) {
+      if (quantity > 0) {
         this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
           // Reload component
-          if (this.cart?.lines != null) {
-            for (const line of this.cart.lines) {
-              if (line.product?.id === item.id) {
-                line.quantity = quantity;
-              }
-            }
+          const productLine: IProductCart | undefined = this.cart?.lines?.find(line => line.product?.id === item.id);
+          if (productLine != null) {
+            productLine.quantity = quantity;
           }
         });
+      } else if (quantity === 0) {
+        this.deleteProduct(item);
       }
     }
   }
@@ -107,28 +102,18 @@ export class ProductsComponent implements OnInit {
   updateQuantityProductByText(item: IProduct, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
       if (!isNaN(Number(event.target.value))) {
-        const quantity: number = event.target.value;
+        const quantity: number = +event.target.value;
         this.updateQuantityProduct(item, quantity);
       }
     }
   }
-
-  quantityProduct(item: IProduct): number {
-    if (this.cart?.lines != null) {
-      for (const lineProduct of this.cart.lines) {
-        if (lineProduct.product?.id === item.id) {
-          if (lineProduct.quantity != null) {
-            return lineProduct.quantity;
-          }
-        }
-      }
-    }
-    return 0;
+  getProductCart(item: IProduct): IProductCart | undefined {
+    return this.productsMap.get(<number>item.id);
   }
 
-  ngOnInit(): void {
-    this.loadAll();
-    this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+  quantityProduct(item: IProduct): number {
+    const lineProduct = this.getProductCart(item);
+    return lineProduct?.quantity ?? 0;
   }
 
   trackId(index: number, item: IProduct): number {
@@ -136,16 +121,31 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: IProduct): void {
-    let productCartToUpdate: IProductCart | null;
-    if (product.id !== undefined) {
-      // TODO Gestion erreur product id undefined
-      this.productToCartService.create(product.id).subscribe((res: HttpResponse<IProductCart>) => {
+    // If the cart is not defined, it shouldn't even be possible to add a product to it.
+    if (this.cart == null) {
+      return;
+    }
+    this.productToCartService.create(product.id!).subscribe((res: HttpResponse<IProductCart>) => {
+      // Update the cart
+      const productCartToUpdate: IProductCart | null = res.body ?? null;
+      if (productCartToUpdate != null) {
+        this.cart!.lines?.push(productCartToUpdate);
+      }
+      this.buildCartContentMap();
+    });
+  }
+
+  deleteProduct(product: IProduct): void {
+    const lineProduct: IProductCart | undefined = this.getProductCart(product);
+    if (lineProduct?.id != null) {
+      this.cartService.queryDeleteProductCart(lineProduct.id).subscribe(() => {
         // Reload component
-        productCartToUpdate = res.body ?? null;
-        if (productCartToUpdate != null) {
-          this.cart?.lines?.push(productCartToUpdate);
+        if (this.cart?.lines != null) {
+          const indexProductCart = this.cart.lines.indexOf(lineProduct);
+          // Splice is a method to delete starting from <index> a given <number of elements>.
+          this.cart.lines.splice(indexProductCart, 1);
+          this.buildCartContentMap();
         }
-        this.buildCartContentArray();
       });
     }
   }
