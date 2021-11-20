@@ -39,7 +39,7 @@ export class ProductService {
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/research?query=${req}`, { params: options, observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/research?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
