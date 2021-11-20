@@ -70,6 +70,6 @@ export class NavbarComponent implements OnInit {
   }
 
   search_products(): void {
-    console.log("Vous voulez cherchez :",this.search_bar)
+    this.router.navigate(['/research'], { queryParams: { q: this.search_bar } }).then(() => this.search_bar="")
   }
 }
