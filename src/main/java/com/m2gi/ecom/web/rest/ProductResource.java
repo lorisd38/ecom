@@ -145,6 +145,19 @@ public class ProductResource {
     }
 
     /**
+     * {@code GET  /products} : get all the products.
+     *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param query the research query.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
+     */
+    @GetMapping("/products/research")
+    public List<Product> getProductsResearch(@RequestParam(name = "query") String query ,@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get Research Products for query : ("+ query+")");
+        return productService.findResearch(query);
+    }
+
+    /**
      * {@code GET  /products/:id} : get the "id" product.
      *
      * @param id the id of the product to retrieve.

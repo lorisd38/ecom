@@ -23,6 +23,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select distinct product from Product product left join fetch product.relatedCtegories left join fetch product.tags")
     List<Product> findAllWithEagerRelationships();
 
+    //TODO: Query
+    @Query("select distinct product from Product product left join fetch product.relatedCtegories left join fetch product.tags")
+    List<Product> findAllFromResearch(@Param("query") String query);
+
     @Query(
         "select product from Product product left join fetch product.relatedCtegories left join fetch product.tags where product.id =:id"
     )
