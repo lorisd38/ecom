@@ -145,7 +145,7 @@ public class ProductResource {
     }
 
     /**
-     * {@code GET  /products} : get all the products.
+     * {@code GET  /products} : get products from research.
      *
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @param query the research query.
