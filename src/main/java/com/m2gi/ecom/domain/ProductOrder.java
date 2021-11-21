@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "product_order")
-public class ProductOrder implements Serializable {
+public class ProductOrder implements Serializable, Comparable<ProductOrder> {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +39,13 @@ public class ProductOrder implements Serializable {
     private Order order;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+    public static ProductOrder fromProductCart(final ProductCart productCart) {
+        final ProductOrder entity = new ProductOrder();
+        entity.product = productCart.getProduct();
+        entity.quantity = productCart.getQuantity();
+        entity.price = entity.product.getPrice().multiply(BigDecimal.valueOf(entity.quantity));
+        return entity;
+    }
 
     public Long getId() {
         return this.id;
@@ -132,5 +139,10 @@ public class ProductOrder implements Serializable {
             ", quantity=" + getQuantity() +
             ", price=" + getPrice() +
             "}";
+    }
+
+    @Override
+    public int compareTo(ProductOrder o) {
+        return this.product.getId().compareTo(o.getProduct().getId());
     }
 }
