@@ -1,11 +1,11 @@
 id;name;description;quantity;version;origin;brand;image_path;price;weight
-1;Steel;Consultant;57374;81236;support navigate;Chilean reboot b;Saussaies actuating deposit;44573;6255
-2;Metal;infomediaries partnerships b;91058;85179;intermediate initiative Generic;Liban;Australian;16473;23281
-3;digital;CFP orange;9548;46269;mobile Poitou-Charentes auxiliary;COM a Awesome;homogeneous la;86573;17814
-4;Bike Shoes d'Argenteuil;tangible;62192;4722;Account;Cheese Consultant online;project hacking efficient;50702;80217
-5;Practical User-friendly c;sticky Francs-Bourgeois Automotive;41021;62316;Gorgeous;a;Plastic Cambridgeshire;16025;2730
-6;solution Zimbabwe Games;Account transmit Incredible;88593;84724;Maurice Executif Down-sized;transitional;bypassing c interactive;69233;80985
-7;multi-byte Frozen;a;64290;98982;system Practical;executive;Assistant Berkshire program;64262;94512
-8;convergence moratorium Stand-alone;transmit;65021;19001;clear-thinking focus;Loan;Small Costa Specialiste;81697;60454
-9;index;Berkshire intuitive;67526;13889;la;Account Stagiaire markets;adapter Keyboard Industrial;11276;50912
-10;Frozen Salad Concrete;Agent Technicien;20806;19179;b;Assistant Île-de-France;circuit b JBOD;24226;95757
+1;Carotte;description;0;1;Landes;Panier du primeur;image_path;0.79;1000
+2;Pomme de terre;description;0;1;Angers;Panier du primeur;image_path;2.59;1500
+3;Lait;description;0;1;Landes;GrandLait;image_path;0.99;1000
+4;Tomates;description;0;1;Brest;brand;image_path;2.99;250
+5;Steak de boeuf;description;2;1;Aix-en-Provence;Bio village;image_path;4.99;120
+6;Oeufs;description;6;1;Perpignan;Bio Village;image_path;1.65;0
+7;Chips;description;0;1;Besançon;Lays;image_path;0.92;135
+8;Pain de campagne;description;0;1;Perpignan;brand;image_path;1.10;400
+9;Brioche;description;0;1;Caen;Pasquier;image_path;1.95;630
+10;Cerise;description;0;1;Le Mans;Bio Village;image_path;0.99;250

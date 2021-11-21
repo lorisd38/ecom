@@ -1,0 +1,93 @@
+.ecom-title-header {
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.ecom-title-header:after {
+  content: '';
+  background: black;
+  position: absolute;
+  top: 65px;
+  left: 1.5%;
+  height: 1px;
+  width: 150px;
+}
+
+/* ==============================================================
+Product card
+===============================================================*/
+
+#ecom-list-products {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.ecom-product {
+  margin: 5px;
+  position: relative;
+  width: 180px;
+  height: 230px;
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+  box-shadow: 1px 3px 2px grey;
+}
+
+.ecom-product-img {
+  text-align: center;
+  padding: 10px;
+}
+
+.ecom-product-img > div {
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+}
+
+.ecom-product-img img {
+  max-width: 158px;
+  max-height: 120px;
+}
+
+.ecom-product-price {
+  padding-left: 10px;
+}
+
+.ecom-product-info {
+  padding: 0 10px 0 10px;
+}
+
+.ecom-product-subinfo {
+  padding: 0 10px 10px 10px;
+}
+
+.ecom-product-info {
+  font-size: 14px;
+}
+
+.ecom-product-subinfo {
+  font-size: 12px;
+}
+
+.ecom-product-button-text {
+  width: 40px;
+}
+
+.ecom-product-button > div {
+  font-size: 12px;
+  position: absolute;
+  top: 140px;
+  right: 10px;
+}
+
+.ecom-button {
+  border-width: 1.5px;
+  background-color: #518ef8;
+  color: white;
+  border-radius: 50px;
+  color: white;
+}
+
+#ecom-button-see-cart {
+  margin-top: 25px;
+}
