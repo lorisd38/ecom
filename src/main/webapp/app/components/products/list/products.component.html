@@ -1,6 +1,14 @@
 <div>
   <h2 id="page-heading" data-cy="ProductsHeading">
-    <span jhiTranslate="ecomApp.product.home.title">Products</span>
+
+    <div *ngIf="(this.query === undefined); else elseBlock" >
+      <span jhiTranslate="ecomApp.product.home.title">Products</span>
+    </div>
+    <ng-template #elseBlock>
+      <span jhiTranslate="ecomApp.product.research_result">Products results for :</span> {{this.query}}
+    </ng-template>
+
+
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
