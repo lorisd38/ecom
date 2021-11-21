@@ -23,6 +23,8 @@ export class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
 
+  search_bar = "" ;
+
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
@@ -65,5 +67,9 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  search_products(): void {
+    this.router.navigate(['/products'], { queryParams: { query: this.search_bar } }).then(() => this.search_bar="")
   }
 }
