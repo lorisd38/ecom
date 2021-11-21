@@ -272,4 +272,20 @@ public class CartResource {
         final ProductCart result = productCartService.updateQuantity(idProductCart, quantity);
         return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
+
+    /**
+     * {@code DELETE  /product-carts/:id} : delete the "id" productCart.
+     *
+     * @param id the id of the productCart to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/cart/productCart/{id}")
+    public ResponseEntity<Void> deleteProductCart(@PathVariable Long id) {
+        log.debug("REST request to delete ProductCart : {}", id);
+        productCartService.delete(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
 }

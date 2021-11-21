@@ -32,4 +32,10 @@ export class CartService {
       observe: 'response',
     });
   }
+
+  queryDeleteProductCart(idProductCart: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrlCart}/productCart/${idProductCart}`, {
+      observe: `response`,
+    });
+  }
 }

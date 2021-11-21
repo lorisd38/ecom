@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { CartService } from 'app/components/cart/service/cart.service';
 
 import { PaymentService } from 'app/components/payment/service/payment.service';
-import { ICart } from '../../../entities/cart/cart.model';
+import { getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -29,6 +29,10 @@ export class PaymentComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
+  ngOnInit(): void {
+    this.loadAll();
+  }
+
   loadAll(): void {
     this.isLoading = true;
 
@@ -44,21 +48,8 @@ export class PaymentComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.loadAll();
-  }
-
   calcTotal(): void {
-    let tt = 0.0;
-    if (this.cart?.lines != null) {
-      for (const lineProduct of this.cart.lines) {
-        if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-          tt += lineProduct.quantity * lineProduct.product.price;
-        }
-      }
-    }
-    this.totalPrice = tt.toLocaleString();
-    this.finalPrice = tt.toLocaleString();
+    this.totalPrice = getTotalCartPrice(this.cart).toLocaleString();
   }
 
   useCode(): void {

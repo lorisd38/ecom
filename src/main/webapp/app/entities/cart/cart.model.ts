@@ -14,3 +14,15 @@ export class Cart implements ICart {
 export function getCartIdentifier(cart: ICart): number | undefined {
   return cart.id;
 }
+
+export function getTotalCartPrice(cart: ICart | null | undefined): number {
+  let total = 0.0;
+  if (cart?.lines != null) {
+    for (const lineProduct of cart.lines) {
+      if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+        total += lineProduct.quantity * lineProduct.product.price;
+      }
+    }
+  }
+  return total;
+}
