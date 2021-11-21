@@ -81,8 +81,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> findResearch(String query) {
-        log.debug("Request to get Products from query : ("+query+")");
+        query = query.toLowerCase();
+        log.debug("Request to get Products from query : (" + query + ")");
         return productRepository.findAllFromResearch(query);
     }
 

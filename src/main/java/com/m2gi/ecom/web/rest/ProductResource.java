@@ -133,28 +133,20 @@ public class ProductResource {
     }
 
     /**
-     * {@code GET  /products} : get all the products.
-     *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
-     */
-    @GetMapping("/products")
-    public List<Product> getAllProducts(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Products");
-        return productService.findAll();
-    }
-
-    /**
      * {@code GET  /products} : get products from research.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @param query the research query.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
-    @GetMapping("/products/research")
-    public List<Product> getProductsResearch(@RequestParam(name = "query") String query ,@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get Research Products for query : ("+ query+")");
-        return productService.findResearch(query);
+    @GetMapping("/products")
+    public List<Product> getProducts(@RequestParam(name = "query", required = false) String query) {
+        if (query != null) {
+            log.debug("REST request to get Research Products for query : (" + query + ")");
+            return productService.findResearch(query);
+        } else {
+            log.debug("REST request to get all Products");
+            return productService.findAll();
+        }
     }
 
     /**
