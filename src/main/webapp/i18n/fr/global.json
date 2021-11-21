@@ -30,7 +30,9 @@
         "sessions": "Sessions",
         "login": "S'authentifier",
         "logout": "Déconnexion",
-        "register": "Créer un compte"
+        "register": "Créer un compte",
+        "favorites": "Favoris",
+        "history": "Historique"
       },
       "admin": {
         "main": "Administration",

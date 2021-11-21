@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
 
-  search_bar = "" ;
+  search_bar = '';
 
   constructor(
     private loginService: LoginService,
@@ -70,6 +70,6 @@ export class NavbarComponent implements OnInit {
   }
 
   search_products(): void {
-    this.router.navigate(['/products'], { queryParams: { query: this.search_bar } }).then(() => this.search_bar="")
+    this.router.navigate(['/'], { queryParams: { query: this.search_bar } }).then(() => (this.search_bar = ''));
   }
 }

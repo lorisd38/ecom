@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'products',
+        path: '',
         data: { pageTitle: 'ecomApp.product.home.title' },
         loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
       },

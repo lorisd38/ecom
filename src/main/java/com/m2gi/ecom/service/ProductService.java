@@ -33,7 +33,6 @@ public interface ProductService {
      */
     List<Product> findAll();
 
-
     /**
      * Get products from query.
      *
