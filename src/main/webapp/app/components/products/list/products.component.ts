@@ -35,13 +35,13 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      if (params.query !== undefined) {
+      if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
         this.loadProductSearch();
       } else {
         this.loadAll();
-        this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
       }
+      this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     });
   }
 

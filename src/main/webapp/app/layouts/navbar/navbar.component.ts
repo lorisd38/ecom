@@ -70,6 +70,6 @@ export class NavbarComponent implements OnInit {
   }
 
   search_products(): void {
-    this.router.navigate(['/products'], { queryParams: { query: this.search_bar } }).then(() => (this.search_bar = ''));
+    this.router.navigate(['/'], { queryParams: { query: this.search_bar } }).then(() => (this.search_bar = ''));
   }
 }
