@@ -18,14 +18,6 @@
   </a>
   <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/panier" (click)="collapseNavbar()">
-          <span>
-            <fa-icon icon="bars"></fa-icon>
-            <span jhiTranslate="global.menu.entities.cart">Panier</span>
-          </span>
-        </a>
-      </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
           <span>
@@ -35,24 +27,8 @@
         </a>
       </li>
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/products" (click)="collapseNavbar()">
-          <span>
-            <fa-icon icon="search"></fa-icon>
-            <span jhiTranslate="global.menu.products">Products</span>
-          </span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/payment" (click)="collapseNavbar()">
-          <span>
-            <fa-icon icon="search"></fa-icon>
-            <span>Payment</span>
-          </span>
-        </a>
-      </li>
       <li
-        *ngSwitchCase="true"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         ngbDropdown
         class="nav-item dropdown pointer"
         display="dynamic"
@@ -261,24 +237,13 @@
           </li>
         </ul>
       </li>
-      <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/panier" (click)="collapseNavbar()">
           <span>
-            <fa-icon icon="flag"></fa-icon>
-            <span jhiTranslate="global.menu.language">Language</span>
+            <fa-icon icon="shopping-cart"></fa-icon>
+            <span jhiTranslate="ecomApp.cart.detail.title">Cart</span>
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
-          <li *ngFor="let language of languages">
-            <a
-              class="dropdown-item"
-              [jhiActiveMenu]="language"
-              href="javascript:void(0);"
-              (click)="changeLanguage(language); collapseNavbar()"
-              >{{ language | findLanguageFromKey }}</a
-            >
-          </li>
-        </ul>
       </li>
       <li
         ngbDropdown
@@ -301,6 +266,18 @@
             <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
               <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.settings">Settings</span>
+            </a>
+          </li>
+          <li *ngSwitchCase="true">
+            <a class="dropdown-item" data-cy="logout">
+              <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.account.favorites">Favorites</span>
+            </a>
+          </li>
+          <li *ngSwitchCase="true">
+            <a class="dropdown-item" data-cy="logout">
+              <fa-icon icon="paste" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.account.history">History</span>
             </a>
           </li>
           <li *ngSwitchCase="true">
@@ -331,6 +308,25 @@
             <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()" data-cy="register">
               <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.register">Register</span>
+            </a>
+          </li>
+          <li ngbDropdown class="dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+            <a class="dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+              <span>
+                <fa-icon icon="flag"></fa-icon>
+                <span jhiTranslate="global.menu.language">Language</span>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
+                  <li *ngFor="let language of languages">
+                    <a
+                      class="dropdown-item"
+                      [jhiActiveMenu]="language"
+                      href="javascript:void(0);"
+                      (click)="changeLanguage(language); collapseNavbar()"
+                      >{{ language | findLanguageFromKey }}</a
+                    >
+                  </li>
+                </ul>
+              </span>
             </a>
           </li>
         </ul>

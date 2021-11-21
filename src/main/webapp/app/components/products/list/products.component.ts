@@ -68,6 +68,7 @@ export class ProductsComponent implements OnInit {
     if (this.cart?.lines != null) {
       this.cart.lines.forEach(lineProduct => this.productsMap.set(lineProduct.product!.id!, lineProduct));
     }
+    console.log(this.productsMap);
   }
 
   loadAll(): void {

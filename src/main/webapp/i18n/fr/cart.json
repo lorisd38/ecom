@@ -15,7 +15,7 @@
         "question": "Etes-vous certain de vouloir supprimer le Cart {{ id }} ?"
       },
       "detail": {
-        "title": "Cart"
+        "title": "Panier"
       },
       "empty": "Panier vide",
       "id": "ID",

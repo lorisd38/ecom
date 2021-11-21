@@ -1,5 +1,5 @@
 <div>
-  <h2 id="page-heading" data-cy="ProductsHeading">
+  <h2 data-cy="ProductsHeading">
     <span jhiTranslate="global.menu.entities.cart">Cart</span>
   </h2>
 
@@ -7,13 +7,13 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="cart?.lines?.length === 0">
+  <div *ngIf="cart?.lines?.length === 0">
     <span jhiTranslate="ecomApp.cart.empty">Empty card</span>
   </div>
 
   <!--TO DO-->
-  <div class="table-responsive" id="entities" *ngIf="cart && cart?.lines?.length !== 0">
-    <table class="table table-striped" aria-describedby="page-heading">
+  <div id="entities" *ngIf="cart && cart?.lines?.length !== 0">
+    <table aria-describedby="page-heading">
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="ecomApp.productCart.id">ID Product Cart</span></th>
@@ -39,11 +39,10 @@
           <td>{{ lineProduct.product?.imagePath }}</td>
           <td>{{ lineProduct.product?.price }}</td>
           <td>
-            <div class="btn-group">
+            <div>
               <button
                 type="submit"
                 (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) - 1)"
-                class="btn btn-primary btn-sm"
                 data-cy="entityDecreaseProductCartButton"
               >
                 <fa-icon icon="minus"></fa-icon>
@@ -57,18 +56,17 @@
               <button
                 type="submit"
                 (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) + 1)"
-                class="btn btn-primary btn-sm"
                 data-cy="entityIncreaseProductCartButton"
               >
                 <fa-icon icon="plus"></fa-icon>
               </button>
             </div>
           </td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button type="submit" (click)="deleteLine(lineProduct)" class="btn btn-primary btn-sm" data-cy="entityDeleteButton">
+          <td>
+            <div>
+              <button type="submit" (click)="deleteLine(lineProduct)" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>
           </td>
@@ -76,5 +74,8 @@
       </tbody>
     </table>
     <div>Total du panier : {{ total }} €</div>
+    <div>
+      <a routerLink="/payment">Valider le panier</a>
+    </div>
   </div>
 </div>

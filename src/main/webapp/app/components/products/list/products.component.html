@@ -1,9 +1,9 @@
 <div>
-  <h2 id="page-heading" data-cy="ProductsHeading">
+  <h2 data-cy="ProductsHeading">
     <span jhiTranslate="ecomApp.product.home.title">Products</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+    <div>
+      <button (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="ecomApp.product.home.refreshListLabel">Refresh List</span>
       </button>
@@ -14,12 +14,12 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+  <div *ngIf="products?.length === 0">
     <span jhiTranslate="ecomApp.product.home.notFound">No products found</span>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
+  <div id="entities" *ngIf="products && products.length > 0">
+    <table aria-describedby="page-heading">
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
@@ -54,22 +54,21 @@
           </td>
           <td>
             <span *ngFor="let tags of product.tags; let last = last">
-              <a class="form-control-static" [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>
-          <td class="text-right">
-            <div class="btn-group" *ngIf="account == null || !isPresent(product.id); else elseBlock">
-              <button type="submit" (click)="addToCart(product)" class="btn btn-primary btn-sm" data-cy="entityAddTodCartButton">
+          <td>
+            <div *ngIf="account == null || !isPresent(product.id); else elseBlock">
+              <button type="submit" (click)="addToCart(product)" data-cy="entityAddTodCartButton">
                 <fa-icon icon="plus"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="ecomApp.product.addToCart">Ajouter au panier</span>
+                <span jhiTranslate="ecomApp.product.addToCart">Ajouter au panier</span>
               </button>
             </div>
             <ng-template #elseBlock>
               <button
                 type="submit"
                 (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
-                class="btn btn-primary btn-sm"
                 data-cy="entityDecreaseProductCartButton"
               >
                 <fa-icon icon="minus"></fa-icon>
@@ -84,7 +83,6 @@
               <button
                 type="submit"
                 (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
-                class="btn btn-primary btn-sm"
                 data-cy="entityIncreaseProductCartButton"
               >
                 <fa-icon icon="plus"></fa-icon>
@@ -94,5 +92,8 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="account != null">
+      <a routerLink="/panier">Voir panier</a>
+    </div>
   </div>
 </div>
