@@ -17,7 +17,7 @@ logging:
   level:
     ROOT: DEBUG
     tech.jhipster: DEBUG
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: DEBUG
     com.m2gi.ecom: DEBUG
 
 eureka:

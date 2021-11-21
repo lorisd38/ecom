@@ -33,6 +33,14 @@ public interface ProductService {
      */
     List<Product> findAll();
 
+
+    /**
+     * Get products from query.
+     *
+     * @return the list of entities.
+     */
+    List<Product> findResearch(String query);
+
     /**
      * Get all the products with eager load of many-to-many relationships.
      *

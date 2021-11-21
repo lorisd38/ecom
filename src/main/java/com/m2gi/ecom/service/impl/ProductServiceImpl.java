@@ -80,6 +80,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllWithEagerRelationships();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findResearch(String query) {
+        query = query.toLowerCase();
+        log.debug("Request to get Products from query : (" + query + ")");
+        return productRepository.findAllFromResearch(query);
+    }
+
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {
         return productRepository.findAllWithEagerRelationships(pageable);
     }
