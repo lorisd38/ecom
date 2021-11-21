@@ -10,7 +10,7 @@ import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import {ActivatedRoute, Params} from "@angular/router";
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'jhi-products',
@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
   isLoading = false;
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
-  public query: string | null = "";
+  public query: string | null = '';
 
   constructor(
     protected productService: ProductService,
@@ -31,32 +31,33 @@ export class ProductsComponent implements OnInit {
     public cartService: CartService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute
-) {}
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      if(params.query !== undefined){
+      if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
-        this.loadProductSearch()
-      }else{
+        this.loadProductSearch();
+      } else {
         this.loadAll();
-        this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
       }
+      this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     });
   }
 
   loadProductSearch(): void {
     this.isLoading = true;
-    this.query?
-      this.productService.querySearch(this.query).subscribe(
-        (res: HttpResponse<IProduct[]>) => {
-          this.products = res.body ?? [];
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-        }
-      ):"";
+    this.query
+      ? this.productService.querySearch(this.query).subscribe(
+          (res: HttpResponse<IProduct[]>) => {
+            this.products = res.body ?? [];
+            this.isLoading = false;
+          },
+          () => {
+            this.isLoading = false;
+          }
+        )
+      : '';
   }
 
   loadProduct(): void {

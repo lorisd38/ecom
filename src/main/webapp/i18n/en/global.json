@@ -30,7 +30,9 @@
         "sessions": "Sessions",
         "login": "Sign in",
         "logout": "Sign out",
-        "register": "Register"
+        "register": "Register",
+        "favorites": "Favorites",
+        "history": "History"
       },
       "admin": {
         "main": "Administration",
