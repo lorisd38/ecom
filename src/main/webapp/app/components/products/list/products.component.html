@@ -1,6 +1,11 @@
 <div>
-  <h2 data-cy="ProductsHeading">
-    <span jhiTranslate="ecomApp.product.home.title">Products</span>
+  <h2 id="page-heading" data-cy="ProductsHeading">
+    <div *ngIf="this.query === undefined; else elseBlock">
+      <span jhiTranslate="ecomApp.product.home.title">Products</span>
+    </div>
+    <ng-template #elseBlock>
+      <span jhiTranslate="ecomApp.product.research_result">Products results for :</span> {{ this.query }}
+    </ng-template>
 
     <div>
       <button (click)="loadAll()" [disabled]="isLoading">
@@ -69,6 +74,7 @@
               <button
                 type="submit"
                 (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+                class="btn btn-primary btn-sm"
                 data-cy="entityDecreaseProductCartButton"
               >
                 <fa-icon icon="minus"></fa-icon>
@@ -83,6 +89,7 @@
               <button
                 type="submit"
                 (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+                class="btn btn-primary btn-sm"
                 data-cy="entityIncreaseProductCartButton"
               >
                 <fa-icon icon="plus"></fa-icon>

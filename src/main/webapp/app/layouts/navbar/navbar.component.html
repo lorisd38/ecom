@@ -16,6 +16,11 @@
   >
     <fa-icon icon="bars"></fa-icon>
   </a>
+
+  <form (ngSubmit)="search_products()">
+    <input name="Recherchez" type="text" [(ngModel)]="search_bar" />
+    <button jhiTranslate="global.menu.search" type="submit">Rechercher</button>
+  </form>
   <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
