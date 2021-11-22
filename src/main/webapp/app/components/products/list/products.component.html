@@ -25,7 +25,7 @@
             <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
           </div>
           <div class="ecom-product-price">
-            <span>{{ product.price }} €</span>
+            <span>{{ product.price | number: '1.2' }} €</span>
             <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
           </div>
           <div class="ecom-product-info">
