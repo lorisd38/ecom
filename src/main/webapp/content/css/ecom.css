@@ -125,6 +125,10 @@ Navbar
   margin: 0 4px 0 2px;
 }
 
+.ecom-nav-profile fa-icon {
+  margin: 0 2px;
+}
+
 .ecom-nav-search {
   width: 100%;
   display: flex;
