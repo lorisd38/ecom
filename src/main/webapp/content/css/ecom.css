@@ -91,3 +91,69 @@ Product card
 #ecom-button-see-cart {
   margin-top: 25px;
 }
+
+/* ==============================================================
+Navbar
+===============================================================*/
+
+#ecom-nav-navbar {
+  background-color: white !important;
+  box-shadow: 0 5px 5px #c4c4c4;
+}
+
+.ecom-nav-title {
+  color: #518ef8;
+}
+
+.ecom-nav-cart:hover,
+.ecom-nav-cart:focus,
+.ecom-nav-profile:hover,
+.ecom-nav-profile:focus {
+  color: #518ef8 !important;
+  background-color: white;
+}
+
+.ecom-nav-cart,
+.ecom-nav-profile {
+  border: 2px solid #518ef8;
+  background-color: #518ef8;
+  border-radius: 50px;
+  padding: 0 5px;
+}
+
+.ecom-nav-cart fa-icon {
+  margin: 0 3px;
+}
+
+.ecom-nav-search {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.ecom-nav-search > div {
+  position: relative;
+  width: 60%;
+}
+
+.ecom-nav-search fa-icon {
+  cursor: pointer;
+  color: #518ef8;
+  position: absolute;
+  top: 4px;
+  right: 12px;
+}
+
+.ecom-nav-search fa-icon > svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.ecom-input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 5px;
+}

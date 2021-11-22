@@ -38,6 +38,7 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else {
+        this.query = '';
         this.loadAll();
       }
       this.accountService.getAuthenticationState().subscribe(account => (this.account = account));

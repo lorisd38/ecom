@@ -1,11 +1,11 @@
 <div>
   <div data-cy="ProductsHeading">
-    <div *ngIf="this.query === undefined; else elseBlock">
+    <div *ngIf="this.query === undefined || this.query === ''; else elseBlock">
       <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.home.title">Products</h2>
     </div>
     <ng-template #elseBlock>
       <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
-      {{ this.query }}
+      <span>"{{ this.query }}"</span>
     </ng-template>
   </div>
 

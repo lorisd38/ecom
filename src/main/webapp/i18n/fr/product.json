@@ -2,7 +2,7 @@
   "ecomApp": {
     "product": {
       "home": {
-        "title": "Products",
+        "title": "Produits",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un nouveau Product",
         "createOrEditLabel": "Créer ou éditer un Produit",
