@@ -71,7 +71,6 @@
                 </button>
                 <input
                   class="ecom-product-button-text"
-                  id="product_{{ product.id }}}"
                   type="text"
                   pattern="[0-9]*"
                   (change)="updateQuantityProductByText(product, $event)"
@@ -91,8 +90,8 @@
         </div>
       </div>
     </div>
-    <div id="ecom-button-see-cart" *ngIf="account != null">
-      <button type="submit" class="ecom-button" routerLink="/panier">Voir panier</button>
+    <div class="ecom-button-see-cart" *ngIf="account != null">
+      <button type="submit" class="ecom-button ecom-button-next" routerLink="/panier">Voir panier</button>
     </div>
   </div>
 </div>
