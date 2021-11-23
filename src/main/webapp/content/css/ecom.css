@@ -13,10 +13,31 @@
   width: 150px;
 }
 
+.ecom-button {
+  border-width: 1.5px;
+  background-color: #518ef8;
+  color: white;
+}
+
+.ecom-button:disabled {
+  opacity: 0.33;
+}
+
+.ecom-input-default {
+  border-radius: 5px;
+  border: 1px solid black;
+  height: 35px;
+  font-size: 18px;
+  padding: 20px 8px;
+}
+
+.ecom-link {
+  color: #518ef8 !important;
+}
+
 /* ==============================================================
 Product card
 ===============================================================*/
-
 #ecom-list-products {
   display: flex;
   flex-direction: row;
@@ -80,12 +101,6 @@ Product card
   right: 10px;
 }
 
-.ecom-button {
-  border-width: 1.5px;
-  background-color: #518ef8;
-  color: white;
-}
-
 .ecom-product-button-add,
 .ecom-product-button-minus,
 .ecom-product-button-plus {
@@ -104,7 +119,6 @@ Product card
 /* ==============================================================
 Product card in Cart
 ===============================================================*/
-
 #ecom-cart-products {
   width: 100%;
 }
@@ -160,6 +174,13 @@ Product card in Cart
 /* ==============================================================
   Navbar
   ===============================================================*/
+.ecom-nav-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 5px;
+}
 
 #ecom-nav-navbar {
   background-color: white !important;
@@ -219,10 +240,118 @@ Product card in Cart
   height: 25px !important;
 }
 
-.ecom-input {
+.bg-primary .navbar-nav .active > .nav-link {
+  color: #518ef8 !important;
+}
+
+/* ==============================================================
+  Signin / Signup
+  ===============================================================*/
+.ecom-log-form {
   width: 100%;
-  height: 38px;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 0 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding-top: 70px;
+}
+
+.ecom-log-form > div {
+  width: 500px;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px #c4c4c4;
+}
+
+.ecom-log-label-input {
+  position: relative;
+}
+
+.ecom-log-label-input:not(:last-child) {
+  margin-bottom: 25px;
+}
+
+.ecom-log-label-margin {
+  margin-bottom: 0 !important;
+}
+
+.ecom-log-label-input > * {
+  display: block;
+}
+
+.ecom-log-label-input > label {
+  padding-left: 50px;
+}
+
+.ecom-log-label-input > div {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.ecom-log-label-input > div > input {
+  width: 400px;
+}
+
+.ecom-log-button {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.ecom-log-button > button {
+  width: 400px;
+  font-size: 18px;
+}
+
+.ecom-log-title {
+  position: relative;
+}
+
+.ecom-log-title > h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+.ecom-log-title > h1:after {
+  content: '';
+  background: black;
+  position: absolute;
+  top: 45px;
+  left: 175px;
+  height: 1px;
+  width: 150px;
+}
+
+.ecom-log-link {
+  margin: 20px 0 20px 50px;
+}
+
+.ecom-log-link > div {
+  margin: 8px 0;
+}
+
+.ecom-log-rember {
+  text-align: right;
+  margin: 12px 50px 8px 0;
+}
+
+.ecom-log-message {
+  color: red;
+}
+
+.ecom-log-rob-mdp {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+.ecom-log-rob-mdp ul {
+  padding-left: 0;
+}
+
+.ecom-log-message-incorect {
+  position: absolute;
+  top: 72px;
+  left: 50px;
 }
