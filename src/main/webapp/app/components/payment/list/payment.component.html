@@ -1,64 +1,117 @@
-<div>
-  <h2 id="page-heading" data-cy="PaymentHeading">
-    <span jhiTranslate="ecomApp.payment.title">Payment</span>
-  </h2>
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form class="form" role="form" (ngSubmit)="generateOrder()" [formGroup]="editForm">
+      <h2 id="jhi-order-heading" data-cy="OrderCreateUpdateHeading" jhiTranslate="ecomApp.payment.title">Paiement</h2>
 
-  <div class="col justify-content-center">
-    <div class="container">
-      <div class="row">
-        <!-- row 1 date commande -->
-        <span>date</span>
-      </div>
-      <div class="row">
-        <!-- row 2 prix total -->
-        <label class="username-label" for="code" jhiTranslate="ecomApp.payment.totalprice">Prix total du panier :</label>{{ totalPrice }}€
-      </div>
-      <div class="row">
-        <!-- row 3 champ de texte pour le code + bouton validation et affichage du prix final -->
-        <div class="col">
-          <form class="form" role="form" (ngSubmit)="useCode()" [formGroup]="paymentForm">
-            <div class="form-group">
-              <label class="username-label" for="code" jhiTranslate="ecomApp.payment.form.code.label">Your Code</label>
-              <input
-                type="text"
-                class="form-control"
-                name="code"
-                id="code"
-                placeholder="{{ 'ecomApp.payment.form.code.placeholder' | translate }}"
-                formControlName="code"
-                data-cy="code"
-              />
-            </div>
-          </form>
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="ecomApp.payment.form.order.receptionDate.label" for="field_receptionDate"
+          >Date de réception</label
+        >
+        <div class="d-flex">
+          <input
+            id="field_receptionDate"
+            data-cy="receptionDate"
+            type="datetime-local"
+            class="form-control"
+            name="receptionDate"
+            formControlName="receptionDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
         </div>
-        <div class="col">
-          <button type="submit" class="btn btn-primary" jhiTranslate="ecomApp.payment.form.button" data-cy="submitCode">Utiliser</button>
-        </div>
-        <div class="col">
-          <label class="username-label" for="code" jhiTranslate="ecomApp.payment.finalprice">Total après réduction</label>{{ finalPrice }}
-        </div>
-      </div>
-      <div class="row">
-        <!-- row 4 bouton retour panier et bouton valider -->
-        <div class="col">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" data-cy="seeCart">
-              <a class="nav-link" routerLink="/panier">
-                <span class="d-none d-md-inline" jhiTranslate="ecomApp.payment.seeCart">Voir panier</span>
-              </a>
-            </button>
-          </div>
-        </div>
-        <div class="col">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" data-cy="paymentValidation">
-              <a class="nav-link" routerLink="/">
-                <span class="d-none d-md-inline" jhiTranslate="ecomApp.payment.validation">Valider</span>
-              </a>
-            </button>
-          </div>
+        <div
+          *ngIf="editForm.get('receptionDate')!.invalid && (editForm.get('receptionDate')!.dirty || editForm.get('receptionDate')!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('receptionDate')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+          <small
+            class="form-text text-danger"
+            [hidden]="!editForm.get('receptionDate')?.errors?.ZonedDateTimelocal"
+            jhiTranslate="entity.validation.ZonedDateTimelocal"
+          >
+            This field should be a date and time.
+          </small>
         </div>
       </div>
-    </div>
+
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="ecomApp.payment.form.order.promoCode.label" for="field_promoCode">Promo Code</label>
+        <input type="text" class="form-control" name="promoCode" id="field_promoCode" data-cy="promoCode" formControlName="promoCode" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="ecomApp.payment.form.cb.title" for="field_cbName">Carte bancaire</label>
+        <input
+          type="text"
+          class="form-control"
+          name="cbName"
+          id="field_cbName"
+          data-cy="cbName"
+          formControlName="cbName"
+          oninput="this.value = this.value.toUpperCase()"
+          placeholder="{{ 'ecomApp.payment.form.cb.name.placeholder' | translate }}"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          name="cbNumber"
+          id="field_cbNumber"
+          data-cy="cbNumber"
+          formControlName="cbNumber"
+          placeholder="{{ 'ecomApp.payment.form.cb.number.placeholder' | translate }}"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          name="cbExpirationDate"
+          id="field_cbExpirationDate"
+          data-cy="cbExpirationDate"
+          formControlName="cbExpirationDate"
+          maxlength="5"
+          placeholder="{{ 'ecomApp.payment.form.cb.expirationDate.placeholder' | translate }}"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          name="cbCVC"
+          id="field_cbCVC"
+          data-cy="cbCVC"
+          formControlName="cbCVC"
+          maxlength="3"
+          placeholder="{{ 'ecomApp.payment.form.cb.cvc.placeholder' | translate }}"
+        />
+      </div>
+
+      <div>{{ 'ecomApp.payment.totalPrice' | translate }} {{ totalPrice }} €</div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.seeCart">Panier</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          class="btn btn-primary"
+          [disabled]="editForm.invalid || isLoading || isSaving"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.pay">Payer</span>
+        </button>
+      </div>
+    </form>
   </div>
 </div>

@@ -1,17 +1,39 @@
 {
   "ecomApp": {
     "payment": {
-      "title": "Payment Page !",
-      "seeCart": "See Cart",
-      "validation": "Pay",
-      "totalprice": "Total price of the cart :",
-      "finalprice": "Total after reduction :",
+      "title": "Payment",
+      "totalPrice": "Total :",
       "form": {
-        "code": {
-          "label": "Code :",
-          "placeholder": "Enter your code here :"
+        "order": {
+          "promoCode": {
+            "label": "Promo code",
+            "placeholder": "Code"
+          },
+          "receptionDate": {
+            "label": "Reception date",
+            "placeholder": "DD/MM/YYYY HH:mm"
+          }
         },
-        "button": "Valid"
+        "cb": {
+          "title": "Credit card",
+          "name": {
+            "placeholder": "Name"
+          },
+          "number": {
+            "placeholder": "Card number"
+          },
+          "expirationDate": {
+            "placeholder": "MM/YY"
+          },
+          "cvc": {
+            "placeholder": "CVC"
+          }
+        }
+      },
+      "action": {
+        "seeCart": "Cart",
+        "applyPromoCode": "Apply promo code",
+        "pay": "Pay"
       }
     }
   }
