@@ -59,7 +59,7 @@
           </td>
           <td>
             <span *ngFor="let tags of product.tags; let last = last">
-              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>
