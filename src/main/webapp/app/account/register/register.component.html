@@ -1,27 +1,31 @@
 <div>
-  <div class="ecom-log-form">
+  <div class="ecom-log-panel">
     <div>
       <div class="ecom-log-title">
         <h1 jhiTranslate="register.title" data-cy="registerTitle">Registration</h1>
 
-        <div *ngIf="success" jhiTranslate="register.messages.success">
+        <div class="alert alert-danger" *ngIf="success" jhiTranslate="register.messages.success">
           <strong>Registration saved!</strong> Please check your email for confirmation.
         </div>
 
-        <div *ngIf="error" jhiTranslate="register.messages.error.fail"><strong>Registration failed!</strong> Please try again later.</div>
+        <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
+          <strong>Registration failed!</strong> Please try again later.
+        </div>
 
-        <div *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
+        <div class="alert alert-danger" *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
           <strong>Login name already registered!</strong> Please choose another one.
         </div>
 
-        <div *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
+        <div class="alert alert-danger" *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
           <strong>Email is already in use!</strong> Please choose another one.
         </div>
 
-        <div *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">The password and its confirmation do not match!</div>
+        <div class="alert alert-danger" *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">
+          The password and its confirmation do not match!
+        </div>
       </div>
       <div>
-        <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+        <form class="ecom-log-form" name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
           <div class="ecom-log-label-input">
             <label for="login" jhiTranslate="global.form.username.label">Username</label>
             <div>

@@ -1,16 +1,21 @@
 <div>
   <div>
     <div>
-      <div class="ecom-log-form">
+      <div class="ecom-log-panel">
         <div>
           <div class="ecom-log-title">
             <h1 jhiTranslate="login.title" data-cy="loginTitle">Sign in</h1>
-            <div *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication" data-cy="loginError">
+            <div
+              class="alert alert-danger"
+              *ngIf="authenticationError"
+              jhiTranslate="login.messages.error.authentication"
+              data-cy="loginError"
+            >
               <strong>Failed to sign in!</strong> Please check your credentials and try again.
             </div>
           </div>
           <div>
-            <form role="form" (ngSubmit)="login()" [formGroup]="loginForm">
+            <form class="ecom-log-form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
               <div class="ecom-log-label-input">
                 <label for="username" jhiTranslate="global.form.username.label">Login</label>
                 <div>

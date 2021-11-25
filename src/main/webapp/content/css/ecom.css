@@ -247,19 +247,27 @@ Product card in Cart
 /* ==============================================================
   Signin / Signup
   ===============================================================*/
-.ecom-log-form {
+.ecom-log-panel {
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  padding-top: 70px;
+  padding: 70px 0;
 }
 
-.ecom-log-form > div {
+.ecom-log-panel .alert {
+  margin: 0 50px 10px 50px;
+}
+
+.ecom-log-panel > div {
   width: 500px;
   border: 1px solid #c4c4c4;
   border-radius: 15px;
   box-shadow: 5px 5px 5px #c4c4c4;
+}
+
+.ecom-log-form {
+  margin-bottom: 20px;
 }
 
 .ecom-log-label-input {
@@ -324,7 +332,7 @@ Product card in Cart
 }
 
 .ecom-log-link {
-  margin: 20px 0 20px 50px;
+  margin: 0 0 20px 50px;
 }
 
 .ecom-log-link > div {
