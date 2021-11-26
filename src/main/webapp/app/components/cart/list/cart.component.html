@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="ecom-product-price">
-            <span>{{ lineProduct.product?.price | number: '1.2' }} €/u</span>
+            <span>{{ lineProduct.product?.price | number: '0.2' }} €/u</span>
             <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
           </div>
           <div class="ecom-product-info">
@@ -32,10 +32,7 @@
           </div>
           <div class="ecom-product-subinfo">
             <span>{{ lineProduct.product?.brand }}</span>
-            <span *ngIf="lineProduct.product?.weight != 0; else elseQuantity">{{ lineProduct.product?.weight }}</span>
-            <ng-template #elseQuantity
-              ><span>Lot de {{ lineProduct.product?.quantity }}</span></ng-template
-            >
+            <span>{{ lineProduct.product?.weight }} {{ lineProduct.product?.weightUnit }}</span>
           </div>
           <div>
             <span *ngFor="let tags of lineProduct.product?.tags; let last = last">
@@ -79,7 +76,7 @@
             </div>
           </div>
           <div class="ecom-productcart-price">
-            <span>{{ lineProduct.product!.price! * lineProduct!.quantity! | number: '1.2' }} €</span>
+            <span>{{ lineProduct.product!.price! * lineProduct!.quantity! | number: '0.2' }} €</span>
           </div>
         </div>
       </div>

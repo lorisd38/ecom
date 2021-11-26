@@ -25,26 +25,21 @@
             <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
           </div>
           <div class="ecom-product-price">
-            <span>{{ product.price | number: '1.2' }} €</span>
+            <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
+            <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
+            <span class="ecom-product-price-euro">€</span>
             <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
           </div>
           <div class="ecom-product-info">
             <span
-              ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }}</a></span
+              ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
             >
-            <span>{{ product.origin }}</span>
+            <span>{{ product.weight }} {{ product.weightUnit }}</span>
+            <div>Origine : {{ product.origin }}</div>
           </div>
-          <div class="ecom-product-subinfo">
-            <span>{{ product.brand }}</span>
-            <span *ngIf="product.weight != 0; else elseQuantity">{{ product.weight }}</span>
-            <ng-template #elseQuantity
-              ><span>Lot de {{ product.quantity }}</span></ng-template
-            >
-          </div>
-          <div>
-            <span *ngFor="let tags of product.tags; let last = last">
-              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a
-              >{{ last ? '' : ', ' }}
+          <div class="ecom-product-tags">
+            <span style="background-color: #{{ tags.color }}" *ngFor="let tags of product.tags; let last = last">
+              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
             </span>
           </div>
           <div class="ecom-product-button">

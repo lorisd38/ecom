@@ -152,4 +152,17 @@ export class ProductsComponent implements OnInit {
       });
     }
   }
+
+  getIntegerOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    return b[0];
+  }
+
+  getDecimalsOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    if (b[1].length <= 1) {
+      return b[1] + '0';
+    }
+    return b[1];
+  }
 }
