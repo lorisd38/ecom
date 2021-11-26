@@ -41,6 +41,9 @@
             <column name="weight" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
+            <column name="weight_unit" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="category_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -99,6 +102,7 @@
             <column name="image_path" type="string"/>
             <column name="price" type="numeric"/>
             <column name="weight" type="numeric"/>
+            <column name="weight_unit" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

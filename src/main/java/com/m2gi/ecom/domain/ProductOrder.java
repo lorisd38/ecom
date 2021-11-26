@@ -31,11 +31,14 @@ public class ProductOrder implements Serializable, Comparable<ProductOrder> {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        allowSetters = true
+    )
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "lines" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "lines", "promotionalCode" }, allowSetters = true)
     private Order order;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

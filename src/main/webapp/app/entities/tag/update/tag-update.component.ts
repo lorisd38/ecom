@@ -18,6 +18,7 @@ export class TagUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.required]],
+    color: [],
   });
 
   constructor(protected tagService: TagService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -65,6 +66,7 @@ export class TagUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: tag.id,
       name: tag.name,
+      color: tag.color,
     });
   }
 
@@ -73,6 +75,7 @@ export class TagUpdateComponent implements OnInit {
       ...new Tag(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
+      color: this.editForm.get(['color'])!.value,
     };
   }
 }

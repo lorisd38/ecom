@@ -35,7 +35,10 @@ public class Category implements Serializable {
     private Set<Category> children = new HashSet<>();
 
     @ManyToMany(mappedBy = "relatedCtegories")
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        allowSetters = true
+    )
     private Set<Product> associatedProducts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

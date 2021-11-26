@@ -21,6 +21,13 @@
         "recipe": "Recipe",
         "tag": "Tag",
         "userDetails": "Details utilisateurs",
+        "product": "Product",
+        "cart": "Cart",
+        "productOrder": "Product Order",
+        "productCart": "Product Cart",
+        "category": "Category",
+        "userDetails": "User Details",
+        "promotionalCode": "Promotional Code",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

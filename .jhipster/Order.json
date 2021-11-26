@@ -12,10 +12,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "promoCode",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "totalPrice",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]

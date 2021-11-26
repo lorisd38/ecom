@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import * as dayjs from 'dayjs';
 
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { ReductionType } from 'app/entities/enumerations/reduction-type.model';
 import { IPromotion, Promotion } from '../promotion.model';
 
 import { PromotionService } from './promotion.service';
@@ -27,7 +28,8 @@ describe('Promotion Service', () => {
       id: 0,
       startDate: currentDate,
       endDate: currentDate,
-      reductionPercentage: 0,
+      value: 0,
+      unit: ReductionType.FIX,
     };
   });
 
@@ -79,7 +81,8 @@ describe('Promotion Service', () => {
           id: 1,
           startDate: currentDate.format(DATE_TIME_FORMAT),
           endDate: currentDate.format(DATE_TIME_FORMAT),
-          reductionPercentage: 1,
+          value: 1,
+          unit: 'BBBBBB',
         },
         elemDefault
       );
@@ -102,7 +105,7 @@ describe('Promotion Service', () => {
     it('should partial update a Promotion', () => {
       const patchObject = Object.assign(
         {
-          reductionPercentage: 1,
+          value: 1,
         },
         new Promotion()
       );
@@ -130,7 +133,8 @@ describe('Promotion Service', () => {
           id: 1,
           startDate: currentDate.format(DATE_TIME_FORMAT),
           endDate: currentDate.format(DATE_TIME_FORMAT),
-          reductionPercentage: 1,
+          value: 1,
+          unit: 'BBBBBB',
         },
         elemDefault
       );
@@ -188,7 +192,7 @@ describe('Promotion Service', () => {
       });
 
       it('should add only unique Promotion to an array', () => {
-        const promotionArray: IPromotion[] = [{ id: 123 }, { id: 456 }, { id: 33540 }];
+        const promotionArray: IPromotion[] = [{ id: 123 }, { id: 456 }, { id: 26988 }];
         const promotionCollection: IPromotion[] = [{ id: 123 }];
         expectedResult = service.addPromotionToCollectionIfMissing(promotionCollection, ...promotionArray);
         expect(expectedResult).toHaveLength(3);

@@ -3,13 +3,15 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IOrder, Order } from '../order.model';
 import { OrderService } from '../service/order.service';
+import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
+import { PromotionalCodeService } from 'app/entities/promotional-code/service/promotional-code.service';
 
 @Component({
   selector: 'jhi-order-update',
@@ -18,15 +20,22 @@ import { OrderService } from '../service/order.service';
 export class OrderUpdateComponent implements OnInit {
   isSaving = false;
 
+  promotionalCodesSharedCollection: IPromotionalCode[] = [];
+
   editForm = this.fb.group({
     id: [],
     paymentDate: [null, [Validators.required]],
     receptionDate: [null, [Validators.required]],
-    promoCode: [],
     totalPrice: [null, [Validators.required]],
+    promotionalCode: [],
   });
 
-  constructor(protected orderService: OrderService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected orderService: OrderService,
+    protected promotionalCodeService: PromotionalCodeService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ order }) => {
@@ -37,6 +46,8 @@ export class OrderUpdateComponent implements OnInit {
       }
 
       this.updateForm(order);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -52,6 +63,10 @@ export class OrderUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.orderService.create(order));
     }
+  }
+
+  trackPromotionalCodeById(index: number, item: IPromotionalCode): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IOrder>>): void {
@@ -78,9 +93,26 @@ export class OrderUpdateComponent implements OnInit {
       id: order.id,
       paymentDate: order.paymentDate ? order.paymentDate.format(DATE_TIME_FORMAT) : null,
       receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
-      promoCode: order.promoCode,
       totalPrice: order.totalPrice,
+      promotionalCode: order.promotionalCode,
     });
+
+    this.promotionalCodesSharedCollection = this.promotionalCodeService.addPromotionalCodeToCollectionIfMissing(
+      this.promotionalCodesSharedCollection,
+      order.promotionalCode
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.promotionalCodeService
+      .query()
+      .pipe(map((res: HttpResponse<IPromotionalCode[]>) => res.body ?? []))
+      .pipe(
+        map((promotionalCodes: IPromotionalCode[]) =>
+          this.promotionalCodeService.addPromotionalCodeToCollectionIfMissing(promotionalCodes, this.editForm.get('promotionalCode')!.value)
+        )
+      )
+      .subscribe((promotionalCodes: IPromotionalCode[]) => (this.promotionalCodesSharedCollection = promotionalCodes));
   }
 
   protected createFromForm(): IOrder {
@@ -93,8 +125,8 @@ export class OrderUpdateComponent implements OnInit {
       receptionDate: this.editForm.get(['receptionDate'])!.value
         ? dayjs(this.editForm.get(['receptionDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      promoCode: this.editForm.get(['promoCode'])!.value,
       totalPrice: this.editForm.get(['totalPrice'])!.value,
+      promotionalCode: this.editForm.get(['promotionalCode'])!.value,
     };
   }
 }

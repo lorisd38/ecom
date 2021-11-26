@@ -26,7 +26,10 @@ public class ProductCart implements Serializable {
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        allowSetters = true
+    )
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER)

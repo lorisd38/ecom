@@ -1,6 +1,7 @@
 package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.m2gi.ecom.domain.enumeration.ReductionType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -33,8 +34,13 @@ public class Promotion implements Serializable {
     private Instant endDate;
 
     @NotNull
-    @Column(name = "reduction_percentage", precision = 21, scale = 2, nullable = false)
-    private BigDecimal reductionPercentage;
+    @Column(name = "value", precision = 21, scale = 2, nullable = false)
+    private BigDecimal value;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "unit", nullable = false)
+    private ReductionType unit;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -42,7 +48,10 @@ public class Promotion implements Serializable {
         joinColumns = @JoinColumn(name = "promotion_id"),
         inverseJoinColumns = @JoinColumn(name = "products_id")
     )
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        allowSetters = true
+    )
     private Set<Product> products = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -86,17 +95,30 @@ public class Promotion implements Serializable {
         this.endDate = endDate;
     }
 
-    public BigDecimal getReductionPercentage() {
-        return this.reductionPercentage;
+    public BigDecimal getValue() {
+        return this.value;
     }
 
-    public Promotion reductionPercentage(BigDecimal reductionPercentage) {
-        this.setReductionPercentage(reductionPercentage);
+    public Promotion value(BigDecimal value) {
+        this.setValue(value);
         return this;
     }
 
-    public void setReductionPercentage(BigDecimal reductionPercentage) {
-        this.reductionPercentage = reductionPercentage;
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public ReductionType getUnit() {
+        return this.unit;
+    }
+
+    public Promotion unit(ReductionType unit) {
+        this.setUnit(unit);
+        return this;
+    }
+
+    public void setUnit(ReductionType unit) {
+        this.unit = unit;
     }
 
     public Set<Product> getProducts() {
@@ -114,13 +136,13 @@ public class Promotion implements Serializable {
 
     public Promotion addProducts(Product product) {
         this.products.add(product);
-        product.getPromotions().add(this);
+        product.getAssociatedPromotions().add(this);
         return this;
     }
 
     public Promotion removeProducts(Product product) {
         this.products.remove(product);
-        product.getPromotions().remove(this);
+        product.getAssociatedPromotions().remove(this);
         return this;
     }
 
@@ -150,7 +172,8 @@ public class Promotion implements Serializable {
             "id=" + getId() +
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
-            ", reductionPercentage=" + getReductionPercentage() +
+            ", value=" + getValue() +
+            ", unit='" + getUnit() + "'" +
             "}";
     }
 }

@@ -1,13 +1,14 @@
 package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.m2gi.ecom.domain.enumeration.WeightUnit;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Product.
@@ -36,7 +37,6 @@ public class Product implements Serializable {
     private Integer quantity;
 
     @NotNull
-    @Version
     @Column(name = "version", nullable = false)
     private Long version;
 
@@ -55,6 +55,10 @@ public class Product implements Serializable {
 
     @Column(name = "weight", precision = 21, scale = 2)
     private BigDecimal weight;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "weight_unit")
+    private WeightUnit weightUnit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
@@ -83,20 +87,12 @@ public class Product implements Serializable {
     private Set<Recipe> recipes = new HashSet<>();
 
     /**
-     * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
+     * FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
-    @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @ApiModelProperty(value = "FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
+    @ManyToMany(mappedBy = "products")
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
-    private Set<Promotion> promotions = new HashSet<>();
-
-    /**
-     * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
-     */
-    @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)
-    private Set<UserDetails> favoritesOfs = new HashSet<>();
+    private Set<Promotion> associatedPromotions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -230,6 +226,19 @@ public class Product implements Serializable {
         this.weight = weight;
     }
 
+    public WeightUnit getWeightUnit() {
+        return this.weightUnit;
+    }
+
+    public Product weightUnit(WeightUnit weightUnit) {
+        this.setWeightUnit(weightUnit);
+        return this;
+    }
+
+    public void setWeightUnit(WeightUnit weightUnit) {
+        this.weightUnit = weightUnit;
+    }
+
     public Category getCategory() {
         return this.category;
     }
@@ -324,65 +333,34 @@ public class Product implements Serializable {
         return this;
     }
 
-    public Set<Promotion> getPromotions() {
-        return this.promotions;
+    public Set<Promotion> getAssociatedPromotions() {
+        return this.associatedPromotions;
     }
 
-    public void setPromotions(Set<Promotion> promotions) {
-        if (this.promotions != null) {
-            this.promotions.forEach(i -> i.removeProducts(this));
+    public void setAssociatedPromotions(Set<Promotion> promotions) {
+        if (this.associatedPromotions != null) {
+            this.associatedPromotions.forEach(i -> i.removeProducts(this));
         }
         if (promotions != null) {
             promotions.forEach(i -> i.addProducts(this));
         }
-        this.promotions = promotions;
+        this.associatedPromotions = promotions;
     }
 
-    public Product promotions(Set<Promotion> promotions) {
-        this.setPromotions(promotions);
+    public Product associatedPromotions(Set<Promotion> promotions) {
+        this.setAssociatedPromotions(promotions);
         return this;
     }
 
-    public Product addPromotions(Promotion promotion) {
-        this.promotions.add(promotion);
+    public Product addAssociatedPromotions(Promotion promotion) {
+        this.associatedPromotions.add(promotion);
         promotion.getProducts().add(this);
         return this;
     }
 
-    public Product removePromotions(Promotion promotion) {
-        this.promotions.remove(promotion);
+    public Product removeAssociatedPromotions(Promotion promotion) {
+        this.associatedPromotions.remove(promotion);
         promotion.getProducts().remove(this);
-        return this;
-    }
-
-    public Set<UserDetails> getFavoritesOfs() {
-        return this.favoritesOfs;
-    }
-
-    public void setFavoritesOfs(Set<UserDetails> userDetails) {
-        if (this.favoritesOfs != null) {
-            this.favoritesOfs.forEach(i -> i.removeFavorites(this));
-        }
-        if (userDetails != null) {
-            userDetails.forEach(i -> i.addFavorites(this));
-        }
-        this.favoritesOfs = userDetails;
-    }
-
-    public Product favoritesOfs(Set<UserDetails> userDetails) {
-        this.setFavoritesOfs(userDetails);
-        return this;
-    }
-
-    public Product addFavoritesOf(UserDetails userDetails) {
-        this.favoritesOfs.add(userDetails);
-        userDetails.getFavorites().add(this);
-        return this;
-    }
-
-    public Product removeFavoritesOf(UserDetails userDetails) {
-        this.favoritesOfs.remove(userDetails);
-        userDetails.getFavorites().remove(this);
         return this;
     }
 
@@ -419,6 +397,7 @@ public class Product implements Serializable {
             ", imagePath='" + getImagePath() + "'" +
             ", price=" + getPrice() +
             ", weight=" + getWeight() +
+            ", weightUnit='" + getWeightUnit() + "'" +
             "}";
     }
 }

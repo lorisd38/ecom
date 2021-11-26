@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { WeightUnit } from 'app/entities/enumerations/weight-unit.model';
 import { IProduct, Product } from '../product.model';
 
 import { ProductService } from './product.service';
@@ -30,6 +31,7 @@ describe('Product Service', () => {
       imagePath: 'AAAAAAA',
       price: 0,
       weight: 0,
+      weightUnit: WeightUnit.L,
     };
   });
 
@@ -74,6 +76,7 @@ describe('Product Service', () => {
           imagePath: 'BBBBBB',
           price: 1,
           weight: 1,
+          weightUnit: 'BBBBBB',
         },
         elemDefault
       );
@@ -96,6 +99,7 @@ describe('Product Service', () => {
           brand: 'BBBBBB',
           imagePath: 'BBBBBB',
           price: 1,
+          weightUnit: 'BBBBBB',
         },
         new Product()
       );
@@ -124,6 +128,7 @@ describe('Product Service', () => {
           imagePath: 'BBBBBB',
           price: 1,
           weight: 1,
+          weightUnit: 'BBBBBB',
         },
         elemDefault
       );
@@ -175,7 +180,7 @@ describe('Product Service', () => {
       });
 
       it('should add only unique Product to an array', () => {
-        const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 82205 }];
+        const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 19650 }];
         const productCollection: IProduct[] = [{ id: 123 }];
         expectedResult = service.addProductToCollectionIfMissing(productCollection, ...productArray);
         expect(expectedResult).toHaveLength(3);

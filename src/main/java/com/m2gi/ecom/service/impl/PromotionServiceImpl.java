@@ -46,8 +46,11 @@ public class PromotionServiceImpl implements PromotionService {
                 if (promotion.getEndDate() != null) {
                     existingPromotion.setEndDate(promotion.getEndDate());
                 }
-                if (promotion.getReductionPercentage() != null) {
-                    existingPromotion.setReductionPercentage(promotion.getReductionPercentage());
+                if (promotion.getValue() != null) {
+                    existingPromotion.setValue(promotion.getValue());
+                }
+                if (promotion.getUnit() != null) {
+                    existingPromotion.setUnit(promotion.getUnit());
                 }
 
                 return existingPromotion;

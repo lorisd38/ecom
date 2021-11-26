@@ -50,6 +50,10 @@
         <dd>
           <span>{{ product.weight }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</span>
+        </dd>
         <dt><span jhiTranslate="ecomApp.product.category">Category</span></dt>
         <dd>
           <div *ngIf="product.category">

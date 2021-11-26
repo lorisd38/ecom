@@ -11,6 +11,7 @@ import { ICategory } from 'app/entities/category/category.model';
 import { CategoryService } from 'app/entities/category/service/category.service';
 import { ITag } from 'app/entities/tag/tag.model';
 import { TagService } from 'app/entities/tag/service/tag.service';
+import { WeightUnit } from 'app/entities/enumerations/weight-unit.model';
 
 @Component({
   selector: 'jhi-product-update',
@@ -18,6 +19,7 @@ import { TagService } from 'app/entities/tag/service/tag.service';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
+  weightUnitValues = Object.keys(WeightUnit);
 
   categoriesSharedCollection: ICategory[] = [];
   tagsSharedCollection: ITag[] = [];
@@ -33,6 +35,7 @@ export class ProductUpdateComponent implements OnInit {
     imagePath: [],
     price: [null, [Validators.required]],
     weight: [],
+    weightUnit: [],
     category: [],
     relatedCtegories: [],
     tags: [],
@@ -129,6 +132,7 @@ export class ProductUpdateComponent implements OnInit {
       imagePath: product.imagePath,
       price: product.price,
       weight: product.weight,
+      weightUnit: product.weightUnit,
       category: product.category,
       relatedCtegories: product.relatedCtegories,
       tags: product.tags,
@@ -177,6 +181,7 @@ export class ProductUpdateComponent implements OnInit {
       imagePath: this.editForm.get(['imagePath'])!.value,
       price: this.editForm.get(['price'])!.value,
       weight: this.editForm.get(['weight'])!.value,
+      weightUnit: this.editForm.get(['weightUnit'])!.value,
       category: this.editForm.get(['category'])!.value,
       relatedCtegories: this.editForm.get(['relatedCtegories'])!.value,
       tags: this.editForm.get(['tags'])!.value,

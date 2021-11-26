@@ -1,34 +1,43 @@
 entity Address {
   road String,
-    postalCode String,
-    city String,
-    country String,
-    additionalDetails String
+  postalCode String,
+  city String,
+  country String,
+  additionalDetails String
 }
 
 entity Order(jhi_order) {
   paymentDate Instant required,
   receptionDate Instant required,
-    promoCode String,
-    totalPrice BigDecimal required
+  totalPrice BigDecimal required
 }
 
 entity Product {
   name String required,
-    description String,
-    quantity Integer required,
-    version Long required,
-    origin String,
-    brand String,
+  description String,
+  quantity Integer required,
+  version Long required,
+  origin String,
+  brand String,
   imagePath String,
-    price BigDecimal required,
-    weight BigDecimal
+  price BigDecimal required,
+  weight BigDecimal,
+  weightUnit WeightUnit
 }
 
 entity Promotion {
   startDate Instant required,
-    endDate Instant required,
-    reductionPercentage BigDecimal required
+  endDate Instant required,
+  value BigDecimal required,
+  unit ReductionType required
+}
+
+entity PromotionalCode {
+  code String required,
+  startDate Instant required,
+  endDate Instant required,
+  value BigDecimal required,
+  unit ReductionType required
 }
 
 entity Cart {
@@ -36,7 +45,7 @@ entity Cart {
 
 entity ProductOrder {
   quantity Integer min(1) required,
-    price BigDecimal required
+  price BigDecimal required
 }
 
 entity ProductCart {
@@ -49,23 +58,32 @@ entity Category {
 
 entity Recipe {
   name String required,
-    description String,
-    steps String,
+  description String,
+  steps String,
   imagePath String
 }
 
 entity Tag {
-  name String required
+  name String required,
+  color String
 }
 
 entity UserDetails {
   role Role required,
-    birthDate LocalDate,
-    phoneNumber String
+  birthDate LocalDate,
+  phoneNumber String
 }
 
 enum Role {
   ADMIN, STAFF, CLIENT
+}
+
+enum ReductionType {
+  FIX, PERCENTAGE
+}
+
+enum WeightUnit {
+  L, ML, KG, G
 }
 
 relationship OneToMany {
@@ -76,31 +94,35 @@ relationship OneToMany {
 relationship ManyToOne {
   Category{parent} to Category{children},
   Product{category} to Category,
-    ProductOrder{product} to Product,
-    ProductCart{product} to Product
+  Order{promotionalCode} to PromotionalCode,
+  ProductOrder{product} to Product,
+  ProductCart{product} to Product
 }
 
 relationship ManyToMany {
   Recipe{products} to Product{recipes},
   Product{relatedCtegories} to Category{associatedProducts},
   Product{tags} to
-  /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
+  /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{products},
   Promotion{products} to
-  /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
-  Product{promotions},
+  /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
+  Product{associatedPromotions},
+  PromotionalCode{products} to
+  /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
+  Product{associatedPromotionalCodes},
   UserDetails{favorites} to
-  /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
+  /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Product{favoritesOf},
   UserDetails{preferences} to
-  /** Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
+  /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{preferencesOf}
 }
 
 relationship OneToOne {
-    UserDetails{address} to Address,
-    UserDetails{user} to User{details} with jpaDerivedIdentifier,
-    UserDetails{cart} to Cart{user}
+  UserDetails{address} to Address,
+  UserDetails{user} to User{details} with jpaDerivedIdentifier,
+  UserDetails{cart} to Cart{user}
 }
 
 service * with serviceImpl

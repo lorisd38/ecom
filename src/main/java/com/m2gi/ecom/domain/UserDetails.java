@@ -53,7 +53,10 @@ public class UserDetails implements Serializable {
         joinColumns = @JoinColumn(name = "user_details_id"),
         inverseJoinColumns = @JoinColumn(name = "favorites_id")
     )
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        allowSetters = true
+    )
     private Set<Product> favorites = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
