@@ -1,14 +1,18 @@
 package com.m2gi.ecom.web.rest;
 
-import com.m2gi.ecom.domain.PromotionalCode;
+import com.m2gi.ecom.domain.*;
 import com.m2gi.ecom.repository.PromotionalCodeRepository;
+import com.m2gi.ecom.repository.UserRepository;
+import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.PromotionalCodeService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -37,8 +41,13 @@ public class PromotionalCodeResource {
 
     private final PromotionalCodeRepository promotionalCodeRepository;
 
-    public PromotionalCodeResource(PromotionalCodeService promotionalCodeService, PromotionalCodeRepository promotionalCodeRepository) {
+    private final UserRepository userRepo;
+
+    public PromotionalCodeResource(PromotionalCodeService promotionalCodeService,
+                                   UserRepository userRepo,
+                                   PromotionalCodeRepository promotionalCodeRepository) {
         this.promotionalCodeService = promotionalCodeService;
+        this.userRepo = userRepo;
         this.promotionalCodeRepository = promotionalCodeRepository;
     }
 
@@ -172,5 +181,39 @@ public class PromotionalCodeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+
+    /**
+     * {@code GET  /promotional-codes/:code} : get the "code" promotionalCodes.
+     *
+     * @param code the code of the promotionalCodes to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the promotionalCode, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/promotional-codes/{code}")
+    public ResponseEntity<PromotionalCode> getActivePromotionalCodeByCode(@PathVariable String code,
+                                                                          @RequestParam(value = "forCart") boolean forCart,
+                                                                          @RequestParam(value = "date", required = false) Instant date) {
+        log.debug("REST request to get PromotionalCode with code: {}", code);
+        if (date == null) date = Instant.now();
+        final Optional<PromotionalCode> activeCode = promotionalCodeService.findAllWithEagerRelationshipsByCode(code, date);
+
+        if (forCart && activeCode.isPresent()) {
+            final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+            final List<Product> cartProducts = user.getDetails()
+                .getCart()
+                .getLines()
+                .stream()
+                .map(ProductCart::getProduct)
+                .collect(Collectors.toList());
+
+            final PromotionalCode promoCode = activeCode.get();
+            promoCode.setProducts(promoCode.getProducts()
+                .stream()
+                .filter(cartProducts::contains)
+                .collect(Collectors.toSet()));
+        }
+
+        return ResponseUtil.wrapOrNotFound(activeCode);
     }
 }
