@@ -8,7 +8,7 @@ import {getProductQuantity, getTotalCartPrice, ICart} from 'app/entities/cart/ca
 import {HttpResponse} from '@angular/common/http';
 import {IOrder, Order} from '../../../entities/order/order.model';
 import * as dayjs from 'dayjs';
-import {DATE_TIME_FORMAT} from '../../../config/input.constants';
+import {DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT} from '../../../config/input.constants';
 import {IPromotionalCode} from "../../../entities/promotional-code/promotional-code.model";
 import {ReductionType} from "../../../entities/enumerations/reduction-type.model";
 
@@ -27,6 +27,7 @@ export class PaymentComponent implements OnInit {
 
   editForm = this.fb.group({
     receptionDate: [null, [Validators.required]],
+    receptionTime: [null, [Validators.required]],
     promoCode: [null, [Validators.required]],
     cbName: [null, [Validators.required, Validators.pattern("^[a-zA-Z -']+")]],
     cbNumber: [null, [Validators.required]],
@@ -116,7 +117,8 @@ export class PaymentComponent implements OnInit {
 
   protected updateForm(order: IOrder): void {
     this.editForm.patchValue({
-      receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
+      receptionDate: order.receptionDate ? order.receptionDate.format(DATE_FORMAT) : null,
+      receptionTime: order.receptionDate ? order.receptionDate.format(TIME_FORMAT) : null,
       //promoCode: order.promoCode,
     });
   }
@@ -125,9 +127,9 @@ export class PaymentComponent implements OnInit {
     return {
       ...new Order(),
       receptionDate: this.editForm.get(['receptionDate'])!.value
-        ? dayjs(this.editForm.get(['receptionDate'])!.value, DATE_TIME_FORMAT)
+        ? dayjs(`${String(this.editForm.get(['receptionDate'])!.value)}T${String(this.editForm.get(['receptionTime'])!.value)}`, DATE_TIME_FORMAT)
         : undefined,
-      //promoCode: this.editForm.get(['promoCode'])!.value,
+      // promoCode: this.editForm.get(['promoCode'])!.value,
     };
   }
 }
