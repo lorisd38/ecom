@@ -71,15 +71,6 @@ public class ProductCartServiceImpl implements ProductCartService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
         log.debug("Request to delete ProductCart : {}", id);
-        //        ProductCart pC = em.find(ProductCart.class,id);
-        //        log.debug("voici l'id trouve : {}",pC);
-        //        if(pC != null){
-        //            pC.setCart(null);
-        //            pC.setProduct(null);
-        //            em.remove(pC);
-        //            // em.createNativeQuery("delete from product_cart where id=" + id).executeUpdate();
-        //        }
-
         productCartRepository.deleteWithId(id);
     }
 

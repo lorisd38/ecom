@@ -23,7 +23,7 @@
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "product",
-      "otherEntityRelationshipName": "relatedCtegories",
+      "otherEntityRelationshipName": "relatedCategories",
       "relationshipName": "associatedProducts",
       "ownerSide": false
     }

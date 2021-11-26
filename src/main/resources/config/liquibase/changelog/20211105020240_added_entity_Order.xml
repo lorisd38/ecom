@@ -20,11 +20,11 @@
             <column name="reception_date" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
-            <column name="promo_code" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="total_price" type="decimal(21,2)">
                 <constraints nullable="false" />
+            </column>
+            <column name="promotional_code_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -51,7 +51,6 @@
             <column name="id" type="numeric"/>
             <column name="payment_date" type="date"/>
             <column name="reception_date" type="date"/>
-            <column name="promo_code" type="string"/>
             <column name="total_price" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

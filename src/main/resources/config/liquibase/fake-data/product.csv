@@ -1,11 +1,11 @@
-id;name;description;quantity;version;origin;brand;image_path;price;weight
-1;Steel;Consultant;57374;81236;support navigate;Chilean reboot b;Saussaies actuating deposit;44573;6255
-2;Metal;infomediaries partnerships b;91058;85179;intermediate initiative Generic;Liban;Australian;16473;23281
-3;digital;CFP orange;9548;46269;mobile Poitou-Charentes auxiliary;COM a Awesome;homogeneous la;86573;17814
-4;Bike Shoes d'Argenteuil;tangible;62192;4722;Account;Cheese Consultant online;project hacking efficient;50702;80217
-5;Practical User-friendly c;sticky Francs-Bourgeois Automotive;41021;62316;Gorgeous;a;Plastic Cambridgeshire;16025;2730
-6;solution Zimbabwe Games;Account transmit Incredible;88593;84724;Maurice Executif Down-sized;transitional;bypassing c interactive;69233;80985
-7;multi-byte Frozen;a;64290;98982;system Practical;executive;Assistant Berkshire program;64262;94512
-8;convergence moratorium Stand-alone;transmit;65021;19001;clear-thinking focus;Loan;Small Costa Specialiste;81697;60454
-9;index;Berkshire intuitive;67526;13889;la;Account Stagiaire markets;adapter Keyboard Industrial;11276;50912
-10;Frozen Salad Concrete;Agent Technicien;20806;19179;b;Assistant Île-de-France;circuit b JBOD;24226;95757
+id;name;description;quantity;version;origin;brand;image_path;price;weight;weight_unit
+1;Steel;Consultant;57374;81236;support navigate;Chilean reboot b;Saussaies actuating deposit;44573;6255;L
+2;Card;navigating Franche-Comté;32061;94707;Sommerard compressing;initiative Generic;Liban;29161;69325;L
+3;Bike;Computer CFP orange;9548;46269;mobile Poitou-Charentes auxiliary;COM a Awesome;homogeneous la;86573;17814;G
+4;De-engineered;b Intelligent;88292;71810;Cheese Renminbi;Consultant online;project hacking efficient;50702;80217;G
+5;applications;lavender application grey;31592;85040;b;Ergonomic Ergonomic;Handcrafted;27583;42304;KG
+6;back-end a b;Games;67286;61811;c Aquitaine Kids;programming Algérie Rustic;Taka;90493;33918;G
+7;Practical a Turkménistan;Saint-Bernard Checking Coordinateur;17748;91872;Tuna;system Practical;executive;79010;99734;G
+8;Berkshire;Virtual c Borders;66901;12734;copying;synthesizing pink Sausages;Computers Jamaïque;10558;606;L
+9;turquoise disintermediate;Cheese benchmark;36478;41867;Wooden Concrete;Rwanda Account;grid-enabled Tasty Keyboard;552;97400;G
+10;Buckinghamshire;application e-business Concrete;55000;96377;JBOD Gloves withdrawal;copying Kazakhstan circuit;revolutionize Technicien a;66378;55362;ML

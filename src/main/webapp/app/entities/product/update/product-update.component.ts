@@ -11,6 +11,7 @@ import { ICategory } from 'app/entities/category/category.model';
 import { CategoryService } from 'app/entities/category/service/category.service';
 import { ITag } from 'app/entities/tag/tag.model';
 import { TagService } from 'app/entities/tag/service/tag.service';
+import { WeightUnit } from 'app/entities/enumerations/weight-unit.model';
 
 @Component({
   selector: 'jhi-product-update',
@@ -18,6 +19,7 @@ import { TagService } from 'app/entities/tag/service/tag.service';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
+  weightUnitValues = Object.keys(WeightUnit);
 
   categoriesSharedCollection: ICategory[] = [];
   tagsSharedCollection: ITag[] = [];
@@ -33,8 +35,9 @@ export class ProductUpdateComponent implements OnInit {
     imagePath: [],
     price: [null, [Validators.required]],
     weight: [],
+    weightUnit: [],
     category: [],
-    relatedCtegories: [],
+    relatedCategories: [],
     tags: [],
   });
 
@@ -129,15 +132,16 @@ export class ProductUpdateComponent implements OnInit {
       imagePath: product.imagePath,
       price: product.price,
       weight: product.weight,
+      weightUnit: product.weightUnit,
       category: product.category,
-      relatedCtegories: product.relatedCtegories,
+      relatedCategories: product.relatedCategories,
       tags: product.tags,
     });
 
     this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(
       this.categoriesSharedCollection,
       product.category,
-      ...(product.relatedCtegories ?? [])
+      ...(product.relatedCategories ?? [])
     );
     this.tagsSharedCollection = this.tagService.addTagToCollectionIfMissing(this.tagsSharedCollection, ...(product.tags ?? []));
   }
@@ -151,7 +155,7 @@ export class ProductUpdateComponent implements OnInit {
           this.categoryService.addCategoryToCollectionIfMissing(
             categories,
             this.editForm.get('category')!.value,
-            ...(this.editForm.get('relatedCtegories')!.value ?? [])
+            ...(this.editForm.get('relatedCategories')!.value ?? [])
           )
         )
       )
@@ -177,8 +181,9 @@ export class ProductUpdateComponent implements OnInit {
       imagePath: this.editForm.get(['imagePath'])!.value,
       price: this.editForm.get(['price'])!.value,
       weight: this.editForm.get(['weight'])!.value,
+      weightUnit: this.editForm.get(['weightUnit'])!.value,
       category: this.editForm.get(['category'])!.value,
-      relatedCtegories: this.editForm.get(['relatedCtegories'])!.value,
+      relatedCategories: this.editForm.get(['relatedCategories'])!.value,
       tags: this.editForm.get(['tags'])!.value,
     };
   }

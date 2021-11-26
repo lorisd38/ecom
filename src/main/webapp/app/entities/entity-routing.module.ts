@@ -59,6 +59,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'ecomApp.userDetails.home.title' },
         loadChildren: () => import('./user-details/user-details.module').then(m => m.UserDetailsModule),
       },
+      {
+        path: 'promotional-code',
+        data: { pageTitle: 'ecomApp.promotionalCode.home.title' },
+        loadChildren: () => import('./promotional-code/promotional-code.module').then(m => m.PromotionalCodeModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

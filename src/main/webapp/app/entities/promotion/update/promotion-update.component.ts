@@ -12,6 +12,7 @@ import { IPromotion, Promotion } from '../promotion.model';
 import { PromotionService } from '../service/promotion.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
+import { ReductionType } from 'app/entities/enumerations/reduction-type.model';
 
 @Component({
   selector: 'jhi-promotion-update',
@@ -19,6 +20,7 @@ import { ProductService } from 'app/entities/product/service/product.service';
 })
 export class PromotionUpdateComponent implements OnInit {
   isSaving = false;
+  reductionTypeValues = Object.keys(ReductionType);
 
   productsSharedCollection: IProduct[] = [];
 
@@ -26,7 +28,8 @@ export class PromotionUpdateComponent implements OnInit {
     id: [],
     startDate: [null, [Validators.required]],
     endDate: [null, [Validators.required]],
-    reductionPercentage: [null, [Validators.required]],
+    value: [null, [Validators.required]],
+    unit: [null, [Validators.required]],
     products: [],
   });
 
@@ -104,7 +107,8 @@ export class PromotionUpdateComponent implements OnInit {
       id: promotion.id,
       startDate: promotion.startDate ? promotion.startDate.format(DATE_TIME_FORMAT) : null,
       endDate: promotion.endDate ? promotion.endDate.format(DATE_TIME_FORMAT) : null,
-      reductionPercentage: promotion.reductionPercentage,
+      value: promotion.value,
+      unit: promotion.unit,
       products: promotion.products,
     });
 
@@ -132,7 +136,8 @@ export class PromotionUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       startDate: this.editForm.get(['startDate'])!.value ? dayjs(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
       endDate: this.editForm.get(['endDate'])!.value ? dayjs(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      reductionPercentage: this.editForm.get(['reductionPercentage'])!.value,
+      value: this.editForm.get(['value'])!.value,
+      unit: this.editForm.get(['unit'])!.value,
       products: this.editForm.get(['products'])!.value,
     };
   }

@@ -50,16 +50,20 @@
         <dd>
           <span>{{ product.weight }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</span>
+        </dd>
         <dt><span jhiTranslate="ecomApp.product.category">Category</span></dt>
         <dd>
           <div *ngIf="product.category">
             <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="ecomApp.product.relatedCtegories">Related Ctegories</span></dt>
+        <dt><span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span></dt>
         <dd>
-          <span *ngFor="let relatedCtegories of product.relatedCtegories; let last = last">
-            <a [routerLink]="['/category', relatedCtegories?.id, 'view']">{{ relatedCtegories.id }}</a
+          <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
+            <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.id }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

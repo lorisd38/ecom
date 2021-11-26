@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Tag.
@@ -27,18 +27,13 @@ public class Tag implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    /**
-     * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
-     */
-    @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
-    private Set<Product> products = new HashSet<>();
+    @Column(name = "color")
+    private String color;
 
     /**
-     * Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
+     * FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
-    @ApiModelProperty(value = "Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
+    @ApiModelProperty(value = "FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
     @ManyToMany(mappedBy = "preferences", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)
     private Set<UserDetails> preferencesOfs = new HashSet<>();
@@ -71,35 +66,17 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
-        return this.products;
+    public String getColor() {
+        return this.color;
     }
 
-    public void setProducts(Set<Product> products) {
-        if (this.products != null) {
-            this.products.forEach(i -> i.removeTags(this));
-        }
-        if (products != null) {
-            products.forEach(i -> i.addTags(this));
-        }
-        this.products = products;
-    }
-
-    public Tag products(Set<Product> products) {
-        this.setProducts(products);
+    public Tag color(String color) {
+        this.setColor(color);
         return this;
     }
 
-    public Tag addProducts(Product product) {
-        this.products.add(product);
-        product.getTags().add(this);
-        return this;
-    }
-
-    public Tag removeProducts(Product product) {
-        this.products.remove(product);
-        product.getTags().remove(this);
-        return this;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public Set<UserDetails> getPreferencesOfs() {
@@ -158,6 +135,7 @@ public class Tag implements Serializable {
         return "Tag{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", color='" + getColor() + "'" +
             "}";
     }
 }

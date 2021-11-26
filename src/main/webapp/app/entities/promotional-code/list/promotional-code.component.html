@@ -1,0 +1,93 @@
+<div>
+  <h2 id="page-heading" data-cy="PromotionalCodeHeading">
+    <span jhiTranslate="ecomApp.promotionalCode.home.title">Promotional Codes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="ecomApp.promotionalCode.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-promotional-code"
+        [routerLink]="['/promotional-code/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="ecomApp.promotionalCode.home.createLabel"> Create a new Promotional Code </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="promotionalCodes?.length === 0">
+    <span jhiTranslate="ecomApp.promotionalCode.home.notFound">No promotionalCodes found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="promotionalCodes && promotionalCodes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.code">Code</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.startDate">Start Date</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.endDate">End Date</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.value">Value</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.unit">Unit</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotionalCode.products">Products</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let promotionalCode of promotionalCodes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/promotional-code', promotionalCode.id, 'view']">{{ promotionalCode.id }}</a>
+          </td>
+          <td>{{ promotionalCode.code }}</td>
+          <td>{{ promotionalCode.startDate | formatMediumDatetime }}</td>
+          <td>{{ promotionalCode.endDate | formatMediumDatetime }}</td>
+          <td>{{ promotionalCode.value }}</td>
+          <td jhiTranslate="{{ 'ecomApp.ReductionType.' + promotionalCode.unit }}">{{ promotionalCode.unit }}</td>
+          <td>
+            <span *ngFor="let products of promotionalCode.products; let last = last">
+              <a class="form-control-static" [routerLink]="['/product', products.id, 'view']">{{ products.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/promotional-code', promotionalCode.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/promotional-code', promotionalCode.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(promotionalCode)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
