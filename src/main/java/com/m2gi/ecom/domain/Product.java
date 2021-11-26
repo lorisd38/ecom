@@ -67,14 +67,14 @@ public class Product implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "rel_product__related_ctegories",
+        name = "rel_product__related_categories",
         joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "related_ctegories_id")
+        inverseJoinColumns = @JoinColumn(name = "related_categories_id")
     )
     @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
-    private Set<Category> relatedCtegories = new HashSet<>();
+    private Set<Category> relatedCategories = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_product__tags",
         joinColumns = @JoinColumn(name = "product_id"),
@@ -253,27 +253,27 @@ public class Product implements Serializable {
         return this;
     }
 
-    public Set<Category> getRelatedCtegories() {
-        return this.relatedCtegories;
+    public Set<Category> getRelatedCategories() {
+        return this.relatedCategories;
     }
 
-    public void setRelatedCtegories(Set<Category> categories) {
-        this.relatedCtegories = categories;
+    public void setRelatedCategories(Set<Category> categories) {
+        this.relatedCategories = categories;
     }
 
-    public Product relatedCtegories(Set<Category> categories) {
-        this.setRelatedCtegories(categories);
+    public Product relatedCategories(Set<Category> categories) {
+        this.setRelatedCategories(categories);
         return this;
     }
 
-    public Product addRelatedCtegories(Category category) {
-        this.relatedCtegories.add(category);
+    public Product addRelatedCategories(Category category) {
+        this.relatedCategories.add(category);
         category.getAssociatedProducts().add(this);
         return this;
     }
 
-    public Product removeRelatedCtegories(Category category) {
-        this.relatedCtegories.remove(category);
+    public Product removeRelatedCategories(Category category) {
+        this.relatedCategories.remove(category);
         category.getAssociatedProducts().remove(this);
         return this;
     }

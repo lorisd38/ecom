@@ -58,7 +58,7 @@
       "relationshipType": "many-to-many",
       "otherEntityName": "category",
       "otherEntityRelationshipName": "associatedProducts",
-      "relationshipName": "relatedCtegories",
+      "relationshipName": "relatedCategories",
       "ownerSide": true
     },
     {

@@ -53,8 +53,8 @@
 
     <changeSet id="20211105020241-1-relations" author="jhipster">
 
-        <createTable tableName="rel_product__related_ctegories">
-            <column name="related_ctegories_id" type="bigint">
+        <createTable tableName="rel_product__related_categories">
+            <column name="related_categories_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="bigint">
@@ -62,7 +62,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="product_id, related_ctegories_id" tableName="rel_product__related_ctegories"/>
+        <addPrimaryKey columnNames="product_id, related_categories_id" tableName="rel_product__related_categories"/>
 
         <createTable tableName="rel_product__tags">
             <column name="tags_id" type="bigint">

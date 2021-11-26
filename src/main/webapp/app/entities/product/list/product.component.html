@@ -44,7 +44,7 @@
           <th scope="col"><span jhiTranslate="ecomApp.product.weight">Weight</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.product.category">Category</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.relatedCtegories">Related Ctegories</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.product.tags">Tags</span></th>
           <th scope="col"></th>
         </tr>
@@ -70,8 +70,8 @@
             </div>
           </td>
           <td>
-            <span *ngFor="let relatedCtegories of product.relatedCtegories; let last = last">
-              <a class="form-control-static" [routerLink]="['/category', relatedCtegories.id, 'view']">{{ relatedCtegories.id }}</a
+            <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
+              <a class="form-control-static" [routerLink]="['/category', relatedCategories.id, 'view']">{{ relatedCategories.id }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>

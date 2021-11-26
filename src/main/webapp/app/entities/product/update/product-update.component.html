@@ -134,17 +134,17 @@
         </div>
 
         <div class="form-group">
-          <label jhiTranslate="ecomApp.product.relatedCtegories" for="field_relatedCtegories">Related Ctegories</label>
+          <label jhiTranslate="ecomApp.product.relatedCategories" for="field_relatedCategories">Related Categories</label>
           <select
             class="form-control"
-            id="field_relatedCtegories"
-            data-cy="relatedCtegories"
+            id="field_relatedCategories"
+            data-cy="relatedCategories"
             multiple
-            name="relatedCtegories"
-            formControlName="relatedCtegories"
+            name="relatedCategories"
+            formControlName="relatedCategories"
           >
             <option
-              [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCtegories')!.value)"
+              [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCategories')!.value)"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
               {{ categoryOption.id }}

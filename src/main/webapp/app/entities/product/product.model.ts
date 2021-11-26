@@ -19,7 +19,7 @@ export interface IProduct {
   weight?: number | null;
   weightUnit?: WeightUnit | null;
   category?: ICategory | null;
-  relatedCtegories?: ICategory[] | null;
+  relatedCategories?: ICategory[] | null;
   tags?: ITag[] | null;
   recipes?: IRecipe[] | null;
   associatedPromotions?: IPromotion[] | null;
@@ -41,7 +41,7 @@ export class Product implements IProduct {
     public weight?: number | null,
     public weightUnit?: WeightUnit | null,
     public category?: ICategory | null,
-    public relatedCtegories?: ICategory[] | null,
+    public relatedCategories?: ICategory[] | null,
     public tags?: ITag[] | null,
     public recipes?: IRecipe[] | null,
     public associatedPromotions?: IPromotion[] | null,

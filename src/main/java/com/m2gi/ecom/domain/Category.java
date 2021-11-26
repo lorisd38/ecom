@@ -34,9 +34,11 @@ public class Category implements Serializable {
     @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
     private Set<Category> children = new HashSet<>();
 
-    @ManyToMany(mappedBy = "relatedCtegories")
+    @ManyToMany(mappedBy = "relatedCategories")
     @JsonIgnoreProperties(
-        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        value = {
+            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
+        },
         allowSetters = true
     )
     private Set<Product> associatedProducts = new HashSet<>();
@@ -119,10 +121,10 @@ public class Category implements Serializable {
 
     public void setAssociatedProducts(Set<Product> products) {
         if (this.associatedProducts != null) {
-            this.associatedProducts.forEach(i -> i.removeRelatedCtegories(this));
+            this.associatedProducts.forEach(i -> i.removeRelatedCategories(this));
         }
         if (products != null) {
-            products.forEach(i -> i.addRelatedCtegories(this));
+            products.forEach(i -> i.addRelatedCategories(this));
         }
         this.associatedProducts = products;
     }
@@ -134,13 +136,13 @@ public class Category implements Serializable {
 
     public Category addAssociatedProducts(Product product) {
         this.associatedProducts.add(product);
-        product.getRelatedCtegories().add(this);
+        product.getRelatedCategories().add(this);
         return this;
     }
 
     public Category removeAssociatedProducts(Product product) {
         this.associatedProducts.remove(product);
-        product.getRelatedCtegories().remove(this);
+        product.getRelatedCategories().remove(this);
         return this;
     }
 

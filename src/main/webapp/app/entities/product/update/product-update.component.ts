@@ -37,7 +37,7 @@ export class ProductUpdateComponent implements OnInit {
     weight: [],
     weightUnit: [],
     category: [],
-    relatedCtegories: [],
+    relatedCategories: [],
     tags: [],
   });
 
@@ -134,14 +134,14 @@ export class ProductUpdateComponent implements OnInit {
       weight: product.weight,
       weightUnit: product.weightUnit,
       category: product.category,
-      relatedCtegories: product.relatedCtegories,
+      relatedCategories: product.relatedCategories,
       tags: product.tags,
     });
 
     this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(
       this.categoriesSharedCollection,
       product.category,
-      ...(product.relatedCtegories ?? [])
+      ...(product.relatedCategories ?? [])
     );
     this.tagsSharedCollection = this.tagService.addTagToCollectionIfMissing(this.tagsSharedCollection, ...(product.tags ?? []));
   }
@@ -155,7 +155,7 @@ export class ProductUpdateComponent implements OnInit {
           this.categoryService.addCategoryToCollectionIfMissing(
             categories,
             this.editForm.get('category')!.value,
-            ...(this.editForm.get('relatedCtegories')!.value ?? [])
+            ...(this.editForm.get('relatedCategories')!.value ?? [])
           )
         )
       )
@@ -183,7 +183,7 @@ export class ProductUpdateComponent implements OnInit {
       weight: this.editForm.get(['weight'])!.value,
       weightUnit: this.editForm.get(['weightUnit'])!.value,
       category: this.editForm.get(['category'])!.value,
-      relatedCtegories: this.editForm.get(['relatedCtegories'])!.value,
+      relatedCategories: this.editForm.get(['relatedCategories'])!.value,
       tags: this.editForm.get(['tags'])!.value,
     };
   }

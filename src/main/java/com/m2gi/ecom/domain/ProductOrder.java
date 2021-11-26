@@ -32,7 +32,9 @@ public class ProductOrder implements Serializable, Comparable<ProductOrder> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
-        value = { "category", "relatedCtegories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
+        value = {
+            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
+        },
         allowSetters = true
     )
     private Product product;

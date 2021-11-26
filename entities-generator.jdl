@@ -101,7 +101,7 @@ relationship ManyToOne {
 
 relationship ManyToMany {
   Recipe{products} to Product{recipes},
-  Product{relatedCtegories} to Category{associatedProducts},
+  Product{relatedCategories} to Category{associatedProducts},
   Product{tags} to
   /** FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used. */
   Tag{products},
