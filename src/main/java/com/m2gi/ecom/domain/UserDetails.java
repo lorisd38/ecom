@@ -176,13 +176,11 @@ public class UserDetails implements Serializable {
 
     public UserDetails addFavorites(Product product) {
         this.favorites.add(product);
-        product.getFavoritesOfs().add(this);
         return this;
     }
 
     public UserDetails removeFavorites(Product product) {
         this.favorites.remove(product);
-        product.getFavoritesOfs().remove(this);
         return this;
     }
 

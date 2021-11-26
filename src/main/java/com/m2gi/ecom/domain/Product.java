@@ -37,6 +37,7 @@ public class Product implements Serializable {
     private Integer quantity;
 
     @NotNull
+    @Version
     @Column(name = "version", nullable = false)
     private Long version;
 
@@ -292,13 +293,11 @@ public class Product implements Serializable {
 
     public Product addTags(Tag tag) {
         this.tags.add(tag);
-        tag.getProducts().add(this);
         return this;
     }
 
     public Product removeTags(Tag tag) {
         this.tags.remove(tag);
-        tag.getProducts().remove(this);
         return this;
     }
 

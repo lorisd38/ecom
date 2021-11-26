@@ -32,7 +32,10 @@
       "relatedCtegories": "Related Ctegories",
       "tags": "Tags",
       "recipes": "Recipes",
-      "associatedPromotions": "Associated Promotions"
+      "associatedPromotions": "Promotions associées",
+      "favoritesOf": "Favoris de",
+      "addToCart": "Ajouter au panier",
+      "research_result": "Resultat de la recherche :"
     }
   }
 }

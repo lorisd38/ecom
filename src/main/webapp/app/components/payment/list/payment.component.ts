@@ -84,7 +84,7 @@ export class PaymentComponent implements OnInit {
   protected updateForm(order: IOrder): void {
     this.editForm.patchValue({
       receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
-      promoCode: order.promoCode,
+      //promoCode: order.promoCode,
     });
   }
 
@@ -94,7 +94,7 @@ export class PaymentComponent implements OnInit {
       receptionDate: this.editForm.get(['receptionDate'])!.value
         ? dayjs(this.editForm.get(['receptionDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      promoCode: this.editForm.get(['promoCode'])!.value,
+      //promoCode: this.editForm.get(['promoCode'])!.value,
     };
   }
 }

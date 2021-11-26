@@ -153,13 +153,11 @@ public class PromotionalCode implements Serializable {
 
     public PromotionalCode addProducts(Product product) {
         this.products.add(product);
-        product.getAssociatedPromotionalCodes().add(this);
         return this;
     }
 
     public PromotionalCode removeProducts(Product product) {
         this.products.remove(product);
-        product.getAssociatedPromotionalCodes().remove(this);
         return this;
     }
 

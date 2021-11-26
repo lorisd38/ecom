@@ -34,7 +34,7 @@ public class Tag implements Serializable {
      * FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.
      */
     @ApiModelProperty(value = "FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
-    @ManyToMany(mappedBy = "preferences")
+    @ManyToMany(mappedBy = "preferences", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)
     private Set<UserDetails> preferencesOfs = new HashSet<>();
 
