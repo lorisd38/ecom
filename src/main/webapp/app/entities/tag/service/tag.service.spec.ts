@@ -22,6 +22,7 @@ describe('Tag Service', () => {
     elemDefault = {
       id: 0,
       name: 'AAAAAAA',
+      color: 'AAAAAAA',
     };
   });
 
@@ -58,6 +59,7 @@ describe('Tag Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
+          color: 'BBBBBB',
         },
         elemDefault
       );
@@ -72,7 +74,12 @@ describe('Tag Service', () => {
     });
 
     it('should partial update a Tag', () => {
-      const patchObject = Object.assign({}, new Tag());
+      const patchObject = Object.assign(
+        {
+          color: 'BBBBBB',
+        },
+        new Tag()
+      );
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -90,6 +97,7 @@ describe('Tag Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
+          color: 'BBBBBB',
         },
         elemDefault
       );
@@ -141,7 +149,7 @@ describe('Tag Service', () => {
       });
 
       it('should add only unique Tag to an array', () => {
-        const tagArray: ITag[] = [{ id: 123 }, { id: 456 }, { id: 70272 }];
+        const tagArray: ITag[] = [{ id: 123 }, { id: 456 }, { id: 39235 }];
         const tagCollection: ITag[] = [{ id: 123 }];
         expectedResult = service.addTagToCollectionIfMissing(tagCollection, ...tagArray);
         expect(expectedResult).toHaveLength(3);

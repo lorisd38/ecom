@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Order.
@@ -32,12 +32,13 @@ public class Order implements Serializable {
     @Column(name = "reception_date", nullable = false)
     private Instant receptionDate;
 
-    @Column(name = "promo_code")
-    private String promoCode;
-
     @NotNull
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
+    private PromotionalCode promotionalCode;
 
     @OneToMany(mappedBy = "order")
     @JsonIgnoreProperties(value = { "product", "order" }, allowSetters = true)
@@ -84,19 +85,6 @@ public class Order implements Serializable {
         this.receptionDate = receptionDate;
     }
 
-    public String getPromoCode() {
-        return this.promoCode;
-    }
-
-    public Order promoCode(String promoCode) {
-        this.setPromoCode(promoCode);
-        return this;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
-    }
-
     public BigDecimal getTotalPrice() {
         return this.totalPrice;
     }
@@ -141,6 +129,19 @@ public class Order implements Serializable {
         return this;
     }
 
+    public PromotionalCode getPromotionalCode() {
+        return this.promotionalCode;
+    }
+
+    public void setPromotionalCode(PromotionalCode promotionalCode) {
+        this.promotionalCode = promotionalCode;
+    }
+
+    public Order promotionalCode(PromotionalCode promotionalCode) {
+        this.setPromotionalCode(promotionalCode);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -167,7 +168,6 @@ public class Order implements Serializable {
             "id=" + getId() +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", receptionDate='" + getReceptionDate() + "'" +
-            ", promoCode='" + getPromoCode() + "'" +
             ", totalPrice=" + getTotalPrice() +
             "}";
     }

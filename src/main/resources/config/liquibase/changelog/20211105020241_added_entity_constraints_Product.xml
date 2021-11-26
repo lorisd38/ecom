@@ -15,14 +15,14 @@
                                  referencedTableName="category"/>
 
         <addForeignKeyConstraint baseColumnNames="product_id"
-                                 baseTableName="rel_product__related_ctegories"
-                                 constraintName="fk_rel_product__related_ctegories__product_id"
+                                 baseTableName="rel_product__related_categories"
+                                 constraintName="fk_rel_product__related_categories__product_id"
                                  referencedColumnNames="id"
                                  referencedTableName="product"/>
 
-        <addForeignKeyConstraint baseColumnNames="related_ctegories_id"
-                                 baseTableName="rel_product__related_ctegories"
-                                 constraintName="fk_rel_product__related_ctegories__related_ctegories_id"
+        <addForeignKeyConstraint baseColumnNames="related_categories_id"
+                                 baseTableName="rel_product__related_categories"
+                                 constraintName="fk_rel_product__related_categories__related_categories_id"
                                  referencedColumnNames="id"
                                  referencedTableName="category"/>
 

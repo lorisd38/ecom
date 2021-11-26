@@ -20,7 +20,8 @@
       "id": "ID",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "reductionPercentage": "Reduction Percentage",
+      "value": "Value",
+      "unit": "Unit",
       "products": "Products"
     }
   }

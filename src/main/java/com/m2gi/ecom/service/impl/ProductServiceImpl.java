@@ -67,6 +67,9 @@ public class ProductServiceImpl implements ProductService {
                 if (product.getWeight() != null) {
                     existingProduct.setWeight(product.getWeight());
                 }
+                if (product.getWeightUnit() != null) {
+                    existingProduct.setWeightUnit(product.getWeightUnit());
+                }
 
                 return existingProduct;
             })

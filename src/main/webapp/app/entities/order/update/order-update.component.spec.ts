@@ -9,6 +9,8 @@ import { of, Subject } from 'rxjs';
 
 import { OrderService } from '../service/order.service';
 import { IOrder, Order } from '../order.model';
+import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
+import { PromotionalCodeService } from 'app/entities/promotional-code/service/promotional-code.service';
 
 import { OrderUpdateComponent } from './order-update.component';
 
@@ -17,6 +19,7 @@ describe('Order Management Update Component', () => {
   let fixture: ComponentFixture<OrderUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let orderService: OrderService;
+  let promotionalCodeService: PromotionalCodeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,18 +33,44 @@ describe('Order Management Update Component', () => {
     fixture = TestBed.createComponent(OrderUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     orderService = TestBed.inject(OrderService);
+    promotionalCodeService = TestBed.inject(PromotionalCodeService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call PromotionalCode query and add missing value', () => {
+      const order: IOrder = { id: 456 };
+      const promotionalCode: IPromotionalCode = { id: 65619 };
+      order.promotionalCode = promotionalCode;
+
+      const promotionalCodeCollection: IPromotionalCode[] = [{ id: 86476 }];
+      jest.spyOn(promotionalCodeService, 'query').mockReturnValue(of(new HttpResponse({ body: promotionalCodeCollection })));
+      const additionalPromotionalCodes = [promotionalCode];
+      const expectedCollection: IPromotionalCode[] = [...additionalPromotionalCodes, ...promotionalCodeCollection];
+      jest.spyOn(promotionalCodeService, 'addPromotionalCodeToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ order });
+      comp.ngOnInit();
+
+      expect(promotionalCodeService.query).toHaveBeenCalled();
+      expect(promotionalCodeService.addPromotionalCodeToCollectionIfMissing).toHaveBeenCalledWith(
+        promotionalCodeCollection,
+        ...additionalPromotionalCodes
+      );
+      expect(comp.promotionalCodesSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const order: IOrder = { id: 456 };
+      const promotionalCode: IPromotionalCode = { id: 52710 };
+      order.promotionalCode = promotionalCode;
 
       activatedRoute.data = of({ order });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(order));
+      expect(comp.promotionalCodesSharedCollection).toContain(promotionalCode);
     });
   });
 
@@ -106,6 +135,16 @@ describe('Order Management Update Component', () => {
       expect(orderService.update).toHaveBeenCalledWith(order);
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Tracking relationships identifiers', () => {
+    describe('trackPromotionalCodeById', () => {
+      it('Should return tracked PromotionalCode primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackPromotionalCodeById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
     });
   });
 });

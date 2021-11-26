@@ -12,10 +12,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "promoCode",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "totalPrice",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
@@ -27,6 +23,12 @@
       "otherEntityName": "productOrder",
       "otherEntityRelationshipName": "order",
       "relationshipName": "lines"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "promotionalCode",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "promotionalCode"
     }
   ],
   "entityTableName": "jhi_order",

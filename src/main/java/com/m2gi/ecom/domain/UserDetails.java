@@ -53,7 +53,12 @@ public class UserDetails implements Serializable {
         joinColumns = @JoinColumn(name = "user_details_id"),
         inverseJoinColumns = @JoinColumn(name = "favorites_id")
     )
-    @JsonIgnoreProperties(value = { "category", "relatedCtegories", "tags", "recipes", "promotions", "favoritesOfs" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = {
+            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
+        },
+        allowSetters = true
+    )
     private Set<Product> favorites = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -173,13 +178,11 @@ public class UserDetails implements Serializable {
 
     public UserDetails addFavorites(Product product) {
         this.favorites.add(product);
-        product.getFavoritesOfs().add(this);
         return this;
     }
 
     public UserDetails removeFavorites(Product product) {
         this.favorites.remove(product);
-        product.getFavoritesOfs().remove(this);
         return this;
     }
 

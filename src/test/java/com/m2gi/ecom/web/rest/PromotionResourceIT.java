@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.m2gi.ecom.IntegrationTest;
 import com.m2gi.ecom.domain.Promotion;
+import com.m2gi.ecom.domain.enumeration.ReductionType;
 import com.m2gi.ecom.repository.PromotionRepository;
 import com.m2gi.ecom.service.PromotionService;
 import java.math.BigDecimal;
@@ -48,8 +49,11 @@ class PromotionResourceIT {
     private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final BigDecimal DEFAULT_REDUCTION_PERCENTAGE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_REDUCTION_PERCENTAGE = new BigDecimal(2);
+    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_VALUE = new BigDecimal(2);
+
+    private static final ReductionType DEFAULT_UNIT = ReductionType.FIX;
+    private static final ReductionType UPDATED_UNIT = ReductionType.PERCENTAGE;
 
     private static final String ENTITY_API_URL = "/api/promotions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -84,7 +88,8 @@ class PromotionResourceIT {
         Promotion promotion = new Promotion()
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
-            .reductionPercentage(DEFAULT_REDUCTION_PERCENTAGE);
+            .value(DEFAULT_VALUE)
+            .unit(DEFAULT_UNIT);
         return promotion;
     }
 
@@ -98,7 +103,8 @@ class PromotionResourceIT {
         Promotion promotion = new Promotion()
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .reductionPercentage(UPDATED_REDUCTION_PERCENTAGE);
+            .value(UPDATED_VALUE)
+            .unit(UPDATED_UNIT);
         return promotion;
     }
 
@@ -122,7 +128,8 @@ class PromotionResourceIT {
         Promotion testPromotion = promotionList.get(promotionList.size() - 1);
         assertThat(testPromotion.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testPromotion.getEndDate()).isEqualTo(DEFAULT_END_DATE);
-        assertThat(testPromotion.getReductionPercentage()).isEqualByComparingTo(DEFAULT_REDUCTION_PERCENTAGE);
+        assertThat(testPromotion.getValue()).isEqualByComparingTo(DEFAULT_VALUE);
+        assertThat(testPromotion.getUnit()).isEqualTo(DEFAULT_UNIT);
     }
 
     @Test
@@ -179,10 +186,27 @@ class PromotionResourceIT {
 
     @Test
     @Transactional
-    void checkReductionPercentageIsRequired() throws Exception {
+    void checkValueIsRequired() throws Exception {
         int databaseSizeBeforeTest = promotionRepository.findAll().size();
         // set the field null
-        promotion.setReductionPercentage(null);
+        promotion.setValue(null);
+
+        // Create the Promotion, which fails.
+
+        restPromotionMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(promotion)))
+            .andExpect(status().isBadRequest());
+
+        List<Promotion> promotionList = promotionRepository.findAll();
+        assertThat(promotionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkUnitIsRequired() throws Exception {
+        int databaseSizeBeforeTest = promotionRepository.findAll().size();
+        // set the field null
+        promotion.setUnit(null);
 
         // Create the Promotion, which fails.
 
@@ -208,7 +232,8 @@ class PromotionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(promotion.getId().intValue())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].reductionPercentage").value(hasItem(sameNumber(DEFAULT_REDUCTION_PERCENTAGE))));
+            .andExpect(jsonPath("$.[*].value").value(hasItem(sameNumber(DEFAULT_VALUE))))
+            .andExpect(jsonPath("$.[*].unit").value(hasItem(DEFAULT_UNIT.toString())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -243,7 +268,8 @@ class PromotionResourceIT {
             .andExpect(jsonPath("$.id").value(promotion.getId().intValue()))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.reductionPercentage").value(sameNumber(DEFAULT_REDUCTION_PERCENTAGE)));
+            .andExpect(jsonPath("$.value").value(sameNumber(DEFAULT_VALUE)))
+            .andExpect(jsonPath("$.unit").value(DEFAULT_UNIT.toString()));
     }
 
     @Test
@@ -265,7 +291,7 @@ class PromotionResourceIT {
         Promotion updatedPromotion = promotionRepository.findById(promotion.getId()).get();
         // Disconnect from session so that the updates on updatedPromotion are not directly saved in db
         em.detach(updatedPromotion);
-        updatedPromotion.startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE).reductionPercentage(UPDATED_REDUCTION_PERCENTAGE);
+        updatedPromotion.startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE).value(UPDATED_VALUE).unit(UPDATED_UNIT);
 
         restPromotionMockMvc
             .perform(
@@ -281,7 +307,8 @@ class PromotionResourceIT {
         Promotion testPromotion = promotionList.get(promotionList.size() - 1);
         assertThat(testPromotion.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testPromotion.getEndDate()).isEqualTo(UPDATED_END_DATE);
-        assertThat(testPromotion.getReductionPercentage()).isEqualTo(UPDATED_REDUCTION_PERCENTAGE);
+        assertThat(testPromotion.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testPromotion.getUnit()).isEqualTo(UPDATED_UNIT);
     }
 
     @Test
@@ -352,7 +379,7 @@ class PromotionResourceIT {
         Promotion partialUpdatedPromotion = new Promotion();
         partialUpdatedPromotion.setId(promotion.getId());
 
-        partialUpdatedPromotion.endDate(UPDATED_END_DATE).reductionPercentage(UPDATED_REDUCTION_PERCENTAGE);
+        partialUpdatedPromotion.endDate(UPDATED_END_DATE).value(UPDATED_VALUE).unit(UPDATED_UNIT);
 
         restPromotionMockMvc
             .perform(
@@ -368,7 +395,8 @@ class PromotionResourceIT {
         Promotion testPromotion = promotionList.get(promotionList.size() - 1);
         assertThat(testPromotion.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testPromotion.getEndDate()).isEqualTo(UPDATED_END_DATE);
-        assertThat(testPromotion.getReductionPercentage()).isEqualByComparingTo(UPDATED_REDUCTION_PERCENTAGE);
+        assertThat(testPromotion.getValue()).isEqualByComparingTo(UPDATED_VALUE);
+        assertThat(testPromotion.getUnit()).isEqualTo(UPDATED_UNIT);
     }
 
     @Test
@@ -383,7 +411,7 @@ class PromotionResourceIT {
         Promotion partialUpdatedPromotion = new Promotion();
         partialUpdatedPromotion.setId(promotion.getId());
 
-        partialUpdatedPromotion.startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE).reductionPercentage(UPDATED_REDUCTION_PERCENTAGE);
+        partialUpdatedPromotion.startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE).value(UPDATED_VALUE).unit(UPDATED_UNIT);
 
         restPromotionMockMvc
             .perform(
@@ -399,7 +427,8 @@ class PromotionResourceIT {
         Promotion testPromotion = promotionList.get(promotionList.size() - 1);
         assertThat(testPromotion.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testPromotion.getEndDate()).isEqualTo(UPDATED_END_DATE);
-        assertThat(testPromotion.getReductionPercentage()).isEqualByComparingTo(UPDATED_REDUCTION_PERCENTAGE);
+        assertThat(testPromotion.getValue()).isEqualByComparingTo(UPDATED_VALUE);
+        assertThat(testPromotion.getUnit()).isEqualTo(UPDATED_UNIT);
     }
 
     @Test

@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="promotionalCode">
+      <h2 data-cy="promotionalCodeDetailsHeading"><span jhiTranslate="ecomApp.promotionalCode.detail.title">Promotional Code</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ promotionalCode.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.code">Code</span></dt>
+        <dd>
+          <span>{{ promotionalCode.code }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.startDate">Start Date</span></dt>
+        <dd>
+          <span>{{ promotionalCode.startDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.endDate">End Date</span></dt>
+        <dd>
+          <span>{{ promotionalCode.endDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.value">Value</span></dt>
+        <dd>
+          <span>{{ promotionalCode.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.unit">Unit</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.ReductionType.' + promotionalCode.unit }}">{{ promotionalCode.unit }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotionalCode.products">Products</span></dt>
+        <dd>
+          <span *ngFor="let products of promotionalCode.products; let last = last">
+            <a [routerLink]="['/product', products?.id, 'view']">{{ products.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/promotional-code', promotionalCode.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

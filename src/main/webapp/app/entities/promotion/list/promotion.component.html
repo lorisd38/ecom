@@ -35,7 +35,8 @@
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.promotion.startDate">Start Date</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.promotion.endDate">End Date</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.promotion.reductionPercentage">Reduction Percentage</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotion.value">Value</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.promotion.unit">Unit</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.promotion.products">Products</span></th>
           <th scope="col"></th>
         </tr>
@@ -47,7 +48,8 @@
           </td>
           <td>{{ promotion.startDate | formatMediumDatetime }}</td>
           <td>{{ promotion.endDate | formatMediumDatetime }}</td>
-          <td>{{ promotion.reductionPercentage }}</td>
+          <td>{{ promotion.value }}</td>
+          <td jhiTranslate="{{ 'ecomApp.ReductionType.' + promotion.unit }}">{{ promotion.unit }}</td>
           <td>
             <span *ngFor="let products of promotion.products; let last = last">
               <a class="form-control-static" [routerLink]="['/product', products.id, 'view']">{{ products.id }}</a

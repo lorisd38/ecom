@@ -73,7 +73,8 @@ class PromotionGatlingTest extends Simulation {
             .body(StringBody("""{
                 "startDate":"2020-01-01T00:00:00.000Z"
                 , "endDate":"2020-01-01T00:00:00.000Z"
-                , "reductionPercentage":"0"
+                , "value":"0"
+                , "unit":"FIX"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_promotion_url"))).exitHereIfFailed

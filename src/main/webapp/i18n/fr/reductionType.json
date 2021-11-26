@@ -1,0 +1,9 @@
+{
+  "ecomApp": {
+    "ReductionType": {
+      "null": "",
+      "FIX": "FIX",
+      "PERCENTAGE": "PERCENTAGE"
+    }
+  }
+}

@@ -27,13 +27,14 @@
       "imagePath": "Image Path",
       "price": "Price",
       "weight": "Weight",
+      "weightUnit": "Unité de poids",
       "category": "Category",
-      "relatedCtegories": "Related Ctegories",
+      "relatedCategories": "Catégories associées",
       "tags": "Tags",
       "recipes": "Recipes",
-      "promotions": "Promotions",
-      "favoritesOf": "Favorites Of",
-      "addToCart": "Ajouter",
+      "associatedPromotions": "Promotions associées",
+      "favoritesOf": "Favoris de",
+      "addToCart": "Ajouter au panier",
       "research_result": "Resultat de la recherche :"
     }
   }

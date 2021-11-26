@@ -47,12 +47,12 @@ describe('Product Management Update Component', () => {
       const product: IProduct = { id: 456 };
       const category: ICategory = { id: 52954 };
       product.category = category;
-      const relatedCtegories: ICategory[] = [{ id: 63621 }];
-      product.relatedCtegories = relatedCtegories;
+      const relatedCategories: ICategory[] = [{ id: 63621 }];
+      product.relatedCategories = relatedCategories;
 
       const categoryCollection: ICategory[] = [{ id: 32126 }];
       jest.spyOn(categoryService, 'query').mockReturnValue(of(new HttpResponse({ body: categoryCollection })));
-      const additionalCategories = [category, ...relatedCtegories];
+      const additionalCategories = [category, ...relatedCategories];
       const expectedCollection: ICategory[] = [...additionalCategories, ...categoryCollection];
       jest.spyOn(categoryService, 'addCategoryToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -87,8 +87,8 @@ describe('Product Management Update Component', () => {
       const product: IProduct = { id: 456 };
       const category: ICategory = { id: 61642 };
       product.category = category;
-      const relatedCtegories: ICategory = { id: 84852 };
-      product.relatedCtegories = [relatedCtegories];
+      const relatedCategories: ICategory = { id: 84852 };
+      product.relatedCategories = [relatedCategories];
       const tags: ITag = { id: 8647 };
       product.tags = [tags];
 
@@ -97,7 +97,7 @@ describe('Product Management Update Component', () => {
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(product));
       expect(comp.categoriesSharedCollection).toContain(category);
-      expect(comp.categoriesSharedCollection).toContain(relatedCtegories);
+      expect(comp.categoriesSharedCollection).toContain(relatedCategories);
       expect(comp.tagsSharedCollection).toContain(tags);
     });
   });

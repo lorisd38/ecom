@@ -21,6 +21,7 @@
         "recipe": "Recipe",
         "tag": "Tag",
         "userDetails": "User Details",
+        "promotionalCode": "Promotional Code",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

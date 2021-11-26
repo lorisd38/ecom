@@ -80,6 +80,7 @@ class ProductGatlingTest extends Simulation {
                 , "imagePath":"SAMPLE_TEXT"
                 , "price":"0"
                 , "weight":"0"
+                , "weightUnit":"L"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_product_url"))).exitHereIfFailed
