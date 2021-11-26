@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validators } from '@angular/forms';
-import { CartService } from 'app/components/cart/service/cart.service';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, Validators} from '@angular/forms';
+import {CartService} from 'app/components/cart/service/cart.service';
 
-import { PaymentService } from 'app/components/payment/service/payment.service';
-import { getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
-import { HttpResponse } from '@angular/common/http';
-import { IOrder, Order } from '../../../entities/order/order.model';
+import {PaymentService} from 'app/components/payment/service/payment.service';
+import {getProductQuantity, getTotalCartPrice, ICart} from 'app/entities/cart/cart.model';
+import {HttpResponse} from '@angular/common/http';
+import {IOrder, Order} from '../../../entities/order/order.model';
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from '../../../config/input.constants';
-import { Dayjs } from 'dayjs';
+import {DATE_TIME_FORMAT} from '../../../config/input.constants';
+import {IPromotionalCode} from "../../../entities/promotional-code/promotional-code.model";
+import {ReductionType} from "../../../entities/enumerations/reduction-type.model";
 
 @Component({
   selector: 'jhi-payment',
@@ -17,7 +18,9 @@ import { Dayjs } from 'dayjs';
 })
 export class PaymentComponent implements OnInit {
   cart?: ICart | null;
+  promoCode?: IPromotionalCode | null;
   totalPrice = '0';
+  totalSaved = '0';
   codeUsed = '';
   isLoading = true;
   isSaving = false;
@@ -64,7 +67,25 @@ export class PaymentComponent implements OnInit {
 
   calcTotal(): void {
     this.totalPrice = getTotalCartPrice(this.cart).toLocaleString();
-    //TODO Use promo code here.
+  }
+
+  calcTotalSaved(): void {
+    if (this.promoCode == null || this.cart == null) {
+      this.totalSaved = '0';
+      return;
+    }
+    let total = 0;
+    if (this.promoCode.unit === ReductionType.FIX) {
+      this.promoCode.products!.forEach(p => {
+        total += this.promoCode!.value! * getProductQuantity(this.cart, p.id!);
+      })
+    } else if (this.promoCode.unit === ReductionType.PERCENTAGE) {
+      const percentage: number = this.promoCode.value!/100;
+      this.promoCode.products!.forEach(p => {
+        total += p.price! * percentage * getProductQuantity(this.cart, p.id!);
+      })
+    }
+    this.totalSaved = total.toString();
   }
 
   generateOrder(): void {
@@ -79,6 +100,18 @@ export class PaymentComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  applyPromoCode(): void {
+    this.paymentService.findPromoCode(this.editForm.get(['promoCode'])!.value, true).subscribe((res: HttpResponse<IPromotionalCode>) => {
+        this.isLoading = false;
+        this.promoCode = res.body ?? null;
+        console.log(this.promoCode);
+        this.calcTotalSaved();
+      },
+      () => {
+        this.isLoading = false;
+      });
   }
 
   protected updateForm(order: IOrder): void {

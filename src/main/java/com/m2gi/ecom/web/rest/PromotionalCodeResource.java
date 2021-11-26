@@ -190,7 +190,7 @@ public class PromotionalCodeResource {
      * @param code the code of the promotionalCodes to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the promotionalCode, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/promotional-codes/{code}")
+    @GetMapping("/promotional-codes/codes/{code}")
     public ResponseEntity<PromotionalCode> getActivePromotionalCodeByCode(@PathVariable String code,
                                                                           @RequestParam(value = "forCart") boolean forCart,
                                                                           @RequestParam(value = "date", required = false) Instant date) {

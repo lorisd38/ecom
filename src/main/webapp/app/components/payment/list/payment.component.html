@@ -96,6 +96,7 @@
       </div>
 
       <div>{{ 'ecomApp.payment.totalPrice' | translate }} {{ totalPrice }} €</div>
+      <div>{{ 'ecomApp.payment.totalSaved' | translate }} {{ totalSaved }} €</div>
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
@@ -112,7 +113,7 @@
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.pay">Payer</span>
         </button>
 
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" (click)="applyPromoCode()">
           <fa-icon icon="search"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.applyPromoCode">Payer</span>
         </button>
       </div>
