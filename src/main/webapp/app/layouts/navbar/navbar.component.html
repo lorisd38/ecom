@@ -248,7 +248,12 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="ecom-nav-cart nav-link" routerLink="/panier" (click)="collapseNavbar()">
+        <a
+          [ngClass]="{ 'ecom-nav-cart-opened': router.url === '/panier' }"
+          class="ecom-nav-cart"
+          routerLink="/panier"
+          (click)="collapseNavbar()"
+        >
           <span>
             <fa-icon icon="shopping-cart"></fa-icon>
           </span>
@@ -262,10 +267,10 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         <a
-          class="nav-link ecom-nav-profile dropdown-toggle"
+          [ngClass]="{ 'ecom-nav-profile-opened': router.url === '/account/settings' || router.url === '/account/password' }"
+          class="ecom-nav-profile dropdown-toggle"
           ngbDropdownToggle
           href="javascript:void(0);"
-          id="account-menu"
           data-cy="accountMenu"
         >
           <span *ngIf="!account?.imageUrl">
@@ -324,7 +329,7 @@
               <span jhiTranslate="global.menu.account.register">Register</span>
             </a>
           </li>
-          <li ngbDropdown class="dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+          <!-- <li ngbDropdown class="dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
             <a class="dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
               <span>
                 <fa-icon icon="flag"></fa-icon>
@@ -342,7 +347,7 @@
                 </ul>
               </span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li>
     </ul>

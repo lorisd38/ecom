@@ -38,7 +38,7 @@
             <div>Origine : {{ product.origin }}</div>
           </div>
           <div class="ecom-product-tags">
-            <span style="background-color: #{{ tags.color }}" *ngFor="let tags of product.tags; let last = last">
+            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags; let last = last">
               <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
             </span>
           </div>
