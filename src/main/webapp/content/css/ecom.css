@@ -257,20 +257,25 @@ Product card in Cart
   color: var(--couleur-primaire);
 }
 
-.ecom-nav-cart:hover,
-.ecom-nav-cart:focus,
-.ecom-nav-profile:hover,
-.ecom-nav-profile:focus {
-  color: var(--couleur-primaire) !important;
-  background-color: white;
-}
-
 .ecom-nav-cart,
 .ecom-nav-profile {
   border: 2px solid var(--couleur-primaire);
   background-color: var(--couleur-primaire);
   border-radius: 50px;
-  padding: 0 5px;
+  font-weight: 400;
+  padding: 0.5rem;
+  display: block;
+  color: white;
+}
+
+.ecom-nav-cart:hover,
+.ecom-nav-cart:focus,
+.ecom-nav-profile:hover,
+.ecom-nav-profile:focus,
+.ecom-nav-cart-opened,
+.ecom-nav-profile-opened {
+  color: var(--couleur-primaire);
+  background-color: white;
 }
 
 .ecom-nav-cart fa-icon {
