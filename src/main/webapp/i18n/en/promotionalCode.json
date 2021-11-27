@@ -1,0 +1,29 @@
+{
+  "ecomApp": {
+    "promotionalCode": {
+      "home": {
+        "title": "Promotional Codes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Promotional Code",
+        "createOrEditLabel": "Create or edit a Promotional Code",
+        "notFound": "No Promotional Codes found"
+      },
+      "created": "A new Promotional Code is created with identifier {{ param }}",
+      "updated": "A Promotional Code is updated with identifier {{ param }}",
+      "deleted": "A Promotional Code is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Promotional Code {{ id }}?"
+      },
+      "detail": {
+        "title": "Promotional Code"
+      },
+      "id": "ID",
+      "code": "Code",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "value": "Value",
+      "unit": "Unit",
+      "products": "Products"
+    }
+  }
+}

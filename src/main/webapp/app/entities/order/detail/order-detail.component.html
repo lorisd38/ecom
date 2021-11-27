@@ -22,13 +22,15 @@
         <dd>
           <span>{{ order.receptionDate | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="ecomApp.order.promoCode">Promo Code</span></dt>
-        <dd>
-          <span>{{ order.promoCode }}</span>
-        </dd>
         <dt><span jhiTranslate="ecomApp.order.totalPrice">Total Price</span></dt>
         <dd>
           <span>{{ order.totalPrice }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.order.promotionalCode">Promotional Code</span></dt>
+        <dd>
+          <div *ngIf="order.promotionalCode">
+            <a [routerLink]="['/promotional-code', order.promotionalCode?.id, 'view']">{{ order.promotionalCode?.id }}</a>
+          </div>
         </dd>
       </dl>
 

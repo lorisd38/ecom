@@ -111,6 +111,16 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.product.weightUnit" for="field_weightUnit">Weight Unit</label>
+          <select class="form-control" name="weightUnit" formControlName="weightUnit" id="field_weightUnit" data-cy="weightUnit">
+            <option [ngValue]="null">{{ 'ecomApp.WeightUnit.null' | translate }}</option>
+            <option *ngFor="let weightUnit of weightUnitValues" [value]="weightUnit">
+              {{ 'ecomApp.WeightUnit.' + weightUnit | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="ecomApp.product.category" for="field_category">Category</label>
           <select class="form-control" id="field_category" data-cy="category" name="category" formControlName="category">
             <option [ngValue]="null"></option>
@@ -124,17 +134,17 @@
         </div>
 
         <div class="form-group">
-          <label jhiTranslate="ecomApp.product.relatedCtegories" for="field_relatedCtegories">Related Ctegories</label>
+          <label jhiTranslate="ecomApp.product.relatedCategories" for="field_relatedCategories">Related Categories</label>
           <select
             class="form-control"
-            id="field_relatedCtegories"
-            data-cy="relatedCtegories"
+            id="field_relatedCategories"
+            data-cy="relatedCategories"
             multiple
-            name="relatedCtegories"
-            formControlName="relatedCtegories"
+            name="relatedCategories"
+            formControlName="relatedCategories"
           >
             <option
-              [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCtegories')!.value)"
+              [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCategories')!.value)"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
               {{ categoryOption.id }}

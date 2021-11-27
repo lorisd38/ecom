@@ -72,6 +72,7 @@ class TagGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "name":"SAMPLE_TEXT"
+                , "color":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_tag_url"))).exitHereIfFailed

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.m2gi.ecom.IntegrationTest;
 import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.enumeration.WeightUnit;
 import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.ProductService;
 import java.math.BigDecimal;
@@ -67,6 +68,9 @@ class ProductResourceIT {
     private static final BigDecimal DEFAULT_WEIGHT = new BigDecimal(1);
     private static final BigDecimal UPDATED_WEIGHT = new BigDecimal(2);
 
+    private static final WeightUnit DEFAULT_WEIGHT_UNIT = WeightUnit.L;
+    private static final WeightUnit UPDATED_WEIGHT_UNIT = WeightUnit.ML;
+
     private static final String ENTITY_API_URL = "/api/products";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -106,7 +110,8 @@ class ProductResourceIT {
             .brand(DEFAULT_BRAND)
             .imagePath(DEFAULT_IMAGE_PATH)
             .price(DEFAULT_PRICE)
-            .weight(DEFAULT_WEIGHT);
+            .weight(DEFAULT_WEIGHT)
+            .weightUnit(DEFAULT_WEIGHT_UNIT);
         return product;
     }
 
@@ -126,7 +131,8 @@ class ProductResourceIT {
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
             .price(UPDATED_PRICE)
-            .weight(UPDATED_WEIGHT);
+            .weight(UPDATED_WEIGHT)
+            .weightUnit(UPDATED_WEIGHT_UNIT);
         return product;
     }
 
@@ -157,6 +163,7 @@ class ProductResourceIT {
         assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
         assertThat(testProduct.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
         assertThat(testProduct.getWeight()).isEqualByComparingTo(DEFAULT_WEIGHT);
+        assertThat(testProduct.getWeightUnit()).isEqualTo(DEFAULT_WEIGHT_UNIT);
     }
 
     @Test
@@ -265,7 +272,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].imagePath").value(hasItem(DEFAULT_IMAGE_PATH)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(sameNumber(DEFAULT_WEIGHT))));
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(sameNumber(DEFAULT_WEIGHT))))
+            .andExpect(jsonPath("$.[*].weightUnit").value(hasItem(DEFAULT_WEIGHT_UNIT.toString())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -306,7 +314,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND))
             .andExpect(jsonPath("$.imagePath").value(DEFAULT_IMAGE_PATH))
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
-            .andExpect(jsonPath("$.weight").value(sameNumber(DEFAULT_WEIGHT)));
+            .andExpect(jsonPath("$.weight").value(sameNumber(DEFAULT_WEIGHT)))
+            .andExpect(jsonPath("$.weightUnit").value(DEFAULT_WEIGHT_UNIT.toString()));
     }
 
     @Test
@@ -337,7 +346,8 @@ class ProductResourceIT {
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
             .price(UPDATED_PRICE)
-            .weight(UPDATED_WEIGHT);
+            .weight(UPDATED_WEIGHT)
+            .weightUnit(UPDATED_WEIGHT_UNIT);
 
         restProductMockMvc
             .perform(
@@ -360,6 +370,7 @@ class ProductResourceIT {
         assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
         assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testProduct.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testProduct.getWeightUnit()).isEqualTo(UPDATED_WEIGHT_UNIT);
     }
 
     @Test
@@ -453,6 +464,7 @@ class ProductResourceIT {
         assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
         assertThat(testProduct.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
         assertThat(testProduct.getWeight()).isEqualByComparingTo(DEFAULT_WEIGHT);
+        assertThat(testProduct.getWeightUnit()).isEqualTo(DEFAULT_WEIGHT_UNIT);
     }
 
     @Test
@@ -476,7 +488,8 @@ class ProductResourceIT {
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
             .price(UPDATED_PRICE)
-            .weight(UPDATED_WEIGHT);
+            .weight(UPDATED_WEIGHT)
+            .weightUnit(UPDATED_WEIGHT_UNIT);
 
         restProductMockMvc
             .perform(
@@ -499,6 +512,7 @@ class ProductResourceIT {
         assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
         assertThat(testProduct.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
         assertThat(testProduct.getWeight()).isEqualByComparingTo(UPDATED_WEIGHT);
+        assertThat(testProduct.getWeightUnit()).isEqualTo(UPDATED_WEIGHT_UNIT);
     }
 
     @Test

@@ -32,6 +32,9 @@ class TagResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_COLOR = "AAAAAAAAAA";
+    private static final String UPDATED_COLOR = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/tags";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -56,7 +59,7 @@ class TagResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tag createEntity(EntityManager em) {
-        Tag tag = new Tag().name(DEFAULT_NAME);
+        Tag tag = new Tag().name(DEFAULT_NAME).color(DEFAULT_COLOR);
         return tag;
     }
 
@@ -67,7 +70,7 @@ class TagResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tag createUpdatedEntity(EntityManager em) {
-        Tag tag = new Tag().name(UPDATED_NAME);
+        Tag tag = new Tag().name(UPDATED_NAME).color(UPDATED_COLOR);
         return tag;
     }
 
@@ -90,6 +93,7 @@ class TagResourceIT {
         assertThat(tagList).hasSize(databaseSizeBeforeCreate + 1);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testTag.getColor()).isEqualTo(DEFAULT_COLOR);
     }
 
     @Test
@@ -139,7 +143,8 @@ class TagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
     }
 
     @Test
@@ -154,7 +159,8 @@ class TagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tag.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR));
     }
 
     @Test
@@ -176,7 +182,7 @@ class TagResourceIT {
         Tag updatedTag = tagRepository.findById(tag.getId()).get();
         // Disconnect from session so that the updates on updatedTag are not directly saved in db
         em.detach(updatedTag);
-        updatedTag.name(UPDATED_NAME);
+        updatedTag.name(UPDATED_NAME).color(UPDATED_COLOR);
 
         restTagMockMvc
             .perform(
@@ -191,6 +197,7 @@ class TagResourceIT {
         assertThat(tagList).hasSize(databaseSizeBeforeUpdate);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTag.getColor()).isEqualTo(UPDATED_COLOR);
     }
 
     @Test
@@ -274,6 +281,7 @@ class TagResourceIT {
         assertThat(tagList).hasSize(databaseSizeBeforeUpdate);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTag.getColor()).isEqualTo(DEFAULT_COLOR);
     }
 
     @Test
@@ -288,7 +296,7 @@ class TagResourceIT {
         Tag partialUpdatedTag = new Tag();
         partialUpdatedTag.setId(tag.getId());
 
-        partialUpdatedTag.name(UPDATED_NAME);
+        partialUpdatedTag.name(UPDATED_NAME).color(UPDATED_COLOR);
 
         restTagMockMvc
             .perform(
@@ -303,6 +311,7 @@ class TagResourceIT {
         assertThat(tagList).hasSize(databaseSizeBeforeUpdate);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTag.getColor()).isEqualTo(UPDATED_COLOR);
     }
 
     @Test

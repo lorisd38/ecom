@@ -22,9 +22,13 @@
         <dd>
           <span>{{ promotion.endDate | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="ecomApp.promotion.reductionPercentage">Reduction Percentage</span></dt>
+        <dt><span jhiTranslate="ecomApp.promotion.value">Value</span></dt>
         <dd>
-          <span>{{ promotion.reductionPercentage }}</span>
+          <span>{{ promotion.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.promotion.unit">Unit</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.ReductionType.' + promotion.unit }}">{{ promotion.unit }}</span>
         </dd>
         <dt><span jhiTranslate="ecomApp.promotion.products">Products</span></dt>
         <dd>

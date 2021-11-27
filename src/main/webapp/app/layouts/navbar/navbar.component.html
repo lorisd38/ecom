@@ -1,8 +1,7 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
+<nav data-cy="navbar" id="ecom-nav-navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
-    <span jhiTranslate="global.title" class="navbar-title">Ecom</span>
-    <span class="navbar-version">{{ version }}</span>
+    <span jhiTranslate="global.title" class="ecom-nav-title navbar-title">ECOM</span>
   </a>
   <a
     class="navbar-toggler d-lg-none"
@@ -17,20 +16,14 @@
     <fa-icon icon="bars"></fa-icon>
   </a>
 
-  <form (ngSubmit)="search_products()">
-    <input name="Recherchez" type="text" [(ngModel)]="search_bar" />
-    <button jhiTranslate="global.menu.search" type="submit">Rechercher</button>
-  </form>
+  <div class="ecom-nav-search">
+    <div>
+      <fa-icon icon="search"></fa-icon>
+      <input class="ecom-nav-input" name="Recherchez" type="text" [(ngModel)]="search_bar" (input)="search_products()" />
+    </div>
+  </div>
   <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-          <span>
-            <fa-icon icon="home"></fa-icon>
-            <span jhiTranslate="global.menu.home">Home</span>
-          </span>
-        </a>
-      </li>
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
       <li
         *jhiHasAnyAuthority="'ROLE_ADMIN'"
@@ -179,6 +172,18 @@
               <span jhiTranslate="global.menu.entities.userDetails">User Details</span>
             </a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="promotional-code"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.promotionalCode">Promotional Code</span>
+            </a>
+          </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
@@ -243,10 +248,9 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/panier" (click)="collapseNavbar()">
+        <a class="ecom-nav-cart nav-link" routerLink="/panier" (click)="collapseNavbar()">
           <span>
             <fa-icon icon="shopping-cart"></fa-icon>
-            <span jhiTranslate="ecomApp.cart.detail.title">Cart</span>
           </span>
         </a>
       </li>
@@ -257,10 +261,15 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
+        <a
+          class="nav-link ecom-nav-profile dropdown-toggle"
+          ngbDropdownToggle
+          href="javascript:void(0);"
+          id="account-menu"
+          data-cy="accountMenu"
+        >
           <span *ngIf="!account?.imageUrl">
             <fa-icon icon="user"></fa-icon>
-            <span jhiTranslate="global.menu.account.main">Account</span>
           </span>
           <span *ngIf="account?.imageUrl">
             <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />

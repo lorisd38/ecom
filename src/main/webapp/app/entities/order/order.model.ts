@@ -1,13 +1,14 @@
 import * as dayjs from 'dayjs';
 import { IProductOrder } from 'app/entities/product-order/product-order.model';
+import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
 
 export interface IOrder {
   id?: number;
   paymentDate?: dayjs.Dayjs;
   receptionDate?: dayjs.Dayjs;
-  promoCode?: string | null;
   totalPrice?: number;
   lines?: IProductOrder[] | null;
+  promotionalCode?: IPromotionalCode | null;
 }
 
 export class Order implements IOrder {
@@ -15,9 +16,9 @@ export class Order implements IOrder {
     public id?: number,
     public paymentDate?: dayjs.Dayjs,
     public receptionDate?: dayjs.Dayjs,
-    public promoCode?: string | null,
     public totalPrice?: number,
-    public lines?: IProductOrder[] | null
+    public lines?: IProductOrder[] | null,
+    public promotionalCode?: IPromotionalCode | null
   ) {}
 }
 

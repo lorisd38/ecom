@@ -39,9 +39,6 @@ class OrderResourceIT {
     private static final Instant DEFAULT_RECEPTION_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_RECEPTION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_PROMO_CODE = "AAAAAAAAAA";
-    private static final String UPDATED_PROMO_CODE = "BBBBBBBBBB";
-
     private static final BigDecimal DEFAULT_TOTAL_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
 
@@ -69,11 +66,7 @@ class OrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Order createEntity(EntityManager em) {
-        Order order = new Order()
-            .paymentDate(DEFAULT_PAYMENT_DATE)
-            .receptionDate(DEFAULT_RECEPTION_DATE)
-            .promoCode(DEFAULT_PROMO_CODE)
-            .totalPrice(DEFAULT_TOTAL_PRICE);
+        Order order = new Order().paymentDate(DEFAULT_PAYMENT_DATE).receptionDate(DEFAULT_RECEPTION_DATE).totalPrice(DEFAULT_TOTAL_PRICE);
         return order;
     }
 
@@ -84,11 +77,7 @@ class OrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Order createUpdatedEntity(EntityManager em) {
-        Order order = new Order()
-            .paymentDate(UPDATED_PAYMENT_DATE)
-            .receptionDate(UPDATED_RECEPTION_DATE)
-            .promoCode(UPDATED_PROMO_CODE)
-            .totalPrice(UPDATED_TOTAL_PRICE);
+        Order order = new Order().paymentDate(UPDATED_PAYMENT_DATE).receptionDate(UPDATED_RECEPTION_DATE).totalPrice(UPDATED_TOTAL_PRICE);
         return order;
     }
 
@@ -112,7 +101,6 @@ class OrderResourceIT {
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
         assertThat(testOrder.getReceptionDate()).isEqualTo(DEFAULT_RECEPTION_DATE);
-        assertThat(testOrder.getPromoCode()).isEqualTo(DEFAULT_PROMO_CODE);
         assertThat(testOrder.getTotalPrice()).isEqualByComparingTo(DEFAULT_TOTAL_PRICE);
     }
 
@@ -199,7 +187,6 @@ class OrderResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
             .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(DEFAULT_PAYMENT_DATE.toString())))
             .andExpect(jsonPath("$.[*].receptionDate").value(hasItem(DEFAULT_RECEPTION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].promoCode").value(hasItem(DEFAULT_PROMO_CODE)))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(sameNumber(DEFAULT_TOTAL_PRICE))));
     }
 
@@ -217,7 +204,6 @@ class OrderResourceIT {
             .andExpect(jsonPath("$.id").value(order.getId().intValue()))
             .andExpect(jsonPath("$.paymentDate").value(DEFAULT_PAYMENT_DATE.toString()))
             .andExpect(jsonPath("$.receptionDate").value(DEFAULT_RECEPTION_DATE.toString()))
-            .andExpect(jsonPath("$.promoCode").value(DEFAULT_PROMO_CODE))
             .andExpect(jsonPath("$.totalPrice").value(sameNumber(DEFAULT_TOTAL_PRICE)));
     }
 
@@ -240,11 +226,7 @@ class OrderResourceIT {
         Order updatedOrder = orderRepository.findById(order.getId()).get();
         // Disconnect from session so that the updates on updatedOrder are not directly saved in db
         em.detach(updatedOrder);
-        updatedOrder
-            .paymentDate(UPDATED_PAYMENT_DATE)
-            .receptionDate(UPDATED_RECEPTION_DATE)
-            .promoCode(UPDATED_PROMO_CODE)
-            .totalPrice(UPDATED_TOTAL_PRICE);
+        updatedOrder.paymentDate(UPDATED_PAYMENT_DATE).receptionDate(UPDATED_RECEPTION_DATE).totalPrice(UPDATED_TOTAL_PRICE);
 
         restOrderMockMvc
             .perform(
@@ -260,7 +242,6 @@ class OrderResourceIT {
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
         assertThat(testOrder.getReceptionDate()).isEqualTo(UPDATED_RECEPTION_DATE);
-        assertThat(testOrder.getPromoCode()).isEqualTo(UPDATED_PROMO_CODE);
         assertThat(testOrder.getTotalPrice()).isEqualTo(UPDATED_TOTAL_PRICE);
     }
 
@@ -332,7 +313,7 @@ class OrderResourceIT {
         Order partialUpdatedOrder = new Order();
         partialUpdatedOrder.setId(order.getId());
 
-        partialUpdatedOrder.paymentDate(UPDATED_PAYMENT_DATE).promoCode(UPDATED_PROMO_CODE).totalPrice(UPDATED_TOTAL_PRICE);
+        partialUpdatedOrder.paymentDate(UPDATED_PAYMENT_DATE).totalPrice(UPDATED_TOTAL_PRICE);
 
         restOrderMockMvc
             .perform(
@@ -348,7 +329,6 @@ class OrderResourceIT {
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
         assertThat(testOrder.getReceptionDate()).isEqualTo(DEFAULT_RECEPTION_DATE);
-        assertThat(testOrder.getPromoCode()).isEqualTo(UPDATED_PROMO_CODE);
         assertThat(testOrder.getTotalPrice()).isEqualByComparingTo(UPDATED_TOTAL_PRICE);
     }
 
@@ -364,11 +344,7 @@ class OrderResourceIT {
         Order partialUpdatedOrder = new Order();
         partialUpdatedOrder.setId(order.getId());
 
-        partialUpdatedOrder
-            .paymentDate(UPDATED_PAYMENT_DATE)
-            .receptionDate(UPDATED_RECEPTION_DATE)
-            .promoCode(UPDATED_PROMO_CODE)
-            .totalPrice(UPDATED_TOTAL_PRICE);
+        partialUpdatedOrder.paymentDate(UPDATED_PAYMENT_DATE).receptionDate(UPDATED_RECEPTION_DATE).totalPrice(UPDATED_TOTAL_PRICE);
 
         restOrderMockMvc
             .perform(
@@ -384,7 +360,6 @@ class OrderResourceIT {
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
         assertThat(testOrder.getReceptionDate()).isEqualTo(UPDATED_RECEPTION_DATE);
-        assertThat(testOrder.getPromoCode()).isEqualTo(UPDATED_PROMO_CODE);
         assertThat(testOrder.getTotalPrice()).isEqualByComparingTo(UPDATED_TOTAL_PRICE);
     }
 

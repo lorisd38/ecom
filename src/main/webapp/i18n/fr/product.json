@@ -2,7 +2,7 @@
   "ecomApp": {
     "product": {
       "home": {
-        "title": "Products",
+        "title": "Produits",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un nouveau Product",
         "createOrEditLabel": "Créer ou éditer un Produit",
@@ -27,13 +27,14 @@
       "imagePath": "Image Path",
       "price": "Price",
       "weight": "Weight",
+      "weightUnit": "Unité de poids",
       "category": "Category",
-      "relatedCtegories": "Related Ctegories",
+      "relatedCategories": "Catégories associées",
       "tags": "Tags",
       "recipes": "Recipes",
-      "promotions": "Promotions",
-      "favoritesOf": "Favorites Of",
-      "addToCart": "Ajouter au panier",
+      "associatedPromotions": "Promotions associées",
+      "favoritesOf": "Favoris de",
+      "addToCart": "Ajouter",
       "research_result": "Resultat de la recherche :"
     }
   }

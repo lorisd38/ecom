@@ -41,6 +41,9 @@ public class TagServiceImpl implements TagService {
                 if (tag.getName() != null) {
                     existingTag.setName(tag.getName());
                 }
+                if (tag.getColor() != null) {
+                    existingTag.setColor(tag.getColor());
+                }
 
                 return existingTag;
             })

@@ -108,6 +108,7 @@
   },
   "defaultProject": "ecom",
   "cli": {
+    "analytics": false,
     "packageManager": "npm"
   }
 }

@@ -1,17 +1,39 @@
 {
   "ecomApp": {
     "payment": {
-      "title": "Page de paiement !",
-      "seeCart": "Voir panier",
-      "validation": "Payer",
-      "totalprice": "Prix total du panier :",
-      "finalprice": "Total après réduction :",
+      "title": "Paiement",
+      "totalPrice": "Total :",
       "form": {
-        "code": {
-          "label": "Code :",
-          "placeholder": "Entrez votre code içi :"
+        "order": {
+          "promoCode": {
+            "label": "Code promo",
+            "placeholder": "Code"
+          },
+          "receptionDate": {
+            "label": "Date de récupération",
+            "placeholder": "JJ/MM/AAAA HH:mm"
+          }
         },
-        "button": "Valider"
+        "cb": {
+          "title": "Carte bancaire",
+          "name": {
+            "placeholder": "Nom du titulaire"
+          },
+          "number": {
+            "placeholder": "N° de la carte"
+          },
+          "expirationDate": {
+            "placeholder": "MM/AA"
+          },
+          "cvc": {
+            "placeholder": "CVC"
+          }
+        }
+      },
+      "action": {
+        "seeCart": "Panier",
+        "applyPromoCode": "Appliquer le code promo",
+        "pay": "Payer"
       }
     }
   }
