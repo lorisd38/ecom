@@ -283,9 +283,6 @@ public class CartResource {
     public ResponseEntity<Void> deleteProductCart(@PathVariable Long id) {
         log.debug("REST request to delete ProductCart : {}", id);
         productCartService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+        return ResponseEntity.noContent().build();
     }
 }

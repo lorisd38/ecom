@@ -19,7 +19,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
   cart?: ICart | null;
-  isLoading = false;
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
@@ -39,6 +38,7 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else {
+        this.query = '';
         this.loadAll();
       }
       this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
@@ -46,46 +46,24 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProductSearch(): void {
-    this.isLoading = true;
     this.query
-      ? this.productService.querySearch(this.query).subscribe(
-          (res: HttpResponse<IProduct[]>) => {
-            this.products = res.body ?? [];
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
-          }
-        )
+      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+          this.products = res.body ?? [];
+        })
       : '';
   }
 
   loadProduct(): void {
-    this.isLoading = true;
-
-    this.productService.query().subscribe(
-      (res: HttpResponse<IProduct[]>) => {
-        this.products = res.body ?? [];
-        this.isLoading = false;
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => {
+      this.products = res.body ?? [];
+    });
   }
 
   loadCart(): void {
-    this.isLoading = true;
-    this.cartService.queryOneCart().subscribe(
-      (res: HttpResponse<ICart>) => {
-        this.isLoading = false;
-        this.cart = res.body ?? null;
-        this.buildCartContentMap();
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
+      this.cart = res.body ?? null;
+      this.buildCartContentMap();
+    });
   }
 
   buildCartContentMap(): void {
@@ -173,5 +151,18 @@ export class ProductsComponent implements OnInit {
         }
       });
     }
+  }
+
+  getIntegerOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    return b[0];
+  }
+
+  getDecimalsOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    if (b[1].length <= 1) {
+      return b[1] + '0';
+    }
+    return b[1];
   }
 }

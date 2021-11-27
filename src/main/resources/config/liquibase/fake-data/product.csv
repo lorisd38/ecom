@@ -1,11 +1,11 @@
 id;name;description;quantity;version;origin;brand;image_path;price;weight;weight_unit
-1;Steel;Consultant;57374;81236;support navigate;Chilean reboot b;Saussaies actuating deposit;44573;6255;L
-2;Card;navigating Franche-Comté;32061;94707;Sommerard compressing;initiative Generic;Liban;29161;69325;L
-3;Bike;Computer CFP orange;9548;46269;mobile Poitou-Charentes auxiliary;COM a Awesome;homogeneous la;86573;17814;G
-4;De-engineered;b Intelligent;88292;71810;Cheese Renminbi;Consultant online;project hacking efficient;50702;80217;G
-5;applications;lavender application grey;31592;85040;b;Ergonomic Ergonomic;Handcrafted;27583;42304;KG
-6;back-end a b;Games;67286;61811;c Aquitaine Kids;programming Algérie Rustic;Taka;90493;33918;G
-7;Practical a Turkménistan;Saint-Bernard Checking Coordinateur;17748;91872;Tuna;system Practical;executive;79010;99734;G
-8;Berkshire;Virtual c Borders;66901;12734;copying;synthesizing pink Sausages;Computers Jamaïque;10558;606;L
-9;turquoise disintermediate;Cheese benchmark;36478;41867;Wooden Concrete;Rwanda Account;grid-enabled Tasty Keyboard;552;97400;G
-10;Buckinghamshire;application e-business Concrete;55000;96377;JBOD Gloves withdrawal;copying Kazakhstan circuit;revolutionize Technicien a;66378;55362;ML
+1;Carotte;description;10;1;Landes;Panier du primeur;image_path;0.79;1;KG
+2;Pomme de terre;description;10;1;Angers;Panier du primeur;image_path;2.59;1.5;KG
+3;Lait;description;10;1;Landes;GrandLait;image_path;0.99;1;L
+4;Tomates;description;10;1;Brest;brand;image_path;2.99;250;G
+5;Steak de boeuf;description;10;1;Aix-en-Provence;Bio village;image_path;4.99;240;G
+6;Oeufs;description;10;1;Perpignan;Bio Village;image_path;1.65;6;G
+7;Chips;description;10;1;Besançon;Lays;image_path;0.92;135;G
+8;Pain de campagne;description;10;1;Perpignan;brand;image_path;1.10;400;G
+9;Brioche;description;10;1;Caen;Pasquier;image_path;1.95;630;G
+10;Cerise;description;10;1;Le Mans;Bio Village;image_path;0.99;250;G

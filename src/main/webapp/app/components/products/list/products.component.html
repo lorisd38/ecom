@@ -1,19 +1,13 @@
 <div>
-  <h2 id="page-heading" data-cy="ProductsHeading">
-    <div *ngIf="this.query === undefined; else elseBlock">
-      <span jhiTranslate="ecomApp.product.home.title">Products</span>
+  <div data-cy="ProductsHeading">
+    <div *ngIf="this.query === undefined || this.query === ''; else elseBlock">
+      <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.home.title">Products</h2>
     </div>
     <ng-template #elseBlock>
-      <span jhiTranslate="ecomApp.product.research_result">Products results for :</span> {{ this.query }}
+      <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
+      <span>"{{ this.query }}"</span>
     </ng-template>
-
-    <div>
-      <button (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="ecomApp.product.home.refreshListLabel">Refresh List</span>
-      </button>
-    </div>
-  </h2>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -23,84 +17,76 @@
     <span jhiTranslate="ecomApp.product.home.notFound">No products found</span>
   </div>
 
-  <div id="entities" *ngIf="products && products.length > 0">
-    <table aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.origin">Origin</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.brand">Brand</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.imagePath">Image Path</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.price">Price</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.weight">Weight</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.category">Category</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.tags">Tags</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/product', product.id, 'view']">{{ product.id }}</a>
-          </td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.origin }}</td>
-          <td>{{ product.brand }}</td>
-          <td>{{ product.imagePath }}</td>
-          <td>{{ product.price }}</td>
-          <td>{{ product.weight }}</td>
-          <td>
-            <div *ngIf="product.category">
-              <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
-            </div>
-          </td>
-          <td>
-            <span *ngFor="let tags of product.tags; let last = last">
-              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a
-              >{{ last ? '' : ', ' }}
+  <div *ngIf="products && products.length > 0">
+    <div>
+      <div id="ecom-list-products">
+        <div class="ecom-product" *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+          <div class="ecom-product-img">
+            <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
+          </div>
+          <div class="ecom-product-price">
+            <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
+            <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
+            <span class="ecom-product-price-euro">€</span>
+            <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
+          </div>
+          <div class="ecom-product-info">
+            <span
+              ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
+            >
+            <span>{{ product.weight }} {{ product.weightUnit }}</span>
+            <div>Origine : {{ product.origin }}</div>
+          </div>
+          <div class="ecom-product-tags">
+            <span style="background-color: #{{ tags.color }}" *ngFor="let tags of product.tags; let last = last">
+              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
             </span>
-          </td>
-          <td>
+          </div>
+          <div class="ecom-product-button">
             <div *ngIf="account == null || !isPresent(product.id); else elseBlock">
-              <button type="submit" (click)="addToCart(product)" data-cy="entityAddTodCartButton">
+              <button
+                class="ecom-product-button-add ecom-button"
+                type="submit"
+                (click)="addToCart(product)"
+                data-cy="entityAddTodCartButton"
+              >
+                <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
                 <fa-icon icon="plus"></fa-icon>
-                <span jhiTranslate="ecomApp.product.addToCart">Ajouter au panier</span>
               </button>
             </div>
             <ng-template #elseBlock>
-              <button
-                type="submit"
-                (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
-                class="btn btn-primary btn-sm"
-                data-cy="entityDecreaseProductCartButton"
-              >
-                <fa-icon icon="minus"></fa-icon>
-              </button>
-              <input
-                id="product_{{ product.id }}}"
-                type="text"
-                pattern="[0-9]*"
-                (change)="updateQuantityProductByText(product, $event)"
-                [value]="quantityProduct(product)"
-              />
-              <button
-                type="submit"
-                (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
-                class="btn btn-primary btn-sm"
-                data-cy="entityIncreaseProductCartButton"
-              >
-                <fa-icon icon="plus"></fa-icon>
-              </button>
+              <div>
+                <button
+                  class="ecom-product-button-minus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+                  data-cy="entityDecreaseProductCartButton"
+                >
+                  <fa-icon icon="minus"></fa-icon>
+                </button>
+                <input
+                  class="ecom-product-button-text"
+                  type="text"
+                  pattern="[0-9]*"
+                  (change)="updateQuantityProductByText(product, $event)"
+                  [value]="quantityProduct(product)"
+                />
+                <button
+                  class="ecom-product-button-plus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+                  data-cy="entityIncreaseProductCartButton"
+                >
+                  <fa-icon icon="plus"></fa-icon>
+                </button>
+              </div>
             </ng-template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div *ngIf="account != null">
-      <a routerLink="/panier">Voir panier</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ecom-button-see-cart">
+      <button type="submit" class="ecom-button ecom-button-next" routerLink="/panier">Voir panier</button>
     </div>
   </div>
 </div>
