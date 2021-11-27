@@ -311,10 +311,38 @@ Product card in Cart
   height: 25px !important;
 }
 
-.bg-primary .navbar-nav .active > .nav-link {
-  color: var(--couleur-primaire) !important;
+.ecom-nav-menu {
+  box-shadow: 3px 3px 3px #c4c4c4;
 }
 
+.ecom-nav-menu > li {
+  margin: 8px 25px;
+}
+
+.ecom-nav-menu > li > a {
+  border: 1px solid #c4c4c4;
+  padding: 7px 12px;
+  border-radius: 5px;
+}
+
+.ecom-nav-menu > li > a:hover,
+.ecom-nav-account-opened,
+.ecom-nav-password-opened {
+  background-color: #808080 !important;
+}
+
+.ecom-nav-menu > li > a:active {
+  transform: translate(2px, 2px);
+}
+
+#logout {
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+#logout:hover {
+  background-color: var(--couleur-primaire-hover);
+}
 /* ==============================================================
   Signin / Signup
   ===============================================================*/
