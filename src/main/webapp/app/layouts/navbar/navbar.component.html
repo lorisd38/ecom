@@ -280,27 +280,35 @@
             <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
+        <ul class="dropdown-menu ecom-nav-menu" ngbDropdownMenu aria-labelledby="account-menu">
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
+            <a
+              [ngClass]="{ 'ecom-nav-account-opened': router.url === '/account/settings' }"
+              class="dropdown-item"
+              routerLink="account/settings"
+              routerLinkActive="active"
+              (click)="collapseNavbar()"
+              data-cy="settings"
+            >
               <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.settings">Settings</span>
             </a>
           </li>
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" data-cy="logout">
+            <a class="dropdown-item" data-cy="favorites">
               <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.favorites">Favorites</span>
             </a>
           </li>
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" data-cy="logout">
+            <a class="dropdown-item" data-cy="history">
               <fa-icon icon="paste" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.history">History</span>
             </a>
           </li>
           <li *ngSwitchCase="true">
             <a
+              [ngClass]="{ 'ecom-nav-password-opened': router.url === '/account/password' }"
               class="dropdown-item"
               routerLink="account/password"
               routerLinkActive="active"
