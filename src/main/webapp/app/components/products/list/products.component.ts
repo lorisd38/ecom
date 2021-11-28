@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import { ICart } from 'app/entities/cart/cart.model';
+import {getTotalCartItems, ICart} from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
@@ -63,6 +63,7 @@ export class ProductsComponent implements OnInit {
     this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
       this.cart = res.body ?? null;
       this.buildCartContentMap();
+      this.cartService.nbItems = getTotalCartItems(this.cart);
     });
   }
 
@@ -94,6 +95,7 @@ export class ProductsComponent implements OnInit {
           const productLine: IProductCart | undefined = this.cart?.lines?.find(line => line.product?.id === item.id);
           if (productLine != null) {
             productLine.quantity = quantity;
+            this.cartService.nbItems = getTotalCartItems(this.cart);
           }
         });
       } else if (quantity === 0) {
@@ -110,6 +112,7 @@ export class ProductsComponent implements OnInit {
       }
     }
   }
+
   getProductCart(item: IProduct): IProductCart | undefined {
     return this.productsMap.get(<number>item.id);
   }
@@ -133,6 +136,7 @@ export class ProductsComponent implements OnInit {
       const productCartToUpdate: IProductCart | null = res.body ?? null;
       if (productCartToUpdate != null) {
         this.cart!.lines?.push(productCartToUpdate);
+        this.cartService.nbItems = getTotalCartItems(this.cart);
       }
       this.buildCartContentMap();
     });
@@ -148,6 +152,7 @@ export class ProductsComponent implements OnInit {
           // Splice is a method to delete starting from <index> a given <number of elements>.
           this.cart.lines.splice(indexProductCart, 1);
           this.buildCartContentMap();
+          this.cartService.nbItems = getTotalCartItems(this.cart);
         }
       });
     }
