@@ -9,6 +9,7 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { CartService } from '../../components/cart/service/cart.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -22,8 +23,8 @@ export class NavbarComponent implements OnInit {
   openAPIEnabled?: boolean;
   version = '';
   account: Account | null = null;
-  nbProductsPanier = 4;
   search_bar = '';
+
 
   constructor(
     private loginService: LoginService,
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     public router: Router,
+    public cartService: CartService,
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
