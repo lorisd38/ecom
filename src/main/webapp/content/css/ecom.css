@@ -182,6 +182,23 @@ Product card
 .ecom-product-tags > span > a {
   color: black;
 }
+
+.ecom-product-heart {
+  position: absolute;
+  display: block;
+  top: 0px;
+  right: 0px;
+  height: 30px;
+  width: 30px;
+  background: white;
+  border-radius: 50%;
+}
+
+.ecom-product-heart > img{
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
 /* ==============================================================
 Product card in Cart
 ===============================================================*/

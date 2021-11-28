@@ -22,6 +22,8 @@ export class ProductsComponent implements OnInit {
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
+  //For test favoris
+  isFavoris = false;
 
   constructor(
     protected productService: ProductService,
@@ -140,6 +142,11 @@ export class ProductsComponent implements OnInit {
       }
       this.buildCartContentMap();
     });
+  }
+
+  addToFavorite(product: IProduct): void {
+    console.log("YOOO");
+    this.isFavoris = !this.isFavoris;
   }
 
   deleteProduct(product: IProduct): void {
