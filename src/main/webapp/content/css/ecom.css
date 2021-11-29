@@ -186,18 +186,20 @@ Product card
 .ecom-product-heart {
   position: absolute;
   display: block;
-  top: 0px;
-  right: 0px;
+  top: 3px;
+  right: 3px;
   height: 30px;
   width: 30px;
   background: white;
   border-radius: 50%;
+  border: solid 1px #c4c4c4;
 }
 
 .ecom-product-heart > img{
   height: 100%;
   width: 100%;
   cursor: pointer;
+  border-radius: 50%;
 }
 /* ==============================================================
 Product card in Cart
