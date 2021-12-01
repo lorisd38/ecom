@@ -27,6 +27,18 @@ export function getTotalCartPrice(cart: ICart | null | undefined): number {
   return total;
 }
 
+export function getTotalCartItems(cart: ICart | null | undefined): number {
+  let total = 0;
+  if (cart?.lines != null) {
+    for (const lineProduct of cart.lines) {
+      if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+        total += lineProduct.quantity;
+      }
+    }
+  }
+  return total;
+}
+
 export function getProductQuantity(cart: ICart | null | undefined, productId: number): number {
   if (cart?.lines != null) {
     for (const lineProduct of cart.lines) {

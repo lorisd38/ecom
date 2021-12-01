@@ -52,3 +52,17 @@ Logo styles
   background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
   background-size: contain;
 }
+
+.panier {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  display: block;
+  top: -5px;
+  right: -5px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}

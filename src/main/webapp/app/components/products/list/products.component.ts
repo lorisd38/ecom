@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import { ICart } from 'app/entities/cart/cart.model';
+import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
@@ -19,7 +19,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
   cart?: ICart | null;
-  isLoading = false;
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
@@ -39,6 +38,7 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else {
+        this.query = '';
         this.loadAll();
       }
       this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
@@ -46,46 +46,25 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProductSearch(): void {
-    this.isLoading = true;
     this.query
-      ? this.productService.querySearch(this.query).subscribe(
-          (res: HttpResponse<IProduct[]>) => {
-            this.products = res.body ?? [];
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
-          }
-        )
+      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+          this.products = res.body ?? [];
+        })
       : '';
   }
 
   loadProduct(): void {
-    this.isLoading = true;
-
-    this.productService.query().subscribe(
-      (res: HttpResponse<IProduct[]>) => {
-        this.products = res.body ?? [];
-        this.isLoading = false;
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => {
+      this.products = res.body ?? [];
+    });
   }
 
   loadCart(): void {
-    this.isLoading = true;
-    this.cartService.queryOneCart().subscribe(
-      (res: HttpResponse<ICart>) => {
-        this.isLoading = false;
-        this.cart = res.body ?? null;
-        this.buildCartContentMap();
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
+      this.cart = res.body ?? null;
+      this.buildCartContentMap();
+      this.cartService.nbItems = getTotalCartItems(this.cart);
+    });
   }
 
   buildCartContentMap(): void {
@@ -116,6 +95,7 @@ export class ProductsComponent implements OnInit {
           const productLine: IProductCart | undefined = this.cart?.lines?.find(line => line.product?.id === item.id);
           if (productLine != null) {
             productLine.quantity = quantity;
+            this.cartService.nbItems = getTotalCartItems(this.cart);
           }
         });
       } else if (quantity === 0) {
@@ -132,6 +112,7 @@ export class ProductsComponent implements OnInit {
       }
     }
   }
+
   getProductCart(item: IProduct): IProductCart | undefined {
     return this.productsMap.get(<number>item.id);
   }
@@ -155,6 +136,7 @@ export class ProductsComponent implements OnInit {
       const productCartToUpdate: IProductCart | null = res.body ?? null;
       if (productCartToUpdate != null) {
         this.cart!.lines?.push(productCartToUpdate);
+        this.cartService.nbItems = getTotalCartItems(this.cart);
       }
       this.buildCartContentMap();
     });
@@ -170,8 +152,22 @@ export class ProductsComponent implements OnInit {
           // Splice is a method to delete starting from <index> a given <number of elements>.
           this.cart.lines.splice(indexProductCart, 1);
           this.buildCartContentMap();
+          this.cartService.nbItems = getTotalCartItems(this.cart);
         }
       });
     }
+  }
+
+  getIntegerOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    return b[0];
+  }
+
+  getDecimalsOfPrice(price?: number): string {
+    const b = price!.toString().split('.');
+    if (b[1].length <= 1) {
+      return b[1] + '0';
+    }
+    return b[1];
   }
 }

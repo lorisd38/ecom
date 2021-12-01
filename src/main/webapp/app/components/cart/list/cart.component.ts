@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
+import { getTotalCartItems, getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../service/cart.service';
@@ -39,6 +39,7 @@ export class CartComponent implements OnInit {
 
   calcTotal(): void {
     this.total = getTotalCartPrice(this.cart).toLocaleString();
+    this.cartService.nbItems = getTotalCartItems(this.cart);
   }
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
