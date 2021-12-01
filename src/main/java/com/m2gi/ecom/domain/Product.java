@@ -92,7 +92,7 @@ public class Product implements Serializable {
      */
     @ApiModelProperty(value = "FIXME: Only created because JHipster needs a bidirectional ManyToMany Relationship, should not be used.")
     @ManyToMany(mappedBy = "products")
-    @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "" }, allowSetters = true)
     private Set<Promotion> associatedPromotions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -103,16 +103,34 @@ Product card
   max-height: 130px;
 }
 
+.ecom-product-oldprice > p {
+  display: inline-block;
+  margin: 0 0 0 5px;
+  color: red;
+}
+
+.ecom-product-price {
+  font-size: 0px;
+}
+
+.ecom-product-oldprice > span {
+  text-decoration: line-through;
+  font-size: 12px;
+}
+
 .ecom-product-price {
   padding-left: 10px;
 }
 
 .ecom-product-price-integer,
-.ecom-product-price-euro {
+.ecom-product-price-euro,
+.ecom-product-price-integer-promo,
+.ecom-product-price-euro-promo {
   font-size: 19px;
 }
 
-.ecom-product-price-decimals {
+.ecom-product-price-decimals,
+.ecom-product-price-decimals-promo {
   font-size: 15px;
 }
 
