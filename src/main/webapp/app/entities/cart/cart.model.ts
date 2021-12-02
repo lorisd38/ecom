@@ -26,3 +26,15 @@ export function getTotalCartPrice(cart: ICart | null | undefined): number {
   }
   return total;
 }
+
+export function getTotalCartItems(cart: ICart | null | undefined): number {
+  let total = 0;
+  if (cart?.lines != null) {
+    for (const lineProduct of cart.lines) {
+      if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+        total += 1;
+      }
+    }
+  }
+  return total;
+}

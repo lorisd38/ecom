@@ -1,0 +1,502 @@
+:root {
+  --couleur-primaire: #518ef8;
+  --couleur-primaire-hover: #4272c7;
+}
+
+.ecom-title-header {
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.ecom-title-header:after {
+  content: '';
+  background: black;
+  position: absolute;
+  top: 65px;
+  left: 1.5%;
+  height: 1px;
+  width: 150px;
+}
+
+.ecom-button {
+  border-width: 1.5px;
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+.ecom-button:hover {
+  background-color: var(--couleur-primaire-hover);
+}
+
+.ecom-button:active {
+  transform: translate(2px, 1px);
+}
+
+.ecom-button:disabled {
+  opacity: 0.33;
+}
+
+.ecom-input-default {
+  border-radius: 5px;
+  border: 1px solid black;
+  height: 35px;
+  font-size: 18px;
+  padding: 20px 8px;
+}
+
+.ecom-link {
+  color: var(--couleur-primaire) !important;
+}
+
+/* ==============================================================
+Product card
+===============================================================*/
+#ecom-list-products {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.ecom-product {
+  margin: 5px;
+  position: relative;
+  width: 208px;
+  height: 308px;
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+  box-shadow: 1px 3px 2px grey;
+}
+
+.ecom-product-promo-band {
+  position: absolute;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background-color: red;
+  width: 100px;
+  height: 23px;
+  position: absolute;
+  left: -24px;
+  top: 15px;
+  transform: rotate(-45deg);
+  clip-path: polygon(23% 0%, 77% 0, 100% 100%, 0% 100%);
+}
+
+/* SCROLLBAR */
+/* width */
+.ecom-product ::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ecom-product ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+.ecom-product ::-webkit-scrollbar-thumb {
+  background: var(--couleur-primaire);
+  border-radius: 10px;
+}
+
+.ecom-product ::-webkit-scrollbar-thumb:hover {
+  background: var(--couleur-primaire-hover);
+}
+/* */
+.ecom-product-img {
+  text-align: center;
+  padding: 10px;
+}
+
+.ecom-product-img > div {
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+}
+
+.ecom-product-img img {
+  max-width: 158px;
+  max-height: 130px;
+}
+
+.ecom-product-oldprice > p {
+  display: inline-block;
+  margin: 0 0 0 5px;
+  color: red;
+}
+
+.ecom-product-price {
+  font-size: 0px;
+}
+
+.ecom-product-oldprice > span {
+  text-decoration: line-through;
+  font-size: 12px;
+}
+
+.ecom-product-price {
+  padding-left: 10px;
+}
+
+.ecom-product-price-integer,
+.ecom-product-price-euro,
+.ecom-product-price-integer-promo,
+.ecom-product-price-euro-promo {
+  font-size: 19px;
+}
+
+.ecom-product-price-decimals,
+.ecom-product-price-decimals-promo {
+  font-size: 15px;
+}
+
+.ecom-product-info {
+  font-size: 15px;
+  padding: 10px 10px 0 10px;
+}
+
+.ecom-product-info > div {
+  font-size: 14px;
+}
+
+.ecom-product-button span,
+.ecom-product-button input,
+.ecom-product-button svg,
+.ecom-product-button button {
+  font-size: 14px;
+}
+
+.ecom-product-button-add {
+  width: 85px;
+  text-align: center;
+}
+
+.ecom-product-button-text {
+  width: 25px;
+}
+
+.ecom-product-button > div {
+  font-size: 12px;
+  position: absolute;
+  top: 152px;
+  right: 10px;
+}
+
+.ecom-product-button-add,
+.ecom-product-button-minus,
+.ecom-product-button-plus {
+  border-radius: 50px;
+}
+
+.ecom-button-see-cart {
+  margin-top: 25px;
+}
+
+.ecom-button-next {
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.ecom-product-tags {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 176px;
+  height: 35px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.ecom-product-tags > span {
+  border-radius: 10px;
+  padding: 2px 5px;
+  font-size: 12px;
+}
+
+.ecom-product-tags > span:not(:last-child) {
+  margin-right: 5px;
+}
+
+.ecom-product-tags > span > a {
+  color: black;
+}
+/* ==============================================================
+Product card in Cart
+===============================================================*/
+#ecom-cart-products {
+  width: 100%;
+}
+
+.ecom-cart {
+  position: relative;
+  height: 124px;
+}
+
+.ecom-cart:nth-child(2n) {
+  background-color: #f3f3f3;
+}
+
+.ecom-cart > * {
+  display: inline-block;
+}
+
+.ecom-cart-img {
+  width: 140px;
+  text-align: center;
+  padding: 10px;
+}
+
+.ecom-cart-img > div {
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+}
+
+.ecom-cart-img img {
+  max-width: 140px;
+  max-height: 100px;
+}
+
+.ecom-productcart-button > div {
+  font-size: 12px;
+  position: absolute;
+  top: 50px;
+  right: 30px;
+}
+
+.ecom-productcart-button > div > div {
+  display: inline-block;
+}
+
+.ecom-productcart-price {
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 10px;
+  right: 18px;
+}
+
+/* ==============================================================
+  Navbar
+  ===============================================================*/
+.ecom-nav-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 5px;
+}
+
+#ecom-nav-navbar {
+  background-color: white !important;
+  box-shadow: 0 5px 5px #c4c4c4;
+}
+
+.ecom-nav-title {
+  color: var(--couleur-primaire);
+}
+
+.ecom-nav-cart,
+.ecom-nav-profile {
+  border: 2px solid var(--couleur-primaire);
+  background-color: var(--couleur-primaire);
+  border-radius: 50px;
+  font-weight: 400;
+  padding: 0.5rem;
+  display: block;
+  color: white;
+}
+
+.ecom-nav-cart:hover,
+.ecom-nav-cart:focus,
+.ecom-nav-profile:hover,
+.ecom-nav-profile:focus,
+.ecom-nav-cart-opened,
+.ecom-nav-profile-opened {
+  color: var(--couleur-primaire);
+  background-color: white;
+}
+
+.ecom-nav-cart fa-icon {
+  margin: 0 4px 0 2px;
+}
+
+.ecom-nav-profile fa-icon {
+  margin: 0 2px;
+}
+
+.ecom-nav-search {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.ecom-nav-search > div {
+  position: relative;
+  width: 60%;
+}
+
+.ecom-nav-search fa-icon {
+  cursor: pointer;
+  color: var(--couleur-primaire);
+  position: absolute;
+  top: 5px;
+  right: 16px;
+}
+
+.ecom-nav-search fa-icon > svg {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.ecom-nav-menu {
+  box-shadow: 3px 3px 3px #c4c4c4;
+}
+
+.ecom-nav-menu > li {
+  margin: 8px 25px;
+}
+
+.ecom-nav-menu > li > a {
+  border: 1px solid #c4c4c4;
+  padding: 7px 12px;
+  border-radius: 5px;
+}
+
+.ecom-nav-menu > li > a:hover,
+.ecom-nav-account-opened,
+.ecom-nav-password-opened {
+  background-color: #808080 !important;
+}
+
+.ecom-nav-menu > li > a:active {
+  transform: translate(2px, 2px);
+}
+
+#logout {
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+#logout:hover {
+  background-color: var(--couleur-primaire-hover);
+}
+/* ==============================================================
+  Signin / Signup
+  ===============================================================*/
+.ecom-log-panel {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 70px 0;
+}
+
+.ecom-log-panel .alert {
+  margin: 0 50px 10px 50px;
+}
+
+.ecom-log-panel > div {
+  width: 500px;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px #c4c4c4;
+}
+
+.ecom-log-form {
+  margin-bottom: 20px;
+}
+
+.ecom-log-label-input {
+  position: relative;
+}
+
+.ecom-log-label-input:not(:last-child) {
+  margin-bottom: 25px;
+}
+
+.ecom-log-label-margin {
+  margin-bottom: 0 !important;
+}
+
+.ecom-log-label-input > * {
+  display: block;
+}
+
+.ecom-log-label-input > label {
+  padding-left: 50px;
+}
+
+.ecom-log-label-input > div {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.ecom-log-label-input > div > input {
+  width: 400px;
+}
+
+.ecom-log-button {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.ecom-log-button > button {
+  width: 400px;
+  font-size: 18px;
+}
+
+.ecom-log-title {
+  position: relative;
+}
+
+.ecom-log-title > h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+.ecom-log-title > h1:after {
+  content: '';
+  background: black;
+  position: absolute;
+  top: 45px;
+  left: 175px;
+  height: 1px;
+  width: 150px;
+}
+
+.ecom-log-link {
+  margin: 0 0 20px 50px;
+}
+
+.ecom-log-link > div {
+  margin: 8px 0;
+}
+
+.ecom-log-rember {
+  text-align: right;
+  margin: 12px 50px 8px 0;
+}
+
+.ecom-log-message {
+  color: red;
+}
+
+.ecom-log-rob-mdp {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+.ecom-log-rob-mdp ul {
+  padding-left: 0;
+}
+
+.ecom-log-message-incorect {
+  position: absolute;
+  top: 72px;
+  left: 50px;
+}

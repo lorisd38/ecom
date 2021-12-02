@@ -11,71 +11,79 @@
     <span jhiTranslate="ecomApp.cart.empty">Empty card</span>
   </div>
 
-  <!--TO DO-->
-  <div id="entities" *ngIf="cart && cart?.lines?.length !== 0">
-    <table aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="ecomApp.productCart.id">ID Product Cart</span></th>
-          <th scope="col"><span jhiTranslate="global.field.id">ID Product</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.origin">Origin</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.imagePath">Image Path</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.product.price">Price</span></th>
-          <th scope="col"><span jhiTranslate="ecomApp.productCart.quantity">Quantity</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let lineProduct of cart?.lines; trackBy: trackId" data-cy="entityTable">
-          <td>{{ lineProduct.id }}</td>
-          <td>
-            <a [routerLink]="['/product', lineProduct.product?.id, 'view']">{{ lineProduct.product?.id }}</a>
-          </td>
-          <td>{{ lineProduct.product?.name }}</td>
-          <td>{{ lineProduct.product?.description }}</td>
-          <td>{{ lineProduct.product?.origin }}</td>
-          <td>{{ lineProduct.product?.imagePath }}</td>
-          <td>{{ lineProduct.product?.price }}</td>
-          <td>
-            <div>
-              <button
-                type="submit"
-                (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) - 1)"
-                data-cy="entityDecreaseProductCartButton"
-              >
-                <fa-icon icon="minus"></fa-icon>
-              </button>
-              <input
-                type="text"
-                pattern="[0-9]*"
-                (change)="updateQuantityProductCartByText(lineProduct, $event)"
-                [value]="lineProduct.quantity ?? 0"
-              />
-              <button
-                type="submit"
-                (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) + 1)"
-                data-cy="entityIncreaseProductCartButton"
-              >
-                <fa-icon icon="plus"></fa-icon>
-              </button>
-            </div>
-          </td>
-          <td>
-            <div>
-              <button type="submit" (click)="deleteLine(lineProduct)" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>Total du panier : {{ total }} €</div>
+  <div *ngIf="cart && cart?.lines?.length !== 0">
     <div>
-      <a routerLink="/payment">Valider le panier</a>
+      <div id="ecom-cart-products">
+        <div class="ecom-cart" *ngFor="let lineProduct of cart?.lines; trackBy: trackId" data-cy="entityTable">
+          <div class="ecom-cart-img">
+            <div>
+              <img src="{{ lineProduct.product?.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" />
+            </div>
+          </div>
+          <div class="ecom-product-price">
+            <span>{{ lineProduct.product?.price | number: '0.2' }} €/u</span>
+            <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
+          </div>
+          <div class="ecom-product-info">
+            <span
+              ><a [routerLink]="['/product', lineProduct.product?.id, 'view']">{{ lineProduct.product?.name }}</a></span
+            >
+            <span>{{ lineProduct.product?.origin }}</span>
+          </div>
+          <div class="ecom-product-subinfo">
+            <span>{{ lineProduct.product?.brand }}</span>
+            <span>{{ lineProduct.product?.weight }} {{ lineProduct.product?.weightUnit }}</span>
+          </div>
+          <div>
+            <span *ngFor="let tags of lineProduct.product?.tags; let last = last">
+              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </div>
+          <div class="ecom-productcart-button">
+            <div>
+              <div>
+                <button
+                  class="ecom-product-button-minus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) - 1)"
+                  data-cy="entityDecreaseProductCartButton"
+                >
+                  <fa-icon icon="minus"></fa-icon>
+                </button>
+                <input
+                  class="ecom-product-button-text"
+                  type="text"
+                  pattern="[0-9]*"
+                  (change)="updateQuantityProductCartByText(lineProduct, $event)"
+                  [value]="lineProduct.quantity ?? 0"
+                />
+                <button
+                  class="ecom-product-button-plus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) + 1)"
+                  data-cy="entityIncreaseProductCartButton"
+                >
+                  <fa-icon icon="plus"></fa-icon>
+                </button>
+              </div>
+              <div>
+                <button class="ecom-button" type="submit" (click)="deleteLine(lineProduct)" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span jhiTranslate="entity.action.delete">Delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="ecom-productcart-price">
+            <span>{{ lineProduct.product!.price! * lineProduct!.quantity! | number: '0.2' }} €</span>
+          </div>
+        </div>
+      </div>
+      <div>Total du panier : {{ total }} €</div>
+      <div class="ecom-button-see-cart">
+        <button type="submit" routerLink="/payment" class="ecom-button ecom-button-next">Valider le panier</button>
+      </div>
     </div>
   </div>
 </div>

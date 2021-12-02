@@ -9,7 +9,6 @@ import { HttpResponse } from '@angular/common/http';
 import { IOrder, Order } from '../../../entities/order/order.model';
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '../../../config/input.constants';
-// import { Dayjs } from 'dayjs';
 
 @Component({
   selector: 'jhi-payment',
