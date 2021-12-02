@@ -317,15 +317,14 @@ Product card in Cart
 }
 
 .ecom-productcart-delete button {
-  background-color: #c4c4c4;
-  border: 1px solid #737373;
+  background-color: #ff4747;
+  border: 1px solid #c72b2b;
   border-radius: 5px;
   padding: 3px 8px;
 }
 
 .ecom-productcart-delete button:hover {
-  background-color: #737373;
-  color: white;
+  background-color: #c72b2b;
 }
 
 .ecom-productcart-delete svg {
