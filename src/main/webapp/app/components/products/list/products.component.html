@@ -44,7 +44,7 @@
             <div>Origine : {{ product.origin }}</div>
           </div>
           <div class="ecom-product-tags">
-            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags; let last = last">
+            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
               <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
             </span>
           </div>
@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next" routerLink="/panier">Voir panier</button>
+      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
     </div>
   </div>
 </div>
