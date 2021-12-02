@@ -55,6 +55,7 @@
                 type="submit"
                 (click)="addToCart(product)"
                 data-cy="entityAddTodCartButton"
+                title="Ajouter au panier"
               >
                 <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
                 <fa-icon icon="plus"></fa-icon>
@@ -67,6 +68,7 @@
                   type="submit"
                   (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
                   data-cy="entityDecreaseProductCartButton"
+                  title="Diminuer la quantite"
                 >
                   <fa-icon icon="minus"></fa-icon>
                 </button>
@@ -76,12 +78,14 @@
                   pattern="[0-9]*"
                   (change)="updateQuantityProductByText(product, $event)"
                   [value]="quantityProduct(product)"
+                  title="Définir la quantite"
                 />
                 <button
                   class="ecom-product-button-plus ecom-button"
                   type="submit"
                   (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
                   data-cy="entityIncreaseProductCartButton"
+                  title="Augmenter la quantite"
                 >
                   <fa-icon icon="plus"></fa-icon>
                 </button>

@@ -33,7 +33,14 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
+        <a
+          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/entities') }"
+          class="ecom-nav-profile dropdown-toggle"
+          ngbDropdownToggle
+          href="javascript:void(0);"
+          id="entity-menu"
+          data-cy="entity"
+        >
           <span>
             <fa-icon icon="th-list"></fa-icon>
             <span jhiTranslate="global.menu.entities.main">Entities</span>
@@ -195,7 +202,14 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
+        <a
+          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/admin/') }"
+          class="ecom-nav-profile dropdown-toggle"
+          ngbDropdownToggle
+          href="javascript:void(0);"
+          id="admin-menu"
+          data-cy="adminMenu"
+        >
           <span>
             <fa-icon icon="users-cog"></fa-icon>
             <span jhiTranslate="global.menu.admin.main">Administration</span>
@@ -249,15 +263,16 @@
       </li>
       <li class="nav-item">
         <a
-          [ngClass]="{ 'ecom-nav-cart-opened': router.url === '/panier' }"
+          [ngClass]="{ 'ecom-nav-opened': router.url === '/panier' }"
           class="ecom-nav-cart panier"
           routerLink="/panier"
           (click)="collapseNavbar()"
+          title="Afficher votre panier"
         >
           <span>
             <fa-icon icon="shopping-cart"></fa-icon>
           </span>
-          <span *ngIf="account && this.cartService.nbItems>0" class="badge">{{this.cartService.nbItems}}</span>
+          <span *ngIf="account && this.cartService.nbItems > 0" class="badge">{{ this.cartService.nbItems }}</span>
         </a>
       </li>
       <li
@@ -268,7 +283,7 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         <a
-          [ngClass]="{ 'ecom-nav-profile-opened': router.url === '/account/settings' || router.url === '/account/password' }"
+          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/account') }"
           class="ecom-nav-profile dropdown-toggle"
           ngbDropdownToggle
           href="javascript:void(0);"

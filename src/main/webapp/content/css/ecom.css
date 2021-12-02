@@ -328,7 +328,7 @@ Product card in Cart
 }
 
 .ecom-productcart-delete svg {
-  color: black;
+  color: white;
 }
 
 .ecom-productCart-info > span:first-child {
@@ -407,10 +407,10 @@ Product card in Cart
 .ecom-nav-cart:focus,
 .ecom-nav-profile:hover,
 .ecom-nav-profile:focus,
-.ecom-nav-cart-opened,
-.ecom-nav-profile-opened {
+.ecom-nav-opened {
   color: var(--couleur-primaire);
   background-color: white;
+  text-decoration: none;
 }
 
 .ecom-nav-cart fa-icon {

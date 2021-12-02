@@ -47,6 +47,7 @@
                 type="submit"
                 (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) - 1)"
                 data-cy="entityDecreaseProductCartButton"
+                title="Diminuer la quantite"
               >
                 <fa-icon icon="minus"></fa-icon>
               </button>
@@ -56,19 +57,27 @@
                 pattern="[0-9]*"
                 (change)="updateQuantityProductCartByText(lineProduct, $event)"
                 [value]="lineProduct.quantity ?? 0"
+                title="Définir la quantite"
               />
               <button
                 class="ecom-product-button-plus ecom-button"
                 type="submit"
                 (click)="updateQuantityProductCart(lineProduct, (lineProduct.quantity ?? 0) + 1)"
                 data-cy="entityIncreaseProductCartButton"
+                title="Augmenter la quantite"
               >
                 <fa-icon icon="plus"></fa-icon>
               </button>
             </div>
           </div>
           <div class="ecom-productcart-delete">
-            <button class="ecom-button" type="submit" (click)="deleteLine(lineProduct)" data-cy="entityDeleteButton">
+            <button
+              title="Supprimer le produit du panier"
+              class="ecom-button"
+              type="submit"
+              (click)="deleteLine(lineProduct)"
+              data-cy="entityDeleteButton"
+            >
               <fa-icon icon="trash"></fa-icon>
             </button>
           </div>
