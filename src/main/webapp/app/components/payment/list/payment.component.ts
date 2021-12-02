@@ -145,7 +145,7 @@ export class PaymentComponent implements OnInit {
             DATE_TIME_FORMAT
           )
         : undefined,
-      totalPrice: +this.totalPrice,
+      totalPrice: +(+this.totalPrice - +this.totalSaved).toFixed(2),
       promotionalCode: this.promoCode,
       lines: this.generateOrderLinesFromCart(),
     };

@@ -3,16 +3,22 @@ package com.m2gi.ecom.web.rest;
 import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.Order;
 import com.m2gi.ecom.domain.ProductOrder;
+import com.m2gi.ecom.domain.PromotionalCode;
 import com.m2gi.ecom.repository.OrderRepository;
 import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
 import com.m2gi.ecom.service.OrderService;
+import com.m2gi.ecom.service.PromotionService;
+import com.m2gi.ecom.service.PromotionalCodeService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -39,15 +45,24 @@ public class OrderResource {
     private String applicationName;
 
     private final OrderService orderService;
-
     private final CartService cartService;
+    private final PromotionService promotionService;
+    private final PromotionalCodeService promotionalCodeService;
 
     private final OrderRepository orderRepository;
 
-    public OrderResource(OrderService orderService, OrderRepository orderRepository, CartService cartService) {
+    public OrderResource(
+        OrderService orderService,
+        OrderRepository orderRepository,
+        CartService cartService,
+        PromotionService promotionService,
+        PromotionalCodeService promotionalCodeService
+    ) {
         this.orderService = orderService;
         this.orderRepository = orderRepository;
         this.cartService = cartService;
+        this.promotionService = promotionService;
+        this.promotionalCodeService = promotionalCodeService;
     }
 
     //    /**
@@ -193,10 +208,37 @@ public class OrderResource {
             throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        final Cart cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get()).orElse(null);
+        final Cart cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElse(null);
+        PromotionalCode promoCode = null;
 
         if (cart == null || cart.getLines().isEmpty()) {
             throw new BadRequestAlertException("User does not have a cart or it is empty.", ENTITY_NAME, "nocart");
+        }
+
+        final PromotionalCode requestPromoCode = order.getPromotionalCode();
+        if (requestPromoCode != null) {
+            promoCode = promotionalCodeService.findOne(requestPromoCode.getId()).orElse(null);
+            if (promoCode == null) {
+                // Does not exist, there's a problem with this request.
+                throw new BadRequestAlertException("Promotional code does not exist.", ENTITY_NAME, "wrongpromocode");
+            }
+
+            if (
+                !promoCode.isActive(Instant.now()) ||
+                (
+                    requestPromoCode.getUnit() != promoCode.getUnit() ||
+                    requestPromoCode.getValue().doubleValue() != promoCode.getValue().doubleValue()
+                )
+            ) {
+                // Does not exist, there's a problem with this request.
+                throw new BadRequestAlertException("Promotional code is not active.", ENTITY_NAME, "wrongpromocode");
+            }
+
+            promoCode.getProducts().retainAll(order.getLines().stream().map(ProductOrder::getProduct).collect(Collectors.toSet()));
+            if (promoCode.getProducts().isEmpty()) {
+                // Promotional Code not applicable for any product of this order.
+                throw new BadRequestAlertException("Promotional code is not applicable to this order.", ENTITY_NAME, "wrongpromocode");
+            }
         }
 
         final Set<ProductOrder> orderLinesFromCart = cart
@@ -209,12 +251,11 @@ public class OrderResource {
             throw new BadRequestAlertException("Cart has been modified.", ENTITY_NAME, "cartmodified");
         }
 
-        if (!areProductOrdersWithSameTotalPrice(orderLinesFromCart, order.getLines())) {
-            throw new BadRequestAlertException("Product prices have changed.", ENTITY_NAME, "pricechanged");
+        if (calculateOrderPrice(order, promoCode).doubleValue() != order.getTotalPrice().doubleValue()) {
+            throw new BadRequestAlertException("Incorrect order total price.", ENTITY_NAME, "wrongprice");
         }
 
-        // TODO Get PromoCode and check if it valid.
-        // TODO Calculate the price and store it.
+        // TODO Check if there are active promotions on the cart's products.
 
         order.paymentDate(Instant.now()).lines(orderLinesFromCart);
 
@@ -241,9 +282,48 @@ public class OrderResource {
         return true;
     }
 
-    private boolean areProductOrdersWithSameTotalPrice(Set<ProductOrder> set1, Set<ProductOrder> set2) {
-        final BigDecimal sum1 = set1.stream().map(ProductOrder::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        final BigDecimal sum2 = set2.stream().map(ProductOrder::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        return sum1.equals(sum2);
+    // TODO Utiliser aussi les promotions
+    private BigDecimal calculateOrderPrice(Order order, PromotionalCode promoCode) {
+        BigDecimal total = BigDecimal.ZERO;
+        if (promoCode == null) {
+            total =
+                order
+                    .getLines()
+                    .stream()
+                    .map(po -> {
+                        final BigDecimal finalUnitPrice = po.getProduct().getPrice();
+                        po.setPrice(finalUnitPrice);
+                        return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                    })
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } else {
+            total =
+                total
+                    .add(
+                        order
+                            .getLines()
+                            .stream()
+                            .filter(po -> promoCode.getProducts().contains(po.getProduct()))
+                            .map(po -> {
+                                final BigDecimal finalUnitPrice = promoCode.applyTo(po.getProduct().getPrice());
+                                po.setPrice(finalUnitPrice);
+                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                            })
+                            .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    )
+                    .add(
+                        order
+                            .getLines()
+                            .stream()
+                            .filter(po -> !promoCode.getProducts().contains(po.getProduct()))
+                            .map(po -> {
+                                final BigDecimal finalUnitPrice = po.getProduct().getPrice();
+                                po.setPrice(finalUnitPrice);
+                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                            })
+                            .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    );
+        }
+        return total;
     }
 }
