@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import {getTotalCartItems, ICart} from 'app/entities/cart/cart.model';
+import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';

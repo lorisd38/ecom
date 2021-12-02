@@ -25,7 +25,6 @@ export class NavbarComponent implements OnInit {
   account: Account | null = null;
   search_bar = '';
 
-
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
@@ -33,7 +32,7 @@ export class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     public router: Router,
-    public cartService: CartService,
+    public cartService: CartService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
