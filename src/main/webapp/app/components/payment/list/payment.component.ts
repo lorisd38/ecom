@@ -9,7 +9,7 @@ import { HttpResponse } from '@angular/common/http';
 import { IOrder, Order } from '../../../entities/order/order.model';
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '../../../config/input.constants';
-import { Dayjs } from 'dayjs';
+// import { Dayjs } from 'dayjs';
 
 @Component({
   selector: 'jhi-payment',
@@ -64,7 +64,7 @@ export class PaymentComponent implements OnInit {
 
   calcTotal(): void {
     this.totalPrice = getTotalCartPrice(this.cart).toLocaleString();
-    //TODO Use promo code here.
+    // TODO Use promo code here.
   }
 
   generateOrder(): void {
@@ -84,7 +84,7 @@ export class PaymentComponent implements OnInit {
   protected updateForm(order: IOrder): void {
     this.editForm.patchValue({
       receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
-      //promoCode: order.promoCode,
+      // promoCode: order.promoCode,
     });
   }
 
@@ -94,7 +94,7 @@ export class PaymentComponent implements OnInit {
       receptionDate: this.editForm.get(['receptionDate'])!.value
         ? dayjs(this.editForm.get(['receptionDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      //promoCode: this.editForm.get(['promoCode'])!.value,
+      // promoCode: this.editForm.get(['promoCode'])!.value,
     };
   }
 }

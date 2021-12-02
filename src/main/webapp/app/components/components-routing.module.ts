@@ -19,6 +19,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'ecomApp.payment.home.title' },
         loadChildren: () => import('./payment/payment.module').then(m => m.PaymentModule),
       },
+      {
+        path: 'categories',
+        data: { pageTitle: 'ecomApp.payment.home.title' },
+        loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule),
+      },
     ]),
   ],
 })

@@ -3,26 +3,24 @@
 // import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { of } from 'rxjs';
 
-// import { PaymentService } from 'app/components/payment/service/payment.service';
-
-// import { PaymentComponent } from './payment.component';
+// import { CategoriesService } from 'app/components/categories/service/categories.service';
 
 // describe('Payment Management Component', () => {
-//   let comp: PaymentComponent;
-//   let fixture: ComponentFixture<PaymentComponent>;
-//   let service: PaymentService;
+//   let comp: CategoriesComponent;
+//   let fixture: ComponentFixture<CategoriesComponent>;
+//   let service: CategoriesService;
 //
 //   beforeEach(() => {
 //     TestBed.configureTestingModule({
 //       imports: [HttpClientTestingModule],
-//       declarations: [PaymentComponent],
+//       declarations: [CategoriesComponent],
 //     })
-//       .overrideTemplate(PaymentComponent, '')
+//       .overrideTemplate(CategoriesComponent, '')
 //       .compileComponents();
 //
-//     fixture = TestBed.createComponent(PaymentComponent);
+//     fixture = TestBed.createComponent(CategoriesComponent);
 //     comp = fixture.componentInstance;
-//     service = TestBed.inject(PaymentService);
+//     service = TestBed.inject(CategoriesService);
 //
 //     const headers = new HttpHeaders();
 //     jest.spyOn(service, 'query').mockReturnValue(

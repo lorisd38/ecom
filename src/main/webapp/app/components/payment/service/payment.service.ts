@@ -4,7 +4,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { IOrder } from '../../../entities/order/order.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EntityArrayResponseType, EntityResponseType } from '../../../entities/order/service/order.service';
+import { EntityResponseType } from '../../../entities/order/service/order.service';
 import * as dayjs from 'dayjs';
 
 @Injectable({ providedIn: 'root' })
