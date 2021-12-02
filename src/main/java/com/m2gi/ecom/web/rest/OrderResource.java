@@ -187,7 +187,7 @@ public class OrderResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/orders")
-    public ResponseEntity<Order> createOrderForAuthenticatedUser(@Valid @RequestBody Order order) throws URISyntaxException {
+    public ResponseEntity<Order> createOrderForAuthenticatedUser(@RequestBody Order order) throws URISyntaxException {
         log.debug("REST request to create an Order for the authenticated User : {}", order);
         if (order.getId() != null) {
             throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
@@ -213,9 +213,12 @@ public class OrderResource {
             throw new BadRequestAlertException("Product prices have changed.", ENTITY_NAME, "pricechanged");
         }
 
+        // TODO Get PromoCode and check if it valid.
+        // TODO Calculate the price and store it.
+
         order.paymentDate(Instant.now()).lines(orderLinesFromCart);
 
-        Order result = orderService.save(order);
+        Order result = orderService.createOrder(order, cart);
         return ResponseEntity
             .created(new URI("/api/orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
