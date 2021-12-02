@@ -61,11 +61,26 @@ Product card
 .ecom-product {
   margin: 5px;
   position: relative;
-  width: 198px;
+  width: 208px;
   height: 308px;
   border: solid 1px #c4c4c4;
   border-radius: 5px;
   box-shadow: 1px 3px 2px grey;
+}
+
+.ecom-product-promo-band {
+  position: absolute;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background-color: red;
+  width: 100px;
+  height: 23px;
+  position: absolute;
+  left: -24px;
+  top: 15px;
+  transform: rotate(-45deg);
+  clip-path: polygon(23% 0%, 77% 0, 100% 100%, 0% 100%);
 }
 
 /* SCROLLBAR */
@@ -150,8 +165,13 @@ Product card
   font-size: 14px;
 }
 
+.ecom-product-button-add {
+  width: 85px;
+  text-align: center;
+}
+
 .ecom-product-button-text {
-  width: 40px;
+  width: 25px;
 }
 
 .ecom-product-button > div {
