@@ -256,7 +256,7 @@ class ProductResourceIT {
     @Transactional
     void getAllProducts() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         // Get all the productList
         restProductMockMvc
@@ -298,7 +298,7 @@ class ProductResourceIT {
     @Transactional
     void getProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         // Get the product
         restProductMockMvc
@@ -329,7 +329,7 @@ class ProductResourceIT {
     @Transactional
     void putNewProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
@@ -341,7 +341,6 @@ class ProductResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .quantity(UPDATED_QUANTITY)
-            .version(UPDATED_VERSION)
             .origin(UPDATED_ORIGIN)
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
