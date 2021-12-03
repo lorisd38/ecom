@@ -47,7 +47,7 @@ export class ProductService {
 
   queryCategories(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?categories=${req}`, { params: options, observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
