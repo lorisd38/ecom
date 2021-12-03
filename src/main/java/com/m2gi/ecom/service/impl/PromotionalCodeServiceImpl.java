@@ -3,6 +3,8 @@ package com.m2gi.ecom.service.impl;
 import com.m2gi.ecom.domain.PromotionalCode;
 import com.m2gi.ecom.repository.PromotionalCodeRepository;
 import com.m2gi.ecom.service.PromotionalCodeService;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -83,5 +85,12 @@ public class PromotionalCodeServiceImpl implements PromotionalCodeService {
     public void delete(Long id) {
         log.debug("Request to delete PromotionalCode : {}", id);
         promotionalCodeRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<PromotionalCode> findAllWithEagerRelationshipsByCode(String code, Instant date) {
+        log.debug("Request to get active PromotionalCode with code: {} for date {}", code, date);
+        return promotionalCodeRepository.findActiveWithEagerRelationshipsByCode(code, date);
     }
 }
