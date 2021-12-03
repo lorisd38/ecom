@@ -3,15 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CategoriesComponent } from '../list/categories.component';
 
-const paymentRoute: Routes = [
+const CategoriesRoute: Routes = [
   {
     path: '',
     component: CategoriesComponent,
+    outlet: 'categories',
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(paymentRoute)],
+  imports: [RouterModule.forChild(CategoriesRoute)],
   exports: [RouterModule],
 })
 export class CategoriesRoutingModule {}
