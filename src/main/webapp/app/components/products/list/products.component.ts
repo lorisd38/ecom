@@ -83,8 +83,4 @@ export class ProductsComponent implements OnInit {
       }
     });
   }
-
-  trackId(index: number, item: IProduct): number {
-    return item.id!;
-  }
 }

@@ -10,21 +10,7 @@
   </div>
 
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
 
-  <div *ngIf="products?.length === 0">
-    <span jhiTranslate="ecomApp.product.home.notFound">No products found</span>
-  </div>
-
-  <div *ngIf="products && products.length > 0">
-    <div>
-      <div id="ecom-list-products">
-        <jhi-product-card *ngFor="let product of products; trackBy: trackId" data-cy="entityTable" [product]="product"></jhi-product-card >
-      </div>
-    </div>
-    <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
-    </div>
-  </div>
+  <jhi-list-product [products]="this.products"></jhi-list-product>
 </div>
