@@ -256,7 +256,7 @@ class ProductResourceIT {
     @Transactional
     void getAllProducts() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         // Get all the productList
         restProductMockMvc
@@ -298,7 +298,7 @@ class ProductResourceIT {
     @Transactional
     void getProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         // Get the product
         restProductMockMvc
@@ -329,7 +329,7 @@ class ProductResourceIT {
     @Transactional
     void putNewProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
@@ -341,7 +341,6 @@ class ProductResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .quantity(UPDATED_QUANTITY)
-            .version(UPDATED_VERSION)
             .origin(UPDATED_ORIGIN)
             .brand(UPDATED_BRAND)
             .imagePath(UPDATED_IMAGE_PATH)
@@ -433,7 +432,7 @@ class ProductResourceIT {
     @Transactional
     void partialUpdateProductWithPatch() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
@@ -458,7 +457,7 @@ class ProductResourceIT {
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
-        assertThat(testProduct.getVersion()).isEqualTo(DEFAULT_VERSION);
+        assertThat(testProduct.getVersion()).isEqualTo(UPDATED_VERSION);
         assertThat(testProduct.getOrigin()).isEqualTo(UPDATED_ORIGIN);
         assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
@@ -471,7 +470,7 @@ class ProductResourceIT {
     @Transactional
     void fullUpdateProductWithPatch() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
@@ -575,7 +574,7 @@ class ProductResourceIT {
     @Transactional
     void deleteProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        product = productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();
 
