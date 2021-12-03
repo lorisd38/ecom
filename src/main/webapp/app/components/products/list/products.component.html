@@ -22,6 +22,12 @@
       <div id="ecom-list-products">
         <div class="ecom-product" *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
           <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
+          <div class="ecom-product-heart">
+            <img
+              srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
+              (click)="addToFavorite(product)"
+            />
+          </div>
           <div class="ecom-product-img">
             <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
           </div>
@@ -44,7 +50,7 @@
             <div>Origine : {{ product.origin }}</div>
           </div>
           <div class="ecom-product-tags">
-            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags; let last = last">
+            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
               <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
             </span>
           </div>
@@ -55,6 +61,7 @@
                 type="submit"
                 (click)="addToCart(product)"
                 data-cy="entityAddTodCartButton"
+                title="Ajouter au panier"
               >
                 <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
                 <fa-icon icon="plus"></fa-icon>
@@ -67,6 +74,7 @@
                   type="submit"
                   (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
                   data-cy="entityDecreaseProductCartButton"
+                  title="Diminuer la quantite"
                 >
                   <fa-icon icon="minus"></fa-icon>
                 </button>
@@ -76,12 +84,14 @@
                   pattern="[0-9]*"
                   (change)="updateQuantityProductByText(product, $event)"
                   [value]="quantityProduct(product)"
+                  title="Définir la quantite"
                 />
                 <button
                   class="ecom-product-button-plus ecom-button"
                   type="submit"
                   (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
                   data-cy="entityIncreaseProductCartButton"
+                  title="Augmenter la quantite"
                 >
                   <fa-icon icon="plus"></fa-icon>
                 </button>
@@ -92,7 +102,7 @@
       </div>
     </div>
     <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next" routerLink="/panier">Voir panier</button>
+      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
     </div>
   </div>
 </div>

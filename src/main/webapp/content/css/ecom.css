@@ -19,7 +19,8 @@
 }
 
 .ecom-button {
-  border-width: 1.5px;
+  border: 1.5px solid grey;
+  box-shadow: 1px 1px 2px grey;
   background-color: var(--couleur-primaire);
   color: white;
 }
@@ -34,6 +35,10 @@
 
 .ecom-button:disabled {
   opacity: 0.33;
+}
+
+.ecom-shadow-button {
+  box-shadow: 1px 3px 2px grey;
 }
 
 .ecom-input-default {
@@ -85,21 +90,25 @@ Product card
 
 /* SCROLLBAR */
 /* width */
-.ecom-product ::-webkit-scrollbar {
+.ecom-product ::-webkit-scrollbar,
+.ecom-cart ::-webkit-scrollbar {
   height: 8px;
 }
 
-.ecom-product ::-webkit-scrollbar-track {
+.ecom-product ::-webkit-scrollbar-track,
+.ecom-cart ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
 
-.ecom-product ::-webkit-scrollbar-thumb {
+.ecom-product ::-webkit-scrollbar-thumb,
+.ecom-cart ::-webkit-scrollbar-thumb {
   background: var(--couleur-primaire);
   border-radius: 10px;
 }
 
-.ecom-product ::-webkit-scrollbar-thumb:hover {
+.ecom-product ::-webkit-scrollbar-thumb:hover,
+.ecom-cart ::-webkit-scrollbar-thumb:hover {
   background: var(--couleur-primaire-hover);
 }
 /* */
@@ -161,7 +170,11 @@ Product card
 .ecom-product-button span,
 .ecom-product-button input,
 .ecom-product-button svg,
-.ecom-product-button button {
+.ecom-product-button button,
+.ecom-productcart-button span,
+.ecom-productcart-button input,
+.ecom-productcart-button svg,
+.ecom-productcart-button button {
   font-size: 14px;
 }
 
@@ -207,18 +220,41 @@ Product card
   white-space: nowrap;
 }
 
-.ecom-product-tags > span {
+.ecom-product-tags > span,
+.ecom-productCart-tags > p > span {
   border-radius: 10px;
   padding: 2px 5px;
   font-size: 12px;
 }
 
-.ecom-product-tags > span:not(:last-child) {
+.ecom-product-tags > span:not(:last-child),
+.ecom-productCart-tags > p > span:not(:last-child) {
   margin-right: 5px;
 }
 
-.ecom-product-tags > span > a {
+.ecom-product-tags > span > a,
+.ecom-productCart-tags > p > span > a {
   color: black;
+}
+
+.ecom-product-heart {
+  position: absolute;
+  display: block;
+  top: 3px;
+  right: 3px;
+  height: 30px;
+  width: 30px;
+  background: white;
+  border-radius: 50%;
+  border: solid 1px #c4c4c4;
+  outline: 3px solid white;
+}
+
+.ecom-product-heart > img {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 50%;
 }
 /* ==============================================================
 Product card in Cart
@@ -232,8 +268,18 @@ Product card in Cart
   height: 124px;
 }
 
+.ecom-cart:first-child {
+  border: 1px solid grey;
+}
+
+.ecom-cart:not(:first-child) {
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+}
+
 .ecom-cart:nth-child(2n) {
-  background-color: #f3f3f3;
+  background-color: #fafafa;
 }
 
 .ecom-cart > * {
@@ -243,7 +289,17 @@ Product card in Cart
 .ecom-cart-img {
   width: 140px;
   text-align: center;
-  padding: 10px;
+  padding: 10px 30px 10px 10px;
+}
+
+.ecom-cart-img:after {
+  position: absolute;
+  content: '';
+  width: 1px;
+  height: 90px;
+  top: 17px;
+  left: 127px;
+  background-color: #c4c4c4;
 }
 
 .ecom-cart-img > div {
@@ -260,7 +316,7 @@ Product card in Cart
   font-size: 12px;
   position: absolute;
   top: 50px;
-  right: 30px;
+  right: 15px;
 }
 
 .ecom-productcart-button > div > div {
@@ -269,12 +325,73 @@ Product card in Cart
 
 .ecom-productcart-price {
   font-size: 18px;
-  font-weight: bold;
   position: absolute;
-  bottom: 10px;
-  right: 18px;
+  bottom: 7px;
+  right: 13px;
 }
 
+.ecom-productcart-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.ecom-productcart-delete button {
+  background-color: #ff4747;
+  border: 1px solid #c72b2b;
+  border-radius: 5px;
+  padding: 3px 8px;
+}
+
+.ecom-productcart-delete button:hover {
+  background-color: #c72b2b;
+}
+
+.ecom-productcart-delete svg {
+  color: white;
+}
+
+.ecom-productCart-info > span:first-child {
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+.ecom-productCart-info > span:last-child {
+  font-size: 15px;
+}
+
+.ecom-productCart-prices > span {
+  display: block;
+  font-size: 13px;
+}
+
+.ecom-productCart-tags {
+  position: absolute;
+  bottom: 8px;
+  left: 142px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 395px;
+  height: 35px;
+}
+
+.ecom-cart-button {
+  margin: 10px 0 0 30px;
+}
+
+.ecom-cart-button > div {
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.ecom-cart-button > div:first-child {
+  font-size: 21px;
+}
+
+.ecom-cart-button > div:last-child {
+  font-size: 18px;
+}
 /* ==============================================================
   Navbar
   ===============================================================*/
@@ -310,10 +427,10 @@ Product card in Cart
 .ecom-nav-cart:focus,
 .ecom-nav-profile:hover,
 .ecom-nav-profile:focus,
-.ecom-nav-cart-opened,
-.ecom-nav-profile-opened {
+.ecom-nav-opened {
   color: var(--couleur-primaire);
   background-color: white;
+  text-decoration: none;
 }
 
 .ecom-nav-cart fa-icon {

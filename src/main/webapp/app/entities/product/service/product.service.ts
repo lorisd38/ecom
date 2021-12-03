@@ -12,6 +12,7 @@ export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
+  listFavorites: IProduct[] | null = null;
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -39,6 +40,8 @@ export class ProductService {
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
+    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
+
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 
@@ -66,5 +69,13 @@ export class ProductService {
       return [...productsToAdd, ...productCollection];
     }
     return productCollection;
+  }
+
+  editFavorites(id: number): Observable<IProduct[]> {
+    return this.http.post<IProduct[]>(`${this.resourceUrl}/favorite-products/${id}`, { observe: 'response' });
+  }
+
+  getFavorites(): Observable<HttpResponse<IProduct[]>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/favorite-products`, { observe: 'response' });
   }
 }

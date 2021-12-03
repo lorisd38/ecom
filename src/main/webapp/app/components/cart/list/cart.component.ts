@@ -3,6 +3,7 @@ import { getTotalCartItems, getTotalCartPrice, ICart } from 'app/entities/cart/c
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../service/cart.service';
+import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
 
 @Component({
   selector: 'jhi-cart',
@@ -84,5 +85,20 @@ export class CartComponent implements OnInit {
 
   trackId(index: number, item: IProductCart): number {
     return item.id!;
+  }
+
+  unitOfPrice(weightUnit: WeightUnit): string {
+    switch (weightUnit) {
+      case WeightUnit.KG:
+        return 'kilo';
+      case WeightUnit.G:
+        return 'kilo';
+      case WeightUnit.L:
+        return 'litre';
+      case WeightUnit.ML:
+        return 'litre';
+      default:
+        return '';
+    }
   }
 }

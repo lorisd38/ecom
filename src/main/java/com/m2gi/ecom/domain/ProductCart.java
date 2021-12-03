@@ -27,9 +27,7 @@ public class ProductCart implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
-        value = {
-            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
-        },
+        value = { "category", "relatedCategories", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
         allowSetters = true
     )
     private Product product;

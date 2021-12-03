@@ -2,12 +2,16 @@ package com.m2gi.ecom.web.rest;
 
 import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.UserDetails;
 import com.m2gi.ecom.repository.ProductRepository;
+import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CategoryService;
 import com.m2gi.ecom.service.ProductService;
+import com.m2gi.ecom.service.UserDetailsService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,13 +40,20 @@ public class ProductResource {
     private String applicationName;
 
     private final ProductService productService;
+    private final UserDetailsService userDetailsService;
     private final CategoryService categoryService;
 
     private final ProductRepository productRepository;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository, CategoryService categoryService) {
+    public ProductResource(
+        ProductService productService,
+        UserDetailsService userDetailsService,
+        ProductRepository productRepository,
+        CategoryService categoryService
+    ) {
         this.productService = productService;
         this.productRepository = productRepository;
+        this.userDetailsService = userDetailsService;
         this.categoryService = categoryService;
     }
 
@@ -125,7 +136,7 @@ public class ProductResource {
         }
 
         if (!productRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", "ENTITY_NAME", "idnotfound");
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<Product> result = productService.partialUpdate(product);
@@ -145,14 +156,14 @@ public class ProductResource {
     @GetMapping("/products")
     public List<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
-        @RequestParam(name = "categories", required = false) Long categoriesId
+        @RequestParam(name = "category", required = false) Long categoryId
     ) {
         if (query != null) {
-            log.debug("REST request to get Research Products for query : (" + query + ")");
+            log.debug("REST request to get Research Products for query : {}", query);
             return productService.findResearch(query);
-        } else if (categoriesId != null) {
-            log.debug("REST request to get Products of a category for query : (" + categoriesId + ")");
-            Optional<Category> cat = categoryService.findOne(categoriesId);
+        } else if (categoryId != null) {
+            log.debug("REST request to get Products for category : {}", categoryId);
+            Optional<Category> cat = categoryService.findOne(categoryId);
             if (cat.isPresent()) {
                 return productService.findCategory(cat.get());
             } else {
@@ -191,5 +202,40 @@ public class ProductResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /favorite-products} : get the current authenticated user's favorite products.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of favorite products.
+     */
+    @GetMapping("/products/favorite-products")
+    public List<Product> getFavoriteProductsForCurrentUser() {
+        log.debug("REST request to get all Favorite Products for user {}", SecurityUtils.getCurrentUserLogin().get());
+        return productService.findAllFavorite(SecurityUtils.getCurrentUserLogin().get());
+    }
+
+    /**
+     * {@code POST  /favorite-products} : get the current authenticated user's favorite products after modifications.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of favorite products.
+     */
+    @PostMapping("/products/favorite-products/{id}")
+    public List<Product> updateFavoriteProductsForCurrentUser(@PathVariable Long id) {
+        String login = SecurityUtils.getCurrentUserLogin().get();
+        log.debug("REST request to update product {} in Favorite Products for user {}", id, login);
+        //Get Product
+        Product product = productService.findOne(id).get();
+        //get userDetails
+        UserDetails user = productRepository.getUserDetails(login);
+        //if favorite contains product we remove it, else we add it to Favorites
+        if (user.getFavorites().contains(product)) {
+            user.getFavorites().remove(product);
+        } else {
+            user.getFavorites().add(product);
+        }
+        //Sauvegarde
+        user = userDetailsService.save(user);
+        return new ArrayList<>(user.getFavorites());
     }
 }
