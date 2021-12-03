@@ -67,13 +67,10 @@ export class ProductService {
   }
 
   editFavorites(id: number): Observable<IProduct[]> {
-    //console.log(`${this.resourceUrl}/favorite-products/${id}`)
     return this.http.post<IProduct[]>(`${this.resourceUrl}/favorite-products/${id}`, { observe: 'response' });
   }
 
-
   getFavorites(): Observable<HttpResponse<IProduct[]>> {
-    //console.log(`${this.resourceUrl}/favorite-products/${id}`)
     return this.http.get<IProduct[]>(`${this.resourceUrl}/favorite-products`, { observe: 'response' });
   }
 }

@@ -198,7 +198,7 @@ public class ProductResource {
     }
 
     /**
-     * {@code POST  /favorite-products} : get the current authenticated user's favorite products.
+     * {@code POST  /favorite-products} : get the current authenticated user's favorite products after modifications.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of favorite products.
      */
@@ -216,8 +216,8 @@ public class ProductResource {
         }else{
             user.getFavorites().add(product);
         }
+        //Sauvegarde
         user = userDetailsService.save(user);
         return new ArrayList<>(user.getFavorites());
-        //return productService.updateFavorite(SecurityUtils.getCurrentUserLogin().get(),id);
     }
 }
