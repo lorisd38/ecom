@@ -97,6 +97,9 @@ export class CartComponent implements OnInit {
         return 'litre';
       case WeightUnit.ML:
         return 'litre';
+      case WeightUnit.U:
+        return 'unité';
+
       default:
         return '';
     }

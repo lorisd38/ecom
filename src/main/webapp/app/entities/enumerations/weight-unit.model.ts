@@ -6,4 +6,6 @@ export enum WeightUnit {
   KG = 'KG',
 
   G = 'G',
+
+  U = 'U',
 }

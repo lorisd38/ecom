@@ -247,9 +247,10 @@ Product card
   background: white;
   border-radius: 50%;
   border: solid 1px #c4c4c4;
+  outline: 3px solid white;
 }
 
-.ecom-product-heart > img{
+.ecom-product-heart > img {
   height: 100%;
   width: 100%;
   cursor: pointer;
