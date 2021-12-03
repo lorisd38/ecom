@@ -37,8 +37,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     )
     Optional<Product> findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query(
-        "select product from Product product left join fetch product.relatedCategories left join fetch product.tags where :cat in (product.relatedCategories)"
-    )
+    @Query("select product from Product product left join fetch product.relatedCategories rc left join fetch product.tags where :cat = rc")
     List<Product> findAllFromCategory(@Param("cat") Category cat);
 }
