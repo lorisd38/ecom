@@ -62,4 +62,12 @@ public interface ProductService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the favorite products of login.
+     *
+     * @param login
+     * @return the list of favorite products.
+     */
+    List<Product> findAllFavorite(String login);
 }
