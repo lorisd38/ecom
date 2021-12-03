@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
-  //For test favoris
+  // For test favoris
 
   constructor(
     protected productService: ProductService,
@@ -45,9 +45,11 @@ export class ProductsComponent implements OnInit {
       }
       this.accountService.getAuthenticationState().subscribe(account => {
         this.account = account;
-        this.account ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
-          this.productService.listFavorites = res.body ?? null;
-        }) : this.productService.listFavorites = null;
+        this.account
+          ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
+              this.productService.listFavorites = res.body ?? null;
+            })
+          : (this.productService.listFavorites = null);
       });
     });
   }
@@ -135,7 +137,7 @@ export class ProductsComponent implements OnInit {
 
   addToCart(product: IProduct): void {
     // If no connected redirection to login page.
-    if(!this.accountService.isAuthenticated()){
+    if (!this.accountService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return;
     }
@@ -155,18 +157,18 @@ export class ProductsComponent implements OnInit {
   }
 
   addToFavorite(product: IProduct): void {
-    if(this.account && product.id !== undefined) {
+    if (this.account && product.id !== undefined) {
       this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
         this.productService.listFavorites = res;
       });
     }
   }
 
-  isFavoris(product: IProduct):boolean{
+  isFavoris(product: IProduct): boolean {
     const l = this.productService.listFavorites?.filter(p => p.id === product.id);
-    if (l === undefined){
+    if (l === undefined) {
       return false;
-    }else{
+    } else {
       return l.length > 0;
     }
   }

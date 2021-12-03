@@ -68,8 +68,9 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Cart> findOneWithEagerRelationshipsByLogin(String login) {
-        log.debug("Request to get Cart with login: {}", login);
-        return cartRepository.findOneWithEagerRelationshipsByLogin(login);
+        final Optional<Cart> result = cartRepository.findOneWithEagerRelationshipsByLogin(login);
+        result.ifPresent(value -> value.getLines().forEach(pc -> pc.getProduct().getTags().isEmpty()));
+        return result;
     }
 
     @Override

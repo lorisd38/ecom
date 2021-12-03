@@ -8,4 +8,5 @@ public enum WeightUnit {
     ML,
     KG,
     G,
+    U,
 }

@@ -10,7 +10,6 @@ import { CategoriesService } from '../service/categories.service';
 })
 export class CategoriesComponent implements OnInit {
   listCategory: Category[];
-  isLoading = true;
 
   constructor(protected categoriesService: CategoriesService, protected modalService: NgbModal) {
     this.listCategory = [];
@@ -21,15 +20,9 @@ export class CategoriesComponent implements OnInit {
   }
 
   loadAll(): void {
-    this.categoriesService.query().subscribe(
-      (res: HttpResponse<ICategory[]>) => {
-        this.isLoading = false;
-        this.listCategory = res.body ?? [];
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.categoriesService.query().subscribe((res: HttpResponse<ICategory[]>) => {
+      this.listCategory = res.body ?? [];
+    });
   }
 
   previousState(): void {
