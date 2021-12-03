@@ -23,7 +23,6 @@ export class ProductsComponent implements OnInit {
   account: Account | null = null;
   public query: string | null = '';
   //For test favoris
-  isFavoris = false;
 
   constructor(
     protected productService: ProductService,
@@ -43,7 +42,12 @@ export class ProductsComponent implements OnInit {
         this.query = '';
         this.loadAll();
       }
-      this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+      this.accountService.getAuthenticationState().subscribe(account => {
+        this.account = account;
+        this.account ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
+          this.productService.listFavorites = res.body ?? null;
+        }) : this.productService.listFavorites = null;
+      });
     });
   }
 
@@ -145,8 +149,20 @@ export class ProductsComponent implements OnInit {
   }
 
   addToFavorite(product: IProduct): void {
-    console.log("YOOO");
-    this.isFavoris = !this.isFavoris;
+    if(this.account && product.id !== undefined) {
+      this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
+        this.productService.listFavorites = res;
+      });
+    }
+  }
+
+  isFavoris(product: IProduct):boolean{
+    const l = this.productService.listFavorites?.filter(p => p.id === product.id);
+    if (l === undefined){
+      return false;
+    }else{
+      return l.length > 0;
+    }
   }
 
   deleteProduct(product: IProduct): void {

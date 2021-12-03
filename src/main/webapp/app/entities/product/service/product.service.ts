@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -12,6 +12,7 @@ export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
+  listFavorites: IProduct[] | null = null;
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -39,6 +40,8 @@ export class ProductService {
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
+    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`)
+
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 
@@ -61,5 +64,16 @@ export class ProductService {
       return [...productsToAdd, ...productCollection];
     }
     return productCollection;
+  }
+
+  editFavorites(id: number): Observable<IProduct[]> {
+    //console.log(`${this.resourceUrl}/favorite-products/${id}`)
+    return this.http.post<IProduct[]>(`${this.resourceUrl}/favorite-products/${id}`, { observe: 'response' });
+  }
+
+
+  getFavorites(): Observable<HttpResponse<IProduct[]>> {
+    //console.log(`${this.resourceUrl}/favorite-products/${id}`)
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/favorite-products`, { observe: 'response' });
   }
 }
