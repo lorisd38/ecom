@@ -28,8 +28,10 @@
             </div>
             <div class="ecom-productCart-prices">
               <span>Prix unitaire : {{ lineProduct.product?.price | number: '0.2' }} €</span>
-              <span>Prix au {{ unitOfPrice(lineProduct.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span>
-              <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
+              <span *ngIf="lineProduct.product!.weightUnit !== 'U'"
+                >Prix au {{ unitOfPrice(lineProduct.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span
+              >
+              <!-- <span>{{ product.weight * product.price / 1000 }}</span>-->
             </div>
           </div>
           <div class="ecom-productCart-tags">
