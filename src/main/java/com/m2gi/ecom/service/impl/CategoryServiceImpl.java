@@ -66,4 +66,25 @@ public class CategoryServiceImpl implements CategoryService {
         log.debug("Request to delete Category : {}", id);
         categoryRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Category> findAllWithoutParent() {
+        log.debug("Request to get Category without parents");
+        List<Category> l = categoryRepository.findAllWithoutParents();
+        l.forEach(e -> {
+            touch(e);
+        });
+        return l;
+    }
+
+    private void touch(Category c) {
+        if (!c.getChildren().isEmpty()) {
+            c
+                .getChildren()
+                .forEach(e -> {
+                    touch(e);
+                });
+        }
+    }
 }

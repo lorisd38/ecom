@@ -32,9 +32,20 @@ export function getTotalCartItems(cart: ICart | null | undefined): number {
   if (cart?.lines != null) {
     for (const lineProduct of cart.lines) {
       if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-        total += lineProduct.quantity ;
+        total += 1;
       }
     }
   }
   return total;
+}
+
+export function getProductQuantity(cart: ICart | null | undefined, productId: number): number {
+  if (cart?.lines != null) {
+    for (const lineProduct of cart.lines) {
+      if (lineProduct.product!.id === productId && lineProduct.quantity != null) {
+        return lineProduct.quantity;
+      }
+    }
+  }
+  return 0;
 }

@@ -21,6 +21,7 @@
     <div>
       <div id="ecom-list-products">
         <div class="ecom-product" *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+          <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
           <div class="ecom-product-heart">
             <img srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
                  (click)="addToFavorite(product)" />
@@ -28,10 +29,15 @@
           <div class="ecom-product-img">
             <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
           </div>
-          <div class="ecom-product-price">
+          <div class="ecom-product-price" [ngClass]="{ 'ecom-product-oldprice': product.id === 1 }">
             <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
             <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
             <span class="ecom-product-price-euro">€</span>
+            <p *ngIf="product.id === 1">
+              <span class="ecom-product-price-integer-promo">0,</span>
+              <span class="ecom-product-price-decimals-promo">35</span>
+              <span class="ecom-product-price-euro-promo">€</span>
+            </p>
             <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
           </div>
           <div class="ecom-product-info">

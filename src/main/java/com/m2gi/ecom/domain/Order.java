@@ -36,12 +36,12 @@ public class Order implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private PromotionalCode promotionalCode;
 
-    @OneToMany(mappedBy = "order")
-    @JsonIgnoreProperties(value = { "product", "order" }, allowSetters = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
     private Set<ProductOrder> lines = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

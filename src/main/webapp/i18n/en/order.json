@@ -21,6 +21,7 @@
       "paymentDate": "Payment Date",
       "receptionDate": "Reception Date",
       "totalPrice": "Total Price",
+      "promotionalCode": "Promo code",
       "lines": "Lines"
     }
   }

@@ -117,6 +117,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleInsufficientQuantityException(
+        com.m2gi.ecom.service.errors.InsufficientQuantityException ex,
+        NativeWebRequest request
+    ) {
+        InsufficientQuantityException problem = new InsufficientQuantityException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
         com.m2gi.ecom.service.errors.EmailAlreadyUsedException ex,
         NativeWebRequest request

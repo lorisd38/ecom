@@ -5,12 +5,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import {getTotalCartItems, ICart} from 'app/entities/cart/cart.model';
+import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'jhi-products',
@@ -30,7 +30,8 @@ export class ProductsComponent implements OnInit {
     protected productToCartService: ProductToCartService,
     public cartService: CartService,
     private accountService: AccountService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -133,7 +134,12 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: IProduct): void {
-    // If the cart is not defined, it shouldn't even be possible to add a product to it.
+    // If no connected redirection to login page.
+    if(!this.accountService.isAuthenticated()){
+      this.router.navigate(['/login']);
+      return;
+    }
+    // If the cart is not defined, it shouldn't even be possible to add a product to it
     if (this.cart == null) {
       return;
     }
