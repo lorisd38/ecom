@@ -1,0 +1,28 @@
+<nav data-cy="categories">
+  <ng-template #categoryTemplateRef let-category>
+    <li>
+      <div class="category">
+        <ul>
+          <a href="">
+            {{ category.name }}
+          </a>
+          <div *ngIf="category.children.length" class="node__children">
+            <!-- Invoke the recursive template. -->
+            <ng-template ngFor [ngForOf]="category.children" [ngForTemplate]="categoryTemplateRef">
+              <!--
+                NOTE: The "$implicit" property of the ngFor context is what will
+                be made available to the template ref's implicit let-node binding.
+              -->
+            </ng-template>
+          </div>
+        </ul>
+      </div>
+    </li>
+  </ng-template>
+
+  <ul>
+    <div *ngFor="let cat of listCategory">
+      <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
+    </div>
+  </ul>
+</nav>

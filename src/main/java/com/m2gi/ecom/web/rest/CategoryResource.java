@@ -144,6 +144,17 @@ public class CategoryResource {
     }
 
     /**
+     * {@code GET  /categories} : get all the categories without parents.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
+     */
+    @GetMapping("/categories/parents")
+    public List<Category> getAllCategoriesWithoutParent() {
+        log.debug("REST request to get all Categories");
+        return categoryService.findAllWithoutParent();
+    }
+
+    /**
      * {@code GET  /categories/:id} : get the "id" category.
      *
      * @param id the id of the category to retrieve.

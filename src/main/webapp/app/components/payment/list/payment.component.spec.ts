@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { HttpHeaders, HttpResponse } from '@angular/common/http';
+// import { HttpClientTestingModule } from '@angular/common/http/testing';
+// import { of } from 'rxjs';
 
 import { PaymentService } from 'app/components/payment/service/payment.service';
 
-import { PaymentComponent } from './payment.component';
+// import { PaymentComponent } from './payment.component';
+
 
 describe('Payment Management Component', () => {
   let comp: PaymentComponent;
