@@ -1,5 +1,6 @@
 package com.m2gi.ecom.service.impl;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.ProductService;
@@ -89,6 +90,13 @@ public class ProductServiceImpl implements ProductService {
         query = query.toLowerCase();
         log.debug("Request to get Products from query : (" + query + ")");
         return productRepository.findAllFromResearch(query);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findCategory(Category cat) {
+        log.debug("Request to get Products from a catgeory : (" + cat + ")");
+        return productRepository.findAllFromCategory(cat);
     }
 
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {

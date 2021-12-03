@@ -1,7 +1,9 @@
 package com.m2gi.ecom.web.rest;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.repository.ProductRepository;
+import com.m2gi.ecom.service.CategoryService;
 import com.m2gi.ecom.service.ProductService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -34,12 +36,14 @@ public class ProductResource {
     private String applicationName;
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     private final ProductRepository productRepository;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository) {
+    public ProductResource(ProductService productService, ProductRepository productRepository, CategoryService categoryService) {
         this.productService = productService;
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -121,7 +125,7 @@ public class ProductResource {
         }
 
         if (!productRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entity not found", "ENTITY_NAME", "idnotfound");
         }
 
         Optional<Product> result = productService.partialUpdate(product);
@@ -139,10 +143,21 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products")
-    public List<Product> getProducts(@RequestParam(name = "query", required = false) String query) {
+    public List<Product> getProducts(
+        @RequestParam(name = "query", required = false) String query,
+        @RequestParam(name = "categories", required = false) Long categoriesId
+    ) {
         if (query != null) {
             log.debug("REST request to get Research Products for query : (" + query + ")");
             return productService.findResearch(query);
+        } else if (categoriesId != null) {
+            log.debug("REST request to get Products of a category for query : (" + categoriesId + ")");
+            Optional<Category> cat = categoryService.findOne(categoriesId);
+            if (cat.isPresent()) {
+                return productService.findCategory(cat.get());
+            } else {
+                throw new BadRequestAlertException("Category unknown", "category", "idnotfound");
+            }
         } else {
             log.debug("REST request to get all Products");
             return productService.findAll();

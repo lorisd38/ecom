@@ -22,6 +22,7 @@ export class ProductsComponent implements OnInit {
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
+  private categories: string | null = '';
 
   constructor(
     protected productService: ProductService,
@@ -37,9 +38,12 @@ export class ProductsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
+
         this.loadProductSearch();
+      } else if (params.categories !== undefined && params.categories !== '') {
+        this.categories = params.categories;
+        this.loadProductCategories();
       } else {
-        this.query = '';
         this.loadAll();
       }
       this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
@@ -49,6 +53,14 @@ export class ProductsComponent implements OnInit {
   loadProductSearch(): void {
     this.query
       ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+          this.products = res.body ?? [];
+        })
+      : '';
+  }
+
+  loadProductCategories(): void {
+    this.categories
+      ? this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
         })
       : '';
@@ -129,7 +141,7 @@ export class ProductsComponent implements OnInit {
 
   addToCart(product: IProduct): void {
     // If no connected redirection to login page.
-    if(!this.accountService.isAuthenticated()){
+    if (!this.accountService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return;
     }

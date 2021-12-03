@@ -1,5 +1,6 @@
 package com.m2gi.ecom.repository;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +36,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         "select product from Product product left join fetch product.relatedCategories left join fetch product.tags where product.id =:id"
     )
     Optional<Product> findOneWithEagerRelationships(@Param("id") Long id);
+
+    @Query(
+        "select product from Product product left join fetch product.relatedCategories left join fetch product.tags where :cat in (product.relatedCategories)"
+    )
+    List<Product> findAllFromCategory(@Param("cat") Category cat);
 }
