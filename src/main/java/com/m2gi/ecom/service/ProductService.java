@@ -1,5 +1,6 @@
 package com.m2gi.ecom.service;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,13 @@ public interface ProductService {
      * @return the list of entities.
      */
     List<Product> findResearch(String query);
+
+    /**
+     * Get products from a category.
+     *
+     * @return the list of entities.
+     */
+    List<Product> findCategory(Category cat);
 
     /**
      * Get all the products with eager load of many-to-many relationships.

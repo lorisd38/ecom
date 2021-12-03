@@ -23,8 +23,10 @@
         <div class="ecom-product" *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
           <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
           <div class="ecom-product-heart">
-            <img srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
-                 (click)="addToFavorite(product)" />
+            <img
+              srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
+              (click)="addToFavorite(product)"
+            />
           </div>
           <div class="ecom-product-img">
             <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>

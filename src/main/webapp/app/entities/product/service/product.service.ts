@@ -45,6 +45,11 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 
+  queryCategories(req: string): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

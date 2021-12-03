@@ -22,6 +22,7 @@ export class ProductsComponent implements OnInit {
   productsMap: Map<number, IProductCart> = new Map();
   account: Account | null = null;
   public query: string | null = '';
+  private categories: string | null = '';
   // For test favoris
 
   constructor(
@@ -38,7 +39,11 @@ export class ProductsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
+
         this.loadProductSearch();
+      } else if (params.categories !== undefined && params.categories !== '') {
+        this.categories = params.categories;
+        this.loadProductCategories();
       } else {
         this.query = '';
         this.loadAll();
@@ -57,6 +62,14 @@ export class ProductsComponent implements OnInit {
   loadProductSearch(): void {
     this.query
       ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+          this.products = res.body ?? [];
+        })
+      : '';
+  }
+
+  loadProductCategories(): void {
+    this.categories
+      ? this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
         })
       : '';
