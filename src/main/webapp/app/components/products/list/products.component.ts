@@ -8,9 +8,7 @@ import { ProductToCartService } from '../service/product-to-cart.service';
 import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'jhi-products',
@@ -18,11 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
-  cart?: ICart | null;
-  productsMap: Map<number, IProductCart> = new Map();
-  account: Account | null = null;
   public query: string | null = '';
-  // For test favoris
 
   constructor(
     protected productService: ProductService,
@@ -31,7 +25,6 @@ export class ProductsComponent implements OnInit {
     public cartService: CartService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -44,8 +37,7 @@ export class ProductsComponent implements OnInit {
         this.loadAll();
       }
       this.accountService.getAuthenticationState().subscribe(account => {
-        this.account = account;
-        this.account
+        account
           ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
               this.productService.listFavorites = res.body ?? null;
             })
@@ -70,16 +62,16 @@ export class ProductsComponent implements OnInit {
 
   loadCart(): void {
     this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
-      this.cart = res.body ?? null;
+      this.productToCartService.cart = res.body ?? null;
       this.buildCartContentMap();
-      this.cartService.nbItems = getTotalCartItems(this.cart);
+      this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
     });
   }
 
   buildCartContentMap(): void {
-    this.productsMap.clear();
-    if (this.cart?.lines != null) {
-      this.cart.lines.forEach(lineProduct => this.productsMap.set(lineProduct.product!.id!, lineProduct));
+    this.productToCartService.productsMap.clear();
+    if (this.productToCartService.cart?.lines != null) {
+      this.productToCartService.cart.lines.forEach(lineProduct => this.productToCartService.productsMap.set(lineProduct.product!.id!, lineProduct));
     }
   }
 
@@ -92,113 +84,7 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  isPresent(productId?: number): boolean {
-    return this.productsMap.has(<number>productId);
-  }
-
-  updateQuantityProduct(item: IProduct, quantity: number): void {
-    if (item.id != null) {
-      if (quantity > 0) {
-        this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
-          // Reload component
-          const productLine: IProductCart | undefined = this.cart?.lines?.find(line => line.product?.id === item.id);
-          if (productLine != null) {
-            productLine.quantity = quantity;
-            this.cartService.nbItems = getTotalCartItems(this.cart);
-          }
-        });
-      } else if (quantity === 0) {
-        this.deleteProduct(item);
-      }
-    }
-  }
-
-  updateQuantityProductByText(item: IProduct, event: any): void {
-    if (event.target.value != null && event.target.value !== '') {
-      if (!isNaN(Number(event.target.value))) {
-        const quantity: number = +event.target.value;
-        this.updateQuantityProduct(item, quantity);
-      }
-    }
-  }
-
-  getProductCart(item: IProduct): IProductCart | undefined {
-    return this.productsMap.get(<number>item.id);
-  }
-
-  quantityProduct(item: IProduct): number {
-    const lineProduct = this.getProductCart(item);
-    return lineProduct?.quantity ?? 0;
-  }
-
   trackId(index: number, item: IProduct): number {
     return item.id!;
-  }
-
-  addToCart(product: IProduct): void {
-    // If no connected redirection to login page.
-    if (!this.accountService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    // If the cart is not defined, it shouldn't even be possible to add a product to it
-    if (this.cart == null) {
-      return;
-    }
-    this.productToCartService.create(product.id!).subscribe((res: HttpResponse<IProductCart>) => {
-      // Update the cart
-      const productCartToUpdate: IProductCart | null = res.body ?? null;
-      if (productCartToUpdate != null) {
-        this.cart!.lines?.push(productCartToUpdate);
-        this.cartService.nbItems = getTotalCartItems(this.cart);
-      }
-      this.buildCartContentMap();
-    });
-  }
-
-  addToFavorite(product: IProduct): void {
-    if (this.account && product.id !== undefined) {
-      this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
-        this.productService.listFavorites = res;
-      });
-    }
-  }
-
-  isFavoris(product: IProduct): boolean {
-    const l = this.productService.listFavorites?.filter(p => p.id === product.id);
-    if (l === undefined) {
-      return false;
-    } else {
-      return l.length > 0;
-    }
-  }
-
-  deleteProduct(product: IProduct): void {
-    const lineProduct: IProductCart | undefined = this.getProductCart(product);
-    if (lineProduct?.id != null) {
-      this.cartService.queryDeleteProductCart(lineProduct.id).subscribe(() => {
-        // Reload component
-        if (this.cart?.lines != null) {
-          const indexProductCart = this.cart.lines.indexOf(lineProduct);
-          // Splice is a method to delete starting from <index> a given <number of elements>.
-          this.cart.lines.splice(indexProductCart, 1);
-          this.buildCartContentMap();
-          this.cartService.nbItems = getTotalCartItems(this.cart);
-        }
-      });
-    }
-  }
-
-  getIntegerOfPrice(price?: number): string {
-    const b = price!.toString().split('.');
-    return b[0];
-  }
-
-  getDecimalsOfPrice(price?: number): string {
-    const b = price!.toString().split('.');
-    if (b[1].length <= 1) {
-      return b[1] + '0';
-    }
-    return b[1];
   }
 }
