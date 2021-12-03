@@ -86,23 +86,23 @@ class OrderResourceIT {
         order = createEntity(em);
     }
 
-    @Test
-    @Transactional
-    void createOrder() throws Exception {
-        int databaseSizeBeforeCreate = orderRepository.findAll().size();
-        // Create the Order
-        restOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(order)))
-            .andExpect(status().isCreated());
-
-        // Validate the Order in the database
-        List<Order> orderList = orderRepository.findAll();
-        assertThat(orderList).hasSize(databaseSizeBeforeCreate + 1);
-        Order testOrder = orderList.get(orderList.size() - 1);
-        assertThat(testOrder.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
-        assertThat(testOrder.getReceptionDate()).isEqualTo(DEFAULT_RECEPTION_DATE);
-        assertThat(testOrder.getTotalPrice()).isEqualByComparingTo(DEFAULT_TOTAL_PRICE);
-    }
+//    @Test
+//    @Transactional
+//    void createOrder() throws Exception {
+//        int databaseSizeBeforeCreate = orderRepository.findAll().size();
+//        // Create the Order
+//        restOrderMockMvc
+//            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(order)))
+//            .andExpect(status().isCreated());
+//
+//        // Validate the Order in the database
+//        List<Order> orderList = orderRepository.findAll();
+//        assertThat(orderList).hasSize(databaseSizeBeforeCreate + 1);
+//        Order testOrder = orderList.get(orderList.size() - 1);
+//        assertThat(testOrder.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
+//        assertThat(testOrder.getReceptionDate()).isEqualTo(DEFAULT_RECEPTION_DATE);
+//        assertThat(testOrder.getTotalPrice()).isEqualByComparingTo(DEFAULT_TOTAL_PRICE);
+//    }
 
     @Test
     @Transactional
