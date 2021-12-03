@@ -3,6 +3,7 @@
     "payment": {
       "title": "Payment",
       "totalPrice": "Total :",
+      "totalSaved": "Total saved :",
       "form": {
         "order": {
           "promoCode": {

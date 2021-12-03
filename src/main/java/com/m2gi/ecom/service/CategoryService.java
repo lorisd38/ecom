@@ -45,4 +45,10 @@ public interface CategoryService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * find all the category which don't have parents
+     * @return list of category
+     */
+    List<Category> findAllWithoutParent();
 }
