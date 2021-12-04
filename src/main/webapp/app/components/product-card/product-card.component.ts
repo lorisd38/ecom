@@ -4,7 +4,7 @@ import {ProductService} from "../../entities/product/service/product.service";
 import {AccountService} from "../../core/auth/account.service";
 import {HttpResponse} from "@angular/common/http";
 import {IProductCart} from "../../entities/product-cart/product-cart.model";
-import {getTotalCartItems, ICart} from "../../entities/cart/cart.model";
+import {getTotalCartItems} from "../../entities/cart/cart.model";
 import {Router} from "@angular/router";
 import {ProductToCartService} from "../products/service/product-to-cart.service";
 import {CartService} from "../cart/service/cart.service";
@@ -13,7 +13,7 @@ import {CartService} from "../cart/service/cart.service";
   selector: 'jhi-product-card',
   templateUrl: './product-card.component.html'
 })
-export class ProductCardComponent implements OnInit{
+export class ProductCardComponent{
   @Input() product: IProduct | null = null;
 
   constructor(
@@ -23,22 +23,6 @@ export class ProductCardComponent implements OnInit{
     protected productToCartService: ProductToCartService,
     public cartService: CartService,
   ) { }
-
-  ngOnInit(): void {
-    this.accountService.getAuthenticationState().subscribe(res => {
-      if (res != null) {
-        this.loadCart();
-      }
-    });
-  }
-
-  loadCart(): void {
-    this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
-      this.productToCartService.cart = res.body ?? null;
-      this.buildCartContentMap();
-      this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
-    });
-  }
 
   isFavoris(product: IProduct):boolean{
     const l = this.productService.listFavorites?.filter(p => p.id === product.id);
