@@ -66,43 +66,12 @@ export class ProductCardComponent {
   }
 
   quantityProduct(item: IProduct): number {
-    const lineProduct = this.getProductCart(item);
+    const lineProduct = this.productToCartService.getProductCart(item);
     return lineProduct?.quantity ?? 0;
   }
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
-    quantity > 0 ? this.updateProductCartQuantity(item, quantity) : this.deleteProduct(item);
-  }
-
-  updateProductCartQuantity(item: IProduct, quantity: number): void {
-    this.cartService.queryQuantityProduct(item.id!, quantity).subscribe(() => {
-      // Reload component
-      const productLine: IProductCart | undefined = this.productToCartService.cart?.lines?.find(line => line.product?.id === item.id);
-      if (productLine != null) {
-        productLine.quantity = quantity;
-        this.cartService.calcTotal();
-      }
-    });
-  }
-
-  deleteProduct(product: IProduct): void {
-    const lineProduct: IProductCart | undefined = this.getProductCart(product);
-    if (lineProduct?.id != null) {
-      this.cartService.queryDeleteProductCart(lineProduct.id).subscribe(() => {
-        // Reload component
-        if (this.productToCartService.cart?.lines != null) {
-          const indexProductCart = this.productToCartService.cart.lines.indexOf(lineProduct);
-          // Splice is a method to delete starting from <index> a given <number of elements>.
-          this.productToCartService.cart.lines.splice(indexProductCart, 1);
-          this.productToCartService.buildCartContentMap();
-          this.cartService.calcTotal();
-        }
-      });
-    }
-  }
-
-  getProductCart(item: IProduct): IProductCart | undefined {
-    return this.productToCartService.productsMap.get(<number>item.id);
+    this.cartService.updateQuantityProduct(item, quantity);
   }
 
   updateQuantityProductByText(item: IProduct, event: any): void {

@@ -46,4 +46,8 @@ export class ProductToCartService {
       this.cart.lines.forEach(lineProduct => this.productsMap.set(lineProduct.product!.id!, lineProduct));
     }
   }
+
+  getProductCart(item: IProduct): IProductCart | undefined {
+    return this.productsMap.get(<number>item.id);
+  }
 }

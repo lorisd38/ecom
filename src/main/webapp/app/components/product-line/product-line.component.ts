@@ -24,32 +24,11 @@ export class ProductLineComponent {
   }
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
-    quantity > 0 ? this.updateLineQuantity(item, quantity) : this.deleteLine(item);
-  }
-
-  updateLineQuantity(item: IProductCart, quantity: number): void {
-    this.cartService.queryQuantityProductCart(item.id!, quantity).subscribe(() => {
-      // Reload component
-      if (this.cartService.cart?.lines != null) {
-        const indexProductCart = this.cartService.cart.lines.indexOf(item);
-        this.cartService.cart.lines[indexProductCart].quantity = quantity;
-        this.cartService.calcTotal();
-      }
-    });
+    this.cartService.updateQuantityProduct(item.product!, quantity);
   }
 
   deleteLine(productCart: IProductCart): void {
-    if (productCart.id != null) {
-      this.cartService.queryDeleteProductCart(productCart.id).subscribe(() => {
-        // Reload component
-        if (this.cartService.cart?.lines != null) {
-          const indexProductCart = this.cartService.cart.lines.indexOf(productCart);
-          // Splice is a method to delete starting from <index> a given <number of elements>.
-          this.cartService.cart.lines.splice(indexProductCart, 1);
-          this.cartService.calcTotal();
-        }
-      });
-    }
+    this.updateQuantityProductCart(productCart, 0);
   }
 
   unitOfPrice(weightUnit: WeightUnit): string {
