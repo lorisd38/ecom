@@ -19,7 +19,7 @@ export class CartService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   calcTotal(): void {
-    this.total = g(this.cart).toLocaleString();
+    this.total = getTotalCartPrice(this.cart).toLocaleString();
     this.nbItems = getTotalCartItems(this.cart);
   }
 
