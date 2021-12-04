@@ -4,17 +4,24 @@ import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { createRequestOption } from '../../../core/request/request-util';
-import { ICart } from '../../../entities/cart/cart.model';
+import {getTotalCartItems, getTotalCartPrice, ICart} from '../../../entities/cart/cart.model';
 
 export type EntityResponseType = HttpResponse<IProductCart>;
 export type EntityArrayResponseType = HttpResponse<IProductCart[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  cart?: ICart | null;
+  total = '0';
   public nbItems = 0;
   protected resourceUrlCart = this.applicationConfigService.getEndpointFor('api/cart');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  calcTotal(): void {
+    this.total = g(this.cart).toLocaleString();
+    this.nbItems = getTotalCartItems(this.cart);
+  }
 
   queryOneCart(req?: any): Observable<EntityResponseType> {
     const options = createRequestOption(req);
