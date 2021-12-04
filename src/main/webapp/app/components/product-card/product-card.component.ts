@@ -5,7 +5,7 @@ import {AccountService} from "../../core/auth/account.service";
 import {HttpResponse} from "@angular/common/http";
 import {IProductCart} from "../../entities/product-cart/product-cart.model";
 import {getTotalCartItems, ICart} from "../../entities/cart/cart.model";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ProductToCartService} from "../products/service/product-to-cart.service";
 import {CartService} from "../cart/service/cart.service";
 
@@ -22,7 +22,6 @@ export class ProductCardComponent implements OnInit{
     private router: Router,
     protected productToCartService: ProductToCartService,
     public cartService: CartService,
-    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {

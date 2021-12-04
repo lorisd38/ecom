@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
