@@ -1,19 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IProduct} from "../../entities/product/product.model";
-import {ProductService} from "../../entities/product/service/product.service";
-import {AccountService} from "../../core/auth/account.service";
-import {HttpResponse} from "@angular/common/http";
-import {IProductCart} from "../../entities/product-cart/product-cart.model";
-import {getTotalCartItems} from "../../entities/cart/cart.model";
-import {Router} from "@angular/router";
-import {ProductToCartService} from "../products/service/product-to-cart.service";
-import {CartService} from "../cart/service/cart.service";
+import { Component, Input } from '@angular/core';
+import { IProduct } from '../../entities/product/product.model';
+import { ProductService } from '../../entities/product/service/product.service';
+import { AccountService } from '../../core/auth/account.service';
+import { IProductCart } from '../../entities/product-cart/product-cart.model';
+import { Router } from '@angular/router';
+import { ProductToCartService } from '../products/service/product-to-cart.service';
+import { CartService } from '../cart/service/cart.service';
 
 @Component({
   selector: 'jhi-product-card',
-  templateUrl: './product-card.component.html'
+  templateUrl: './product-card.component.html',
 })
-export class ProductCardComponent{
+export class ProductCardComponent {
   @Input() product: IProduct | null = null;
 
   constructor(
@@ -21,20 +19,20 @@ export class ProductCardComponent{
     public accountService: AccountService,
     private router: Router,
     protected productToCartService: ProductToCartService,
-    public cartService: CartService,
-  ) { }
+    public cartService: CartService
+  ) {}
 
-  isFavoris(product: IProduct):boolean{
-    const l = this.productService.listFavorites?.filter(p => p.id === product.id);
-    if (l === undefined){
-      return false;
-    }else{
-      return l.length > 0;
-    }
+  isFavorites(product: IProduct): boolean {
+    const size = this.productService.listFavorites?.filter(p => p.id === product.id).length;
+    return size != null && size > 0;
   }
 
   addToFavorite(product: IProduct): void {
-    if(this.accountService.isAuthenticated() && product.id !== undefined) {
+    // If no connected redirection to login page.
+    if (!this.accountService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    } else if (product.id !== undefined) {
       this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
         this.productService.listFavorites = res;
       });
@@ -60,31 +58,11 @@ export class ProductCardComponent{
 
   addToCart(product: IProduct): void {
     // If no connected redirection to login page.
-    if(!this.accountService.isAuthenticated()){
+    if (!this.accountService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return;
     }
-    // If the cart is not defined, it shouldn't even be possible to add a product to it
-    if (this.productToCartService.cart == null) {
-      console.log("HELOO")
-      return;
-    }
-    this.productToCartService.create(product.id!).subscribe((res: HttpResponse<IProductCart>) => {
-      // Update the cart
-      const productCartToUpdate: IProductCart | null = res.body ?? null;
-      if (productCartToUpdate != null) {
-        this.productToCartService.cart!.lines?.push(productCartToUpdate);
-        this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
-      }
-      this.buildCartContentMap();
-    });
-  }
-
-  buildCartContentMap(): void {
-    this.productToCartService.productsMap.clear();
-    if (this.productToCartService.cart?.lines != null) {
-      this.productToCartService.cart.lines.forEach(lineProduct => this.productToCartService.productsMap.set(lineProduct.product!.id!, lineProduct));
-    }
+    this.productToCartService.addToCart(product, this.cartService);
   }
 
   quantityProduct(item: IProduct): number {
@@ -93,20 +71,18 @@ export class ProductCardComponent{
   }
 
   updateQuantityProduct(item: IProduct, quantity: number): void {
-    if (item.id != null) {
-      if (quantity > 0) {
-        this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
-          // Reload component
-          const productLine: IProductCart | undefined = this.productToCartService.cart?.lines?.find(line => line.product?.id === item.id);
-          if (productLine != null) {
-            productLine.quantity = quantity;
-            this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
-          }
-        });
-      } else if (quantity === 0) {
-        this.deleteProduct(item);
+    quantity > 0 ? this.updateProductCartQuantity(item, quantity) : this.deleteProduct(item);
+  }
+
+  updateProductCartQuantity(item: IProduct, quantity: number): void {
+    this.cartService.queryQuantityProduct(item.id!, quantity).subscribe(() => {
+      // Reload component
+      const productLine: IProductCart | undefined = this.productToCartService.cart?.lines?.find(line => line.product?.id === item.id);
+      if (productLine != null) {
+        productLine.quantity = quantity;
+        this.cartService.calcTotal();
       }
-    }
+    });
   }
 
   deleteProduct(product: IProduct): void {
@@ -118,8 +94,8 @@ export class ProductCardComponent{
           const indexProductCart = this.productToCartService.cart.lines.indexOf(lineProduct);
           // Splice is a method to delete starting from <index> a given <number of elements>.
           this.productToCartService.cart.lines.splice(indexProductCart, 1);
-          this.buildCartContentMap();
-          this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
+          this.productToCartService.buildCartContentMap();
+          this.cartService.calcTotal();
         }
       });
     }

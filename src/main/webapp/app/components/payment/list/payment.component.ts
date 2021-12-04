@@ -59,6 +59,7 @@ export class PaymentComponent implements OnInit {
     this.cartService.queryOneCart().subscribe(
       (res: HttpResponse<ICart>) => {
         this.isLoadingCart = false;
+        this.cartService.cart = res.body ?? null;
         this.cart = res.body ?? null;
         this.calcTotal();
       },

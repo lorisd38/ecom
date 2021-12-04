@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { createRequestOption } from '../../../core/request/request-util';
-import {getTotalCartItems, getTotalCartPrice, ICart} from '../../../entities/cart/cart.model';
+import { getTotalCartItems, getTotalCartPrice, ICart } from '../../../entities/cart/cart.model';
+import { ProductToCartService } from '../../products/service/product-to-cart.service';
 
 export type EntityResponseType = HttpResponse<IProductCart>;
 export type EntityArrayResponseType = HttpResponse<IProductCart[]>;
@@ -16,7 +17,11 @@ export class CartService {
   public nbItems = 0;
   protected resourceUrlCart = this.applicationConfigService.getEndpointFor('api/cart');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  constructor(
+    protected http: HttpClient,
+    protected applicationConfigService: ApplicationConfigService,
+    protected productToCartService: ProductToCartService
+  ) {}
 
   calcTotal(): void {
     this.total = getTotalCartPrice(this.cart).toLocaleString();

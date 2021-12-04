@@ -1,8 +1,10 @@
 <div *ngIf="product" class="ecom-product">
   <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
   <div class="ecom-product-heart">
-    <img srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
-         (click)="addToFavorite(product)" />
+    <img
+      srcset="../../../content/images/{{(this.isFavorites(product))? 'heart-active': 'heart-inactive'}}.png"
+      (click)="addToFavorite(product)"
+    />
   </div>
   <div class="ecom-product-img">
     <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
@@ -19,16 +21,16 @@
     <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
   </div>
   <div class="ecom-product-info">
-            <span
-            ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
-            >
+    <span
+      ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
+    >
     <span>{{ product.weight }} {{ product.weightUnit }}</span>
     <div>Origine : {{ product.origin }}</div>
   </div>
   <div class="ecom-product-tags">
-            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
-              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
-            </span>
+    <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
+      <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
+    </span>
   </div>
   <div class="ecom-product-button">
     <div *ngIf="!this.accountService.isAuthenticated() || !isPresent(product.id); else elseBlock">

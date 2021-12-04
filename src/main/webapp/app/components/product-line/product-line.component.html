@@ -1,31 +1,31 @@
-<div *ngIf="this.prductCart" class="ecom-cart" >
+<div *ngIf="this.productCart" class="ecom-cart">
   <div class="ecom-cart-img">
     <div>
-      <img src="{{ this.prductCart.product?.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" />
+      <img src="{{ this.productCart.product?.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" />
     </div>
   </div>
   <div>
     <div class="ecom-productCart-info">
-              <span>
-                <a [routerLink]="['/product', this.prductCart.product?.id, 'view']">{{ this.prductCart.product?.name }}</a> -
-                {{ this.prductCart.product?.origin }}
-              </span>
-      <span>{{ this.prductCart.product?.brand }} {{ this.prductCart.product?.weight }} {{ this.prductCart.product?.weightUnit }}</span>
+      <span>
+        <a [routerLink]="['/product', this.productCart.product?.id, 'view']">{{ this.productCart.product?.name }}</a> -
+        {{ this.productCart.product?.origin }}
+      </span>
+      <span>{{ this.productCart.product?.brand }} {{ this.productCart.product?.weight }} {{ this.productCart.product?.weightUnit }}</span>
     </div>
     <div class="ecom-productCart-prices">
-      <span>Prix unitaire : {{ this.prductCart.product?.price | number: '0.2' }} €</span>
-      <span *ngIf="this.prductCart.product!.weightUnit !== 'U'"
-      >Prix au {{ this.unitOfPrice(this.prductCart.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span
+      <span>Prix unitaire : {{ this.productCart.product?.price | number: '0.2' }} €</span>
+      <span *ngIf="this.productCart.product!.weightUnit !== 'U'"
+        >Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span
       >
       <!-- <span>{{ product.weight * product.price / 1000 }}</span>-->
     </div>
   </div>
   <div class="ecom-productCart-tags">
-    <p *ngIf="this.prductCart.product?.tags?.length != 0">
+    <p *ngIf="this.productCart.product?.tags?.length != 0">
       Tags :
-      <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of this.prductCart.product!.tags">
-                <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
-              </span>
+      <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of this.productCart.product!.tags">
+        <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
+      </span>
     </p>
   </div>
   <div class="ecom-productcart-button">
@@ -33,7 +33,7 @@
       <button
         class="ecom-product-button-minus ecom-button"
         type="submit"
-        (click)="updateQuantityProductCart(this.prductCart, (this.prductCart.quantity ?? 0) - 1)"
+        (click)="updateQuantityProductCart(this.productCart, (this.productCart.quantity ?? 0) - 1)"
         data-cy="entityDecreaseProductCartButton"
         title="Diminuer la quantite"
       >
@@ -43,14 +43,14 @@
         class="ecom-product-button-text"
         type="text"
         pattern="[0-9]*"
-        (change)="this.updateQuantityProductCartByText(this.prductCart, $event)"
-        [value]="this.prductCart.quantity ?? 0"
+        (change)="this.updateQuantityProductCartByText(this.productCart, $event)"
+        [value]="this.productCart.quantity ?? 0"
         title="Définir la quantite"
       />
       <button
         class="ecom-product-button-plus ecom-button"
         type="submit"
-        (click)="this.updateQuantityProductCart(this.prductCart, (this.prductCart.quantity ?? 0) + 1)"
+        (click)="this.updateQuantityProductCart(this.productCart, (this.productCart.quantity ?? 0) + 1)"
         data-cy="entityIncreaseProductCartButton"
         title="Augmenter la quantite"
       >
@@ -63,13 +63,13 @@
       title="Supprimer le produit du panier"
       class="ecom-button"
       type="submit"
-      (click)="this.deleteLine(this.prductCart)"
+      (click)="this.deleteLine(this.productCart)"
       data-cy="entityDeleteButton"
     >
       <fa-icon icon="trash"></fa-icon>
     </button>
   </div>
   <div class="ecom-productcart-price">
-    <span>Prix : {{ this.prductCart.product!.price! * this.prductCart!.quantity! | number: '0.2' }} €</span>
+    <span>Prix : {{ this.productCart.product!.price! * this.productCart!.quantity! | number: '0.2' }} €</span>
   </div>
 </div>

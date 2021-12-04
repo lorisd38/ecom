@@ -12,7 +12,11 @@
   <div *ngIf="this.cartService.cart && this.cartService.cart?.lines?.length !== 0">
     <div>
       <div id="ecom-cart-products">
-        <jhi-product-line *ngFor="let lineProduct of this.cartService.cart?.lines; trackBy: trackId" data-cy="entityTable" [prductCart]="lineProduct"></jhi-product-line>
+        <jhi-product-line
+          *ngFor="let lineProduct of this.cartService.cart?.lines; trackBy: trackId"
+          data-cy="entityTable"
+          [productCart]="lineProduct"
+        ></jhi-product-line>
       </div>
       <div class="ecom-cart-button">
         <div>Total à payer : {{ this.cartService.total }} €</div>

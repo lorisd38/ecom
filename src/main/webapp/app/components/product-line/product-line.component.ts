@@ -1,14 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IProductCart} from "../../entities/product-cart/product-cart.model";
-import {WeightUnit} from "../../entities/enumerations/weight-unit.model";
-import {CartService} from "../cart/service/cart.service";
+import { Component, Input } from '@angular/core';
+import { IProductCart } from '../../entities/product-cart/product-cart.model';
+import { WeightUnit } from '../../entities/enumerations/weight-unit.model';
+import { CartService } from '../cart/service/cart.service';
 
 @Component({
   selector: 'jhi-product-line',
   templateUrl: './product-line.component.html',
 })
 export class ProductLineComponent {
-  @Input() prductCart : IProductCart | null = null;
+  @Input() productCart: IProductCart | null = null;
 
   constructor(public cartService: CartService) {
     // do nothing.
@@ -24,20 +24,18 @@ export class ProductLineComponent {
   }
 
   updateQuantityProductCart(item: IProductCart, quantity: number): void {
-    if (item.id != null) {
-      if (quantity > 0) {
-        this.cartService.queryQuantityProductCart(item.id, quantity).subscribe(() => {
-          // Reload component
-          if (this.cartService.cart?.lines != null) {
-            const indexProductCart = this.cartService.cart.lines.indexOf(item);
-            this.cartService.cart.lines[indexProductCart].quantity = quantity;
-            this.cartService.calcTotal();
-          }
-        });
-      } else if (quantity === 0) {
-        this.deleteLine(item);
+    quantity > 0 ? this.updateLineQuantity(item, quantity) : this.deleteLine(item);
+  }
+
+  updateLineQuantity(item: IProductCart, quantity: number): void {
+    this.cartService.queryQuantityProductCart(item.id!, quantity).subscribe(() => {
+      // Reload component
+      if (this.cartService.cart?.lines != null) {
+        const indexProductCart = this.cartService.cart.lines.indexOf(item);
+        this.cartService.cart.lines[indexProductCart].quantity = quantity;
+        this.cartService.calcTotal();
       }
-    }
+    });
   }
 
   deleteLine(productCart: IProductCart): void {

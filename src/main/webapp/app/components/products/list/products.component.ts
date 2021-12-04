@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
+import { ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -23,24 +23,29 @@ export class ProductsComponent implements OnInit {
     protected productToCartService: ProductToCartService,
     public cartService: CartService,
     private accountService: AccountService,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    console.log('HERE');
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
         this.loadProductSearch();
       } else {
         this.query = '';
-        this.loadAll();
+        this.loadProduct();
       }
       this.accountService.getAuthenticationState().subscribe(account => {
-        account
-          ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
-              this.productService.listFavorites = res.body ?? null;
-            })
-          : (this.productService.listFavorites = null);
+        if (account != null) {
+          this.loadCart();
+          this.loadFavorites();
+        } else {
+          this.productToCartService.cart = null;
+          this.productToCartService.productsMap.clear();
+          this.cartService.nbItems = 0;
+          this.productService.listFavorites = null;
+        }
       });
     });
   }
@@ -62,24 +67,15 @@ export class ProductsComponent implements OnInit {
   loadCart(): void {
     this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
       this.productToCartService.cart = res.body ?? null;
-      this.buildCartContentMap();
-      this.cartService.nbItems = getTotalCartItems(this.productToCartService.cart);
+      this.cartService.cart = res.body ?? null;
+      this.productToCartService.buildCartContentMap();
+      this.cartService.calcTotal();
     });
   }
 
-  buildCartContentMap(): void {
-    this.productToCartService.productsMap.clear();
-    if (this.productToCartService.cart?.lines != null) {
-      this.productToCartService.cart.lines.forEach(lineProduct => this.productToCartService.productsMap.set(lineProduct.product!.id!, lineProduct));
-    }
-  }
-
-  loadAll(): void {
-    this.loadProduct();
-    this.accountService.getAuthenticationState().subscribe(res => {
-      if (res != null) {
-        this.loadCart();
-      }
+  loadFavorites(): void {
+    this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.listFavorites = res.body ?? null;
     });
   }
 }

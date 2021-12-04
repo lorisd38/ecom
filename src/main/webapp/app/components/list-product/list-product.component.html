@@ -5,10 +5,7 @@
 <div *ngIf="products && products.length > 0">
   <div>
     <div id="ecom-list-products">
-      <jhi-product-card *ngFor="let product of products; trackBy: trackId" data-cy="entityTable" [product]="product"></jhi-product-card >
+      <jhi-product-card *ngFor="let product of products; trackBy: trackId" data-cy="entityTable" [product]="product"></jhi-product-card>
     </div>
-  </div>
-  <div class="ecom-button-see-cart">
-    <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
   </div>
 </div>
