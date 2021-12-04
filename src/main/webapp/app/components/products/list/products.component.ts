@@ -16,6 +16,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
   public query: string | null = '';
+  private categories: string | null = '';
 
   constructor(
     protected productService: ProductService,
@@ -27,11 +28,13 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('HERE');
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
         this.loadProductSearch();
+      } else if (params.categories !== undefined && params.categories !== '') {
+        this.categories = params.categories;
+        this.loadProductCategories();
       } else {
         this.query = '';
         this.loadProduct();
@@ -56,6 +59,14 @@ export class ProductsComponent implements OnInit {
           this.products = res.body ?? [];
         })
       : '';
+  }
+
+  loadProductCategories(): void {
+    if (this.categories) {
+      this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
+        this.products = res.body ?? [];
+      });
+    }
   }
 
   loadProduct(): void {
