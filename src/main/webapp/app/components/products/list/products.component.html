@@ -10,99 +10,10 @@
   </div>
 
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
 
-  <div *ngIf="products?.length === 0">
-    <span jhiTranslate="ecomApp.product.home.notFound">No products found</span>
-  </div>
-
-  <div *ngIf="products && products.length > 0">
-    <div>
-      <div id="ecom-list-products">
-        <div class="ecom-product" *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
-          <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
-          <div class="ecom-product-heart">
-            <img
-              srcset="../../../content/images/{{(this.isFavoris(product))? 'heart-active': 'heart-inactive'}}.png"
-              (click)="addToFavorite(product)"
-            />
-          </div>
-          <div class="ecom-product-img">
-            <div><img src="{{ product.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" /></div>
-          </div>
-          <div class="ecom-product-price" [ngClass]="{ 'ecom-product-oldprice': product.id === 1 }">
-            <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
-            <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
-            <span class="ecom-product-price-euro">€</span>
-            <p *ngIf="product.id === 1">
-              <span class="ecom-product-price-integer-promo">0,</span>
-              <span class="ecom-product-price-decimals-promo">35</span>
-              <span class="ecom-product-price-euro-promo">€</span>
-            </p>
-            <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
-          </div>
-          <div class="ecom-product-info">
-            <span
-              ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
-            >
-            <span>{{ product.weight }} {{ product.weightUnit }}</span>
-            <div>Origine : {{ product.origin }}</div>
-          </div>
-          <div class="ecom-product-tags">
-            <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
-              <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
-            </span>
-          </div>
-          <div class="ecom-product-button">
-            <div *ngIf="account == null || !isPresent(product.id); else elseBlock">
-              <button
-                class="ecom-product-button-add ecom-button"
-                type="submit"
-                (click)="addToCart(product)"
-                data-cy="entityAddTodCartButton"
-                title="Ajouter au panier"
-              >
-                <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
-                <fa-icon icon="plus"></fa-icon>
-              </button>
-            </div>
-            <ng-template #elseBlock>
-              <div>
-                <button
-                  class="ecom-product-button-minus ecom-button"
-                  type="submit"
-                  (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
-                  data-cy="entityDecreaseProductCartButton"
-                  title="Diminuer la quantite"
-                >
-                  <fa-icon icon="minus"></fa-icon>
-                </button>
-                <input
-                  class="ecom-product-button-text"
-                  type="text"
-                  pattern="[0-9]*"
-                  (change)="updateQuantityProductByText(product, $event)"
-                  [value]="quantityProduct(product)"
-                  title="Définir la quantite"
-                />
-                <button
-                  class="ecom-product-button-plus ecom-button"
-                  type="submit"
-                  (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
-                  data-cy="entityIncreaseProductCartButton"
-                  title="Augmenter la quantite"
-                >
-                  <fa-icon icon="plus"></fa-icon>
-                </button>
-              </div>
-            </ng-template>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
-    </div>
+  <jhi-list-product [products]="this.products"></jhi-list-product>
+  <div class="ecom-button-see-cart">
+    <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
   </div>
 </div>

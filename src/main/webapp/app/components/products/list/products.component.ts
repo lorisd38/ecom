@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { ProductToCartService } from '../service/product-to-cart.service';
-import { getTotalCartItems, ICart } from 'app/entities/cart/cart.model';
+import { ICart } from 'app/entities/cart/cart.model';
 import { CartService } from '../../cart/service/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'jhi-products',
@@ -18,12 +15,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
-  cart?: ICart | null;
-  productsMap: Map<number, IProductCart> = new Map();
-  account: Account | null = null;
   public query: string | null = '';
   private categories: string | null = '';
-  // For test favoris
 
   constructor(
     protected productService: ProductService,
@@ -31,30 +24,31 @@ export class ProductsComponent implements OnInit {
     protected productToCartService: ProductToCartService,
     public cartService: CartService,
     private accountService: AccountService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
-
         this.loadProductSearch();
       } else if (params.categories !== undefined && params.categories !== '') {
         this.categories = params.categories;
         this.loadProductCategories();
       } else {
         this.query = '';
-        this.loadAll();
+        this.loadProduct();
       }
       this.accountService.getAuthenticationState().subscribe(account => {
-        this.account = account;
-        this.account
-          ? this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
-              this.productService.listFavorites = res.body ?? null;
-            })
-          : (this.productService.listFavorites = null);
+        if (account != null) {
+          this.loadCart();
+          this.loadFavorites();
+        } else {
+          this.productToCartService.cart = null;
+          this.productToCartService.productsMap.clear();
+          this.cartService.nbItems = 0;
+          this.productService.listFavorites = null;
+        }
       });
     });
   }
@@ -68,11 +62,11 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProductCategories(): void {
-    this.categories
-      ? this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
-          this.products = res.body ?? [];
-        })
-      : '';
+    if (this.categories) {
+      this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
+        this.products = res.body ?? [];
+      });
+    }
   }
 
   loadProduct(): void {
@@ -83,135 +77,16 @@ export class ProductsComponent implements OnInit {
 
   loadCart(): void {
     this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
-      this.cart = res.body ?? null;
-      this.buildCartContentMap();
-      this.cartService.nbItems = getTotalCartItems(this.cart);
+      this.productToCartService.cart = res.body ?? null;
+      this.cartService.cart = res.body ?? null;
+      this.productToCartService.buildCartContentMap();
+      this.cartService.calcTotal();
     });
   }
 
-  buildCartContentMap(): void {
-    this.productsMap.clear();
-    if (this.cart?.lines != null) {
-      this.cart.lines.forEach(lineProduct => this.productsMap.set(lineProduct.product!.id!, lineProduct));
-    }
-  }
-
-  loadAll(): void {
-    this.loadProduct();
-    this.accountService.getAuthenticationState().subscribe(res => {
-      if (res != null) {
-        this.loadCart();
-      }
+  loadFavorites(): void {
+    this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.listFavorites = res.body ?? null;
     });
-  }
-
-  isPresent(productId?: number): boolean {
-    return this.productsMap.has(<number>productId);
-  }
-
-  updateQuantityProduct(item: IProduct, quantity: number): void {
-    if (item.id != null) {
-      if (quantity > 0) {
-        this.cartService.queryQuantityProduct(item.id, quantity).subscribe(() => {
-          // Reload component
-          const productLine: IProductCart | undefined = this.cart?.lines?.find(line => line.product?.id === item.id);
-          if (productLine != null) {
-            productLine.quantity = quantity;
-            this.cartService.nbItems = getTotalCartItems(this.cart);
-          }
-        });
-      } else if (quantity === 0) {
-        this.deleteProduct(item);
-      }
-    }
-  }
-
-  updateQuantityProductByText(item: IProduct, event: any): void {
-    if (event.target.value != null && event.target.value !== '') {
-      if (!isNaN(Number(event.target.value))) {
-        const quantity: number = +event.target.value;
-        this.updateQuantityProduct(item, quantity);
-      }
-    }
-  }
-
-  getProductCart(item: IProduct): IProductCart | undefined {
-    return this.productsMap.get(<number>item.id);
-  }
-
-  quantityProduct(item: IProduct): number {
-    const lineProduct = this.getProductCart(item);
-    return lineProduct?.quantity ?? 0;
-  }
-
-  trackId(index: number, item: IProduct): number {
-    return item.id!;
-  }
-
-  addToCart(product: IProduct): void {
-    // If no connected redirection to login page.
-    if (!this.accountService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    // If the cart is not defined, it shouldn't even be possible to add a product to it
-    if (this.cart == null) {
-      return;
-    }
-    this.productToCartService.create(product.id!).subscribe((res: HttpResponse<IProductCart>) => {
-      // Update the cart
-      const productCartToUpdate: IProductCart | null = res.body ?? null;
-      if (productCartToUpdate != null) {
-        this.cart!.lines?.push(productCartToUpdate);
-        this.cartService.nbItems = getTotalCartItems(this.cart);
-      }
-      this.buildCartContentMap();
-    });
-  }
-
-  addToFavorite(product: IProduct): void {
-    if (this.account && product.id !== undefined) {
-      this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
-        this.productService.listFavorites = res;
-      });
-    }
-  }
-
-  isFavoris(product: IProduct): boolean {
-    const l = this.productService.listFavorites?.filter(p => p.id === product.id);
-    if (l === undefined) {
-      return false;
-    } else {
-      return l.length > 0;
-    }
-  }
-
-  deleteProduct(product: IProduct): void {
-    const lineProduct: IProductCart | undefined = this.getProductCart(product);
-    if (lineProduct?.id != null) {
-      this.cartService.queryDeleteProductCart(lineProduct.id).subscribe(() => {
-        // Reload component
-        if (this.cart?.lines != null) {
-          const indexProductCart = this.cart.lines.indexOf(lineProduct);
-          // Splice is a method to delete starting from <index> a given <number of elements>.
-          this.cart.lines.splice(indexProductCart, 1);
-          this.buildCartContentMap();
-          this.cartService.nbItems = getTotalCartItems(this.cart);
-        }
-      });
-    }
-  }
-
-  getIntegerOfPrice(price?: number): string {
-    const b = price!.toString().split('.');
-    return b[0];
-  }
-
-  getDecimalsOfPrice(price?: number): string {
-    const b = price!.toString().split('.');
-    if (b[1].length <= 1) {
-      return b[1] + '0';
-    }
-    return b[1];
   }
 }

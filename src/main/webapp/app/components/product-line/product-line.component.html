@@ -1,0 +1,75 @@
+<div *ngIf="this.productCart" class="ecom-cart">
+  <div class="ecom-cart-img">
+    <div>
+      <img src="{{ this.productCart.product?.imagePath }}" srcset="../../../content/images/default-products.png" alt="Image produit" />
+    </div>
+  </div>
+  <div>
+    <div class="ecom-productCart-info">
+      <span>
+        <a [routerLink]="['/product', this.productCart.product?.id, 'view']">{{ this.productCart.product?.name }}</a> -
+        {{ this.productCart.product?.origin }}
+      </span>
+      <span>{{ this.productCart.product?.brand }} {{ this.productCart.product?.weight }} {{ this.productCart.product?.weightUnit }}</span>
+    </div>
+    <div class="ecom-productCart-prices">
+      <span>Prix unitaire : {{ this.productCart.product?.price | number: '0.2' }} €</span>
+      <span *ngIf="this.productCart.product!.weightUnit !== 'U'"
+        >Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span
+      >
+      <!-- <span>{{ product.weight * product.price / 1000 }}</span>-->
+    </div>
+  </div>
+  <div class="ecom-productCart-tags">
+    <p *ngIf="this.productCart.product?.tags?.length != 0">
+      Tags :
+      <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of this.productCart.product!.tags">
+        <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
+      </span>
+    </p>
+  </div>
+  <div class="ecom-productcart-button">
+    <div>
+      <button
+        class="ecom-product-button-minus ecom-button"
+        type="submit"
+        (click)="updateQuantityProductCart(this.productCart, (this.productCart.quantity ?? 0) - 1)"
+        data-cy="entityDecreaseProductCartButton"
+        title="Diminuer la quantite"
+      >
+        <fa-icon icon="minus"></fa-icon>
+      </button>
+      <input
+        class="ecom-product-button-text"
+        type="text"
+        pattern="[0-9]*"
+        (change)="this.updateQuantityProductCartByText(this.productCart, $event)"
+        [value]="this.productCart.quantity ?? 0"
+        title="Définir la quantite"
+      />
+      <button
+        class="ecom-product-button-plus ecom-button"
+        type="submit"
+        (click)="this.updateQuantityProductCart(this.productCart, (this.productCart.quantity ?? 0) + 1)"
+        data-cy="entityIncreaseProductCartButton"
+        title="Augmenter la quantite"
+      >
+        <fa-icon icon="plus"></fa-icon>
+      </button>
+    </div>
+  </div>
+  <div class="ecom-productcart-delete">
+    <button
+      title="Supprimer le produit du panier"
+      class="ecom-button"
+      type="submit"
+      (click)="this.deleteLine(this.productCart)"
+      data-cy="entityDeleteButton"
+    >
+      <fa-icon icon="trash"></fa-icon>
+    </button>
+  </div>
+  <div class="ecom-productcart-price">
+    <span>Prix : {{ this.productCart.product!.price! * this.productCart!.quantity! | number: '0.2' }} €</span>
+  </div>
+</div>
