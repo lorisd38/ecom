@@ -6,14 +6,15 @@
 .ecom-title-header {
   font-size: 28px;
   margin-bottom: 30px;
+  position: relative;
 }
 
 .ecom-title-header:after {
   content: '';
   background: black;
   position: absolute;
-  top: 65px;
-  left: 1.5%;
+  top: 40px;
+  left: 0;
   height: 1px;
   width: 150px;
 }
@@ -25,7 +26,7 @@
   color: white;
 }
 
-.ecom-button:hover {
+.ecom-button:hover:enabled {
   background-color: var(--couleur-primaire-hover);
 }
 
@@ -278,7 +279,7 @@ Product card in Cart
   border-left: 1px solid grey;
 }
 
-.ecom-cart:nth-child(2n) {
+#ecom-cart-products > *:nth-child(2n) > .ecom-cart {
   background-color: #fafafa;
 }
 
@@ -344,7 +345,7 @@ Product card in Cart
 }
 
 .ecom-productcart-delete button:hover {
-  background-color: #c72b2b;
+  background-color: #c72b2b !important;
 }
 
 .ecom-productcart-delete svg {
@@ -501,7 +502,8 @@ Product card in Cart
 /* ==============================================================
   Signin / Signup
   ===============================================================*/
-.ecom-log-panel {
+.ecom-log-panel,
+.ecom-payment-panel {
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
@@ -616,4 +618,131 @@ Product card in Cart
   position: absolute;
   top: 72px;
   left: 50px;
+}
+/* ==============================================================
+Payment
+===============================================================*/
+.ecom-payment-panel {
+  padding: 70px 10%;
+}
+
+.ecom-payment-panel > div {
+  width: 80%;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px #c4c4c4;
+  position: relative;
+}
+
+.ecom-payment-title {
+  padding: 30px 30px 0 30px;
+}
+
+.ecom-payment-form {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 30px 30px 30px;
+}
+
+.ecom-payment-form > div:first-child {
+  width: 55%;
+}
+
+.ecom-payment-form > div:nth-child(2) {
+  margin-left: 20px;
+  width: 40%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ecom-payment-cb {
+  margin-top: 20px;
+}
+
+.ecom-payment-date > label,
+.ecom-payment-cb > *,
+.ecom-payment-promo-code > * {
+  display: block;
+}
+
+.ecom-payment-cb > input:not(:first-child),
+.ecom-payment-cb > div {
+  margin-top: 5px;
+}
+
+.ecom-payment-cb > div > input,
+.ecom-payment-date > div > input {
+  display: inline-block;
+}
+
+.ecom-payment-date > div,
+.ecom-payment-cb > div {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ecom-payment-cb > div > input:first-child,
+.ecom-payment-date > div > input:first-child {
+  width: 63%;
+}
+
+.ecom-payment-cb > div > input:last-child,
+.ecom-payment-date > div > input:last-child {
+  width: 33%;
+}
+
+.ecom-payment-cb > input,
+.ecom-payment-promo-code > input {
+  width: 100%;
+}
+
+.ecom-payment-promo-code > div {
+  margin-top: 10px;
+  display: flex;
+  justify-content: right;
+}
+
+.ecom-payment-button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.ecom-payment-button-price {
+  margin-right: 10px;
+}
+
+.ecom-payment-button-price > div:first-child {
+  font-size: 18px;
+}
+
+.ecom-payment-button-price > div:last-child {
+  font-size: 15px;
+  color: red;
+}
+
+.ecom-payment-button-button > button {
+  display: block;
+  width: 80px;
+}
+
+.ecom-payement-button-clear {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #ff4747;
+  border: 1px solid #c72b2b;
+}
+
+.ecom-payement-button-clear:hover {
+  background-color: #c72b2b !important;
+}
+
+.ecom-payment-end-form {
 }
