@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { CategoriesComponent } from './list/categories.component';
+import { CategoriesComponent } from './display/categories.component';
 
 export const categoriesRoute: Route = {
   path: '',

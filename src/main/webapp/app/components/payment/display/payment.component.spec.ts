@@ -7,7 +7,6 @@ import { PaymentService } from 'app/components/payment/service/payment.service';
 
 // import { PaymentComponent } from './payment.component';
 
-
 describe('Payment Management Component', () => {
   let comp: PaymentComponent;
   let fixture: ComponentFixture<PaymentComponent>;
