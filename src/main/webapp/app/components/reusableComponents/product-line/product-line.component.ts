@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { IProductCart } from '../../../entities/product-cart/product-cart.model';
 import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
-import { CartService } from '../../cart/service/cart.service';
 import { getPriceWeightStr } from '../../products/products.module';
 import { IProduct } from '../../../entities/product/product.model';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'jhi-product-line',
