@@ -33,20 +33,13 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a
-          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/entities') }"
-          class="ecom-nav-profile dropdown-toggle"
-          ngbDropdownToggle
-          href="javascript:void(0);"
-          id="entity-menu"
-          data-cy="entity"
-        >
+        <a class="ecom-nav-profile dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
           <span>
             <fa-icon icon="th-list"></fa-icon>
             <span jhiTranslate="global.menu.entities.main">Entities</span>
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+        <ul class="dropdown-menu ecom-nav-menu" ngbDropdownMenu aria-labelledby="entity-menu">
           <li>
             <a
               class="dropdown-item"
@@ -202,20 +195,13 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a
-          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/admin/') }"
-          class="ecom-nav-profile dropdown-toggle"
-          ngbDropdownToggle
-          href="javascript:void(0);"
-          id="admin-menu"
-          data-cy="adminMenu"
-        >
+        <a class="ecom-nav-profile dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
           <span>
             <fa-icon icon="users-cog"></fa-icon>
             <span jhiTranslate="global.menu.admin.main">Administration</span>
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+        <ul class="dropdown-menu ecom-nav-menu" ngbDropdownMenu aria-labelledby="admin-menu">
           <li>
             <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
@@ -282,13 +268,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a
-          [ngClass]="{ 'ecom-nav-opened': router.url.includes('/account') }"
-          class="ecom-nav-profile dropdown-toggle"
-          ngbDropdownToggle
-          href="javascript:void(0);"
-          data-cy="accountMenu"
-        >
+        <a class="ecom-nav-profile dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-cy="accountMenu">
           <span *ngIf="!account?.imageUrl">
             <fa-icon icon="user"></fa-icon>
           </span>
@@ -298,14 +278,7 @@
         </a>
         <ul class="dropdown-menu ecom-nav-menu" ngbDropdownMenu aria-labelledby="account-menu">
           <li *ngSwitchCase="true">
-            <a
-              [ngClass]="{ 'ecom-nav-account-opened': router.url === '/account/settings' }"
-              class="dropdown-item"
-              routerLink="account/settings"
-              routerLinkActive="active"
-              (click)="collapseNavbar()"
-              data-cy="settings"
-            >
+            <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
               <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.settings">Settings</span>
             </a>
@@ -324,7 +297,6 @@
           </li>
           <li *ngSwitchCase="true">
             <a
-              [ngClass]="{ 'ecom-nav-password-opened': router.url === '/account/password' }"
               class="dropdown-item"
               routerLink="account/password"
               routerLinkActive="active"
@@ -342,7 +314,13 @@
             </a>
           </li>
           <li *ngSwitchCase="false">
-            <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
+            <a
+              class="dropdown-item"
+              [ngClass]="{ 'ecom-nav-signin-opened': router.url.includes('/login') }"
+              (click)="login()"
+              id="login"
+              data-cy="login"
+            >
               <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.login">Sign in</span>
             </a>
