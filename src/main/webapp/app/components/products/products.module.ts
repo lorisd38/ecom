@@ -9,8 +9,11 @@ import { IProduct } from '../../entities/product/product.model';
 import { WeightUnit } from '../../entities/enumerations/weight-unit.model';
 
 @NgModule({
-  imports: [SharedModule, ProductsRoutingModule, CategoriesModule],
-  declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
+    imports: [SharedModule, ProductsRoutingModule, CategoriesModule],
+    declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
+    exports: [
+        ListProductComponent
+    ]
 })
 export class ProductsModule {}
 

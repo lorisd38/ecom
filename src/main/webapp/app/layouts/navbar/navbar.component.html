@@ -284,7 +284,10 @@
             </a>
           </li>
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" data-cy="favorites">
+            <a
+              class="dropdown-item"
+              data-cy="favorites"
+              routerLink="/account/favorites">
               <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.favorites">Favorites</span>
             </a>
