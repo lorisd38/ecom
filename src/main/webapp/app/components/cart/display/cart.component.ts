@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICart } from 'app/entities/cart/cart.model';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
-import { CartService } from '../service/cart.service';
-import { ProductToCartService } from '../../products/service/product-to-cart.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'jhi-cart',
@@ -13,7 +12,7 @@ import { ProductToCartService } from '../../products/service/product-to-cart.ser
 export class CartComponent implements OnInit {
   isLoading = false;
 
-  constructor(public cartService: CartService, public productToCartService: ProductToCartService) {
+  constructor(public cartService: CartService) {
     // do nothing.
   }
 
@@ -26,9 +25,8 @@ export class CartComponent implements OnInit {
     this.cartService.queryOneCart().subscribe(
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
-        this.productToCartService.cart = res.body ?? null;
         this.cartService.cart = res.body ?? null;
-        this.productToCartService.buildCartContentMap();
+        this.cartService.buildCartContentMap();
         this.cartService.calcTotal();
       },
       () => {

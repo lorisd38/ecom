@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CartService } from 'app/components/cart/service/cart.service';
+import { CartService } from 'app/components/services/cart.service';
 
-import { PaymentService } from 'app/components/payment/service/payment.service';
+import { PaymentService } from 'app/components/services/payment.service';
 import { getProductQuantity, getTotalCartPrice, ICart } from 'app/entities/cart/cart.model';
 import { HttpResponse } from '@angular/common/http';
 import { IOrder, Order } from '../../../entities/order/order.model';

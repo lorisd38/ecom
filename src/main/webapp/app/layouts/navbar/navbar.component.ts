@@ -9,7 +9,7 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
-import { CartService } from '../../components/cart/service/cart.service';
+import { CartService } from '../../components/services/cart.service';
 
 @Component({
   selector: 'jhi-navbar',

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { IOrder } from '../../../entities/order/order.model';
+import { IOrder } from '../../entities/order/order.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
-import {IPromotionalCode} from "../../../entities/promotional-code/promotional-code.model";
+import { IPromotionalCode } from '../../entities/promotional-code/promotional-code.model';
 
 export type OrderEntityResponseType = HttpResponse<IOrder>;
 export type PromoCodeEntityResponseType = HttpResponse<IPromotionalCode>;
