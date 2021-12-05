@@ -7,7 +7,10 @@ import { ListProductComponent } from '../reusableComponents/list-product/list-pr
 import {CategoriesModule} from "../categories/categories.module";
 
 @NgModule({
-  imports: [SharedModule, ProductsRoutingModule, CategoriesModule],
-  declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
+    imports: [SharedModule, ProductsRoutingModule, CategoriesModule],
+    declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
+    exports: [
+        ListProductComponent
+    ]
 })
 export class ProductsModule {}
