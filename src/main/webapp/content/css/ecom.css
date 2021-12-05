@@ -622,20 +622,8 @@ Product card in Cart
 /* ==============================================================
 Payment
 ===============================================================*/
-.ecom-payment-panel {
-  padding: 70px 10%;
-}
-
-.ecom-payment-panel > div {
-  width: 80%;
-  border: 1px solid #c4c4c4;
-  border-radius: 15px;
-  box-shadow: 5px 5px 5px #c4c4c4;
+.ecom-payement {
   position: relative;
-}
-
-.ecom-payment-title {
-  padding: 30px 30px 0 30px;
 }
 
 .ecom-payment-form {
@@ -643,7 +631,6 @@ Payment
   flex-wrap: nowrap;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 30px 30px 30px;
 }
 
 .ecom-payment-form > div:first-child {
@@ -735,7 +722,7 @@ Payment
 .ecom-payement-button-clear {
   position: absolute;
   top: 15px;
-  right: 15px;
+  right: 0;
   background-color: #ff4747;
   border: 1px solid #c72b2b;
 }
