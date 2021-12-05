@@ -5,14 +5,13 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IProduct, getProductIdentifier } from '../product.model';
+import { getProductIdentifier, IProduct } from '../product.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  listFavorites: IProduct[] | null = null;
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -45,11 +44,6 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 
-  queryCategories(req: string): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
-  }
-
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -69,13 +63,5 @@ export class ProductService {
       return [...productsToAdd, ...productCollection];
     }
     return productCollection;
-  }
-
-  editFavorites(id: number): Observable<IProduct[]> {
-    return this.http.post<IProduct[]>(`${this.resourceUrl}/favorite-products/${id}`, { observe: 'response' });
-  }
-
-  getFavorites(): Observable<HttpResponse<IProduct[]>> {
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/favorite-products`, { observe: 'response' });
   }
 }

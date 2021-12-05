@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { IProduct } from '../../../entities/product/product.model';
-import { ProductService } from '../../../entities/product/service/product.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { Router } from '@angular/router';
 import { ProductToCartService } from '../../products/service/product-to-cart.service';
 import { CartService } from '../../cart/service/cart.service';
 import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
 import { getPriceWeightStr } from '../../products/products.module';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'jhi-product-card',
@@ -19,13 +19,11 @@ export class ProductCardComponent {
     protected productService: ProductService,
     public accountService: AccountService,
     private router: Router,
-    protected productToCartService: ProductToCartService,
     public cartService: CartService
   ) {}
 
   isFavorites(product: IProduct): boolean {
-    const size = this.productService.listFavorites?.filter(p => p.id === product.id).length;
-    return size != null && size > 0;
+    return this.productService.isFavorites(product);
   }
 
   addToFavorite(product: IProduct): void {
@@ -34,9 +32,7 @@ export class ProductCardComponent {
       this.router.navigate(['/login']);
       return;
     } else if (product.id !== undefined) {
-      this.productService.editFavorites(product.id).subscribe((res: IProduct[]) => {
-        this.productService.listFavorites = res;
-      });
+      this.productService.addToFavorites(product.id);
     }
   }
 
@@ -68,7 +64,7 @@ export class ProductCardComponent {
   }
 
   isPresent(productId?: number): boolean {
-    return this.productToCartService.productsMap.has(<number>productId);
+    return this.cartService.productsMap.has(<number>productId);
   }
 
   addToCart(product: IProduct): void {
@@ -77,11 +73,11 @@ export class ProductCardComponent {
       this.router.navigate(['/login']);
       return;
     }
-    this.productToCartService.addToCart(product, this.cartService);
+    this.cartService.addToCart(product);
   }
 
   quantityProduct(item: IProduct): number {
-    const lineProduct = this.productToCartService.getProductCart(item);
+    const lineProduct = this.cartService.getProductCart(item);
     return lineProduct?.quantity ?? 0;
   }
 
