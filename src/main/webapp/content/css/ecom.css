@@ -507,9 +507,10 @@ Product card in Cart
 }
 
 .ecom-nav-menu > li > a:hover,
-.ecom-nav-account-opened,
-.ecom-nav-password-opened {
+.ecom-nav-signin-opened,
+.dropdown-item.active {
   background-color: #808080 !important;
+  color: white !important;
 }
 
 .ecom-nav-menu > li > a:active {
@@ -522,7 +523,7 @@ Product card in Cart
 }
 
 #logout:hover {
-  background-color: var(--couleur-primaire-hover);
+  background-color: var(--couleur-primaire-hover) !important;
 }
 /* ==============================================================
   Signin / Signup
