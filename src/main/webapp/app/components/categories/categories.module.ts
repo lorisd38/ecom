@@ -6,5 +6,8 @@ import { CategoriesComponent } from './display/categories.component';
 @NgModule({
   imports: [SharedModule, CategoriesRoutingModule],
   declarations: [CategoriesComponent],
+  exports: [
+    CategoriesComponent
+  ]
 })
 export class CategoriesModule {}
