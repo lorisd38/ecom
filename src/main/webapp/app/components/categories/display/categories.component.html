@@ -3,7 +3,7 @@
     <li>
       <div class="category">
         <ul>
-          <a [routerLink]="['/']" [queryParams]="{ categories: category.id }">
+          <a [routerLink]="['/']" [queryParams]="{ category: category.id }">
             {{ category.name }}
           </a>
           <div *ngIf="category.children.length" class="node__children">

@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from 'app/entities/product/product.model';
-import { ProductService } from 'app/entities/product/service/product.service';
-import { ProductToCartService } from '../service/product-to-cart.service';
 import { ICart } from 'app/entities/cart/cart.model';
-import { CartService } from '../../cart/service/cart.service';
+import { CartService } from '../../services/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'jhi-products',
@@ -16,12 +15,11 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
   public query: string | null = '';
-  private categories: string | null = '';
+  private category: string | null = '';
 
   constructor(
     protected productService: ProductService,
     protected modalService: NgbModal,
-    protected productToCartService: ProductToCartService,
     public cartService: CartService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute
@@ -32,8 +30,8 @@ export class ProductsComponent implements OnInit {
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
         this.loadProductSearch();
-      } else if (params.categories !== undefined && params.categories !== '') {
-        this.categories = params.categories;
+      } else if (params.category !== undefined && params.category !== '') {
+        this.category = params.category;
         this.loadProductCategories();
       } else {
         this.query = '';
@@ -42,10 +40,10 @@ export class ProductsComponent implements OnInit {
       this.accountService.getAuthenticationState().subscribe(account => {
         if (account != null) {
           this.loadCart();
-          this.loadFavorites();
+          this.productService.loadFavorites();
         } else {
-          this.productToCartService.cart = null;
-          this.productToCartService.productsMap.clear();
+          this.cartService.cart = null;
+          this.cartService.productsMap.clear();
           this.cartService.nbItems = 0;
           this.productService.listFavorites = null;
         }
@@ -62,8 +60,8 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProductCategories(): void {
-    if (this.categories) {
-      this.productService.queryCategories(this.categories).subscribe((res: HttpResponse<IProduct[]>) => {
+    if (this.category) {
+      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
@@ -77,16 +75,9 @@ export class ProductsComponent implements OnInit {
 
   loadCart(): void {
     this.cartService.queryOneCart().subscribe((res: HttpResponse<ICart>) => {
-      this.productToCartService.cart = res.body ?? null;
       this.cartService.cart = res.body ?? null;
-      this.productToCartService.buildCartContentMap();
+      this.cartService.buildCartContentMap();
       this.cartService.calcTotal();
-    });
-  }
-
-  loadFavorites(): void {
-    this.productService.getFavorites().subscribe((res: HttpResponse<IProduct[]>) => {
-      this.productService.listFavorites = res.body ?? null;
     });
   }
 }

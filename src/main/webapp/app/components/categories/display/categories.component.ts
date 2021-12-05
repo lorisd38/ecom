@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category, ICategory } from '../../../entities/category/category.model';
 import { HttpResponse } from '@angular/common/http';
-import { CategoriesService } from '../service/categories.service';
+import { CategoriesService } from '../../services/categories.service';
 
 @Component({
   selector: 'jhi-categories',

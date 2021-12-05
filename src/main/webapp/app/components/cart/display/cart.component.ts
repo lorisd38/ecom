@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICart } from 'app/entities/cart/cart.model';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { HttpResponse } from '@angular/common/http';
-import { CartService } from '../service/cart.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'jhi-cart',
@@ -26,6 +26,7 @@ export class CartComponent implements OnInit {
       (res: HttpResponse<ICart>) => {
         this.isLoading = false;
         this.cartService.cart = res.body ?? null;
+        this.cartService.buildCartContentMap();
         this.cartService.calcTotal();
       },
       () => {

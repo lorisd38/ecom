@@ -198,13 +198,49 @@ public class CartResource {
     }
 
     /**
+     * {@code GET  /cart} : get the current authenticated user's cart.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+     */
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCartForCurrentUser() {
+        log.debug("REST request to get all ProductCarts");
+        Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
+        return ResponseUtil.wrapOrNotFound(cart);
+    }
+
+    //    /**
+    //     * {@code PATCH  /cart/product/:id} : Update productCart with product "id"
+    //     *
+    //     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
+    //     */
+    //    @PatchMapping("/cart/product/{id}")
+    //    public ResponseEntity<ProductCart> updateQuantityProduct(
+    //        @PathVariable(value = "id") final Long idProduct,
+    //        @RequestParam(value = "quantity") final int quantity
+    //    ) throws URISyntaxException {
+    //        log.debug("REST request to update quatity of ProductCarts by id of product");
+    //        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+    //        final ProductCart result;
+    //        Cart userCart = user.getDetails().getCart();
+    //        for (ProductCart lineProduct : userCart.getLines()) {
+    //            if (lineProduct.getProduct().getId() == idProduct) {
+    //                lineProduct.setQuantity(quantity);
+    //                result = productCartService.save(lineProduct);
+    //                return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
+    //            }
+    //        }
+    //        throw new BadRequestAlertException("Erreure survenu lors de l'update de la quantite", ENTITY_NAME, "idnotfound");
+    //    }
+
+    /**
      * {@code POST  /cart/product/:id} : Create a new productCart with product "id".
      *
      * @param idProduct the id of product that should create a productCart.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productCart, or with status {@code 400 (Bad Request)} if the productCart has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/cart/product/{id}")
+    @PostMapping("/cart/products/{id}")
     public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
         log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
 
@@ -220,52 +256,16 @@ public class CartResource {
     }
 
     /**
-     * {@code GET  /cart} : get the current authenticated user's cart.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
-     */
-    @GetMapping("/cart")
-    public ResponseEntity<Cart> getCartForCurrentUser() {
-        log.debug("REST request to get all ProductCarts");
-        Optional<Cart> cart = cartService.findOneWithEagerRelationshipsByLogin(SecurityUtils.getCurrentUserLogin().get());
-        return ResponseUtil.wrapOrNotFound(cart);
-    }
-
-    /**
-     * {@code PATCH  /cart/product/:id} : Update productCart with product "id"
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
-     */
-    @PatchMapping("/cart/product/{id}")
-    public ResponseEntity<ProductCart> updateQuantityProduct(
-        @PathVariable(value = "id") final Long idProduct,
-        @RequestParam(value = "quantity") final int quantity
-    ) throws URISyntaxException {
-        log.debug("REST request to update quatity of ProductCarts by id of product");
-        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        final ProductCart result;
-        Cart userCart = user.getDetails().getCart();
-        for (ProductCart lineProduct : userCart.getLines()) {
-            if (lineProduct.getProduct().getId() == idProduct) {
-                lineProduct.setQuantity(quantity);
-                result = productCartService.save(lineProduct);
-                return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
-            }
-        }
-        throw new BadRequestAlertException("Erreure survenu lors de l'update de la quantite", ENTITY_NAME, "idnotfound");
-    }
-
-    /**
      * {@code PATCH  /cart/productCart/:id} : Update productCart with ProductCart "id"
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the cart.
      */
-    @PatchMapping("/cart/productCart/{id}")
+    @PatchMapping("/cart/products/{id}")
     public ResponseEntity<ProductCart> updateQuantityProductCart(
         @PathVariable(value = "id") final Long idProductCart,
         @RequestParam(value = "quantity") final int quantity
     ) throws URISyntaxException {
-        log.debug("REST request to update quatity of ProductCarts by id of ProductCart");
+        log.debug("REST request to update quantity of ProductCarts by id of ProductCart");
         if (!productCartRepository.existsById(idProductCart)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
@@ -279,7 +279,7 @@ public class CartResource {
      * @param id the id of the productCart to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/cart/productCart/{id}")
+    @DeleteMapping("/cart/products/{id}")
     public ResponseEntity<Void> deleteProductCart(@PathVariable Long id) {
         log.debug("REST request to delete ProductCart : {}", id);
         productCartService.delete(id);
