@@ -68,7 +68,7 @@ Product card
   margin: 5px;
   position: relative;
   width: 208px;
-  height: 308px;
+  height: 328px;
   border: solid 1px #c4c4c4;
   border-radius: 5px;
   box-shadow: 1px 3px 2px grey;
@@ -128,7 +128,8 @@ Product card
   max-height: 130px;
 }
 
-.ecom-product-oldprice > p {
+.ecom-product-oldprice > p,
+.ecom-product-price-weight > p {
   display: inline-block;
   margin: 0 0 0 5px;
   color: red;
@@ -138,13 +139,18 @@ Product card
   font-size: 0px;
 }
 
-.ecom-product-oldprice > span {
+.ecom-product-oldprice > span,
+.ecom-product-oldprice-weight > .ecom-product-price-decimalsWeight {
   text-decoration: line-through;
-  font-size: 12px;
 }
 
-.ecom-product-price {
+.ecom-product-price,
+.ecom-product-price-weight {
   padding-left: 10px;
+}
+
+.ecom-product-price-weight {
+  font-size: 13px;
 }
 
 .ecom-product-price-integer,
@@ -159,13 +165,32 @@ Product card
   font-size: 15px;
 }
 
+.ecom-product-price-decimalsWeight {
+  font-size: 13px;
+}
+
 .ecom-product-info {
   font-size: 15px;
-  padding: 10px 10px 0 10px;
+  padding: 3px 10px 0 10px;
+}
+
+.ecom-product-info a > span {
+  font-size: 18px;
 }
 
 .ecom-product-info > div {
   font-size: 14px;
+  margin-top: 3px;
+}
+
+.ecom-product-info a {
+  color: var(--couleur-primaire);
+  margin-bottom: 3px;
+}
+
+.ecom-product-info a:hover {
+  cursor: pointer;
+  color: var(--couleur-primaire-hover);
 }
 
 .ecom-product-button span,

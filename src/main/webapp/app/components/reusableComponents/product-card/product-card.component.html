@@ -18,11 +18,19 @@
       <span class="ecom-product-price-decimals-promo">35</span>
       <span class="ecom-product-price-euro-promo">€</span>
     </p>
-    <!--            <span>{{ product.weight * product.price / 1000 }}</span>-->
+  </div>
+  <div class="ecom-product-price-weight" [ngClass]="{ 'ecom-product-oldprice-weight': product.id === 1 }">
+    <span>Soit : </span
+    ><span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCard(product) }} €/{{ getStringWeight(product) }}</span>
+    <p *ngIf="product.id === 1">
+      <span class="ecom-product-price-decimalsWeight">0,35 €/{{ getStringWeight(product) }}</span>
+    </p>
   </div>
   <div class="ecom-product-info">
     <span
-      ><a [routerLink]="['/product', product.id, 'view']">{{ product.name }} - {{ product.brand }}</a></span
+      ><a [routerLink]="['/product', product.id, 'view']"
+        ><span>{{ product.name }}</span> - {{ product.brand }}</a
+      ></span
     >
     <span>{{ product.weight }} {{ product.weightUnit }}</span>
     <div>Origine : {{ product.origin }}</div>

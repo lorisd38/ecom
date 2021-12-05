@@ -15,7 +15,8 @@
     <div class="ecom-productCart-prices">
       <span>Prix unitaire : {{ this.productCart.product?.price | number: '0.2' }} €</span>
       <span *ngIf="this.productCart.product!.weightUnit !== 'U'"
-        >Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} : {{ 0.0 | number: '0.2' }} €</span
+        >Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} :
+        {{ getPriceWeightStrLine(this.productCart.product!) }} €</span
       >
       <!-- <span>{{ product.weight * product.price / 1000 }}</span>-->
     </div>

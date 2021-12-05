@@ -2,8 +2,10 @@ import { Component, Input } from '@angular/core';
 import { IProduct } from '../../../entities/product/product.model';
 import { AccountService } from '../../../core/auth/account.service';
 import { Router } from '@angular/router';
-import { CartService } from '../../services/cart.service';
+import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
+import { getPriceWeightStr } from '../../products/products.module';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'jhi-product-card',
@@ -44,6 +46,20 @@ export class ProductCardComponent {
       return b[1] + '0';
     }
     return b[1];
+  }
+
+  getPriceWeightStrCard(product?: IProduct): string {
+    return getPriceWeightStr(product);
+  }
+
+  getStringWeight(product?: IProduct): string {
+    if (product!.weightUnit === WeightUnit.ML || product!.weightUnit === WeightUnit.L) {
+      return 'L';
+    } else if (product!.weightUnit === WeightUnit.G || product!.weightUnit === WeightUnit.KG) {
+      return 'kg';
+    } else {
+      return 'u';
+    }
   }
 
   isPresent(productId?: number): boolean {
