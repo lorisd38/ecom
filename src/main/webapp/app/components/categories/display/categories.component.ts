@@ -5,7 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { CategoriesService } from '../service/categories.service';
 
 @Component({
-  selector: 'jhi-payment',
+  selector: 'jhi-categories',
   templateUrl: './categories.component.html',
 })
 export class CategoriesComponent implements OnInit {
