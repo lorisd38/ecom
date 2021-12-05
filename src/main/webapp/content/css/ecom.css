@@ -6,16 +6,7 @@
 .ecom-title-header {
   font-size: 28px;
   margin-bottom: 30px;
-}
-
-.ecom-title-header:after {
-  content: '';
-  background: black;
-  position: absolute;
-  top: 65px;
-  left: 1.5%;
-  height: 1px;
-  width: 150px;
+  border-bottom: 1px solid black;
 }
 
 .ecom-button {
