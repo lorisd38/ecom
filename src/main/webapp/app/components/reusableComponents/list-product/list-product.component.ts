@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {IProduct} from "../../entities/product/product.model";
+import { Component, Input } from '@angular/core';
+import { IProduct } from '../../../entities/product/product.model';
 
 @Component({
   selector: 'jhi-list-product',

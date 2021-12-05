@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { IProduct } from '../../entities/product/product.model';
-import { ProductService } from '../../entities/product/service/product.service';
-import { AccountService } from '../../core/auth/account.service';
-import { IProductCart } from '../../entities/product-cart/product-cart.model';
+import { IProduct } from '../../../entities/product/product.model';
+import { ProductService } from '../../../entities/product/service/product.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { IProductCart } from '../../../entities/product-cart/product-cart.model';
 import { Router } from '@angular/router';
-import { ProductToCartService } from '../products/service/product-to-cart.service';
-import { CartService } from '../cart/service/cart.service';
+import { ProductToCartService } from '../../products/service/product-to-cart.service';
+import { CartService } from '../../cart/service/cart.service';
 
 @Component({
   selector: 'jhi-product-card',

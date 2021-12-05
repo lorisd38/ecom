@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CategoriesComponent } from '../list/categories.component';
+import { CategoriesComponent } from '../display/categories.component';
 
 const CategoriesRoute: Routes = [
   {
