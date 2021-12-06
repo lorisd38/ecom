@@ -1,12 +1,13 @@
-<nav data-cy="categories">
+<nav class="ecom-categories-panel" data-cy="categoriesList">
   <ng-template #categoryTemplateRef let-category>
-    <li>
-      <div class="category">
+    <li ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <div class="ecom-category">
         <ul>
+          <a ngbDropdownToggle href="javascript:void(0);" class="dropdown-toggle"></a>
           <a [routerLink]="['/']" [queryParams]="{ category: category.id }">
             {{ category.name }}
           </a>
-          <div *ngIf="category.children.length" class="node__children">
+          <div ngbDropdownMenu *ngIf="category.children.length" class="node__children ecom-categories-children">
             <!-- Invoke the recursive template. -->
             <ng-template ngFor [ngForOf]="category.children" [ngForTemplate]="categoryTemplateRef">
               <!--
@@ -20,7 +21,7 @@
     </li>
   </ng-template>
 
-  <ul>
+  <ul class="ecom-categories-list">
     <div *ngFor="let cat of listCategory">
       <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
     </div>

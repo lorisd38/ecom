@@ -757,5 +757,63 @@ Payment
   background-color: #c72b2b !important;
 }
 
-.ecom-payment-end-form {
+/* ==============================================================
+  Categories
+  ===============================================================*/
+.ecom-products-and-categories {
+  position: relative;
+}
+
+.ecom-products-and-categories > *:last-child {
+  margin-left: 200px;
+}
+
+.ecom-categories-panel {
+  z-index: 1;
+  width: 200px;
+  height: calc(100% - 61.75px);
+  position: absolute;
+  top: 61.75px;
+  left: 0;
+  box-shadow: 2px 0 2px #c4c4c4;
+}
+
+.ecom-categories-list ul,
+.ecom-categories-list li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ecom-category {
+  padding: 5px 0 0 15px;
+}
+
+.ecom-categories-panel a {
+  color: var(--couleur-primaire);
+}
+
+.ecom-categories-panel a:hover {
+  color: var(--couleur-primaire-hover);
+}
+
+.ecom-categories-list {
+  padding: 50px 5px 0 10px;
+}
+
+.ecom-categories-list > div {
+  padding-bottom: 10px;
+}
+
+.ecom-categories-children {
+  position: unset !important;
+  float: none !important;
+  border: none !important;
+  background: none !important;
+  margin: 0 !important;
+  padding: 5px 0 0 15px !important;
+  color: var(--couleur-primaire) !important;
+  border-radius: unset !important;
+  transform: none !important;
+  will-change: unset !important;
 }
