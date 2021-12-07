@@ -4,16 +4,13 @@ import { ProductsRoutingModule } from './route/products-routing.module';
 import { ProductsComponent } from './display/products.component';
 import { ProductCardComponent } from '../reusableComponents/product-card/product-card.component';
 import { ListProductComponent } from '../reusableComponents/list-product/list-product.component';
-import { CategoriesModule } from '../categories/categories.module';
 import { IProduct } from '../../entities/product/product.model';
 import { WeightUnit } from '../../entities/enumerations/weight-unit.model';
 
 @NgModule({
-    imports: [SharedModule, ProductsRoutingModule, CategoriesModule],
-    declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
-    exports: [
-        ListProductComponent
-    ]
+  imports: [SharedModule, ProductsRoutingModule],
+  declarations: [ProductsComponent, ProductCardComponent, ListProductComponent],
+  exports: [ListProductComponent],
 })
 export class ProductsModule {}
 

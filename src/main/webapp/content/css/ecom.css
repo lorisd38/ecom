@@ -4,19 +4,20 @@
 }
 
 .ecom-title-header {
-  font-size: 28px;
+  font-size: 38px;
   margin-bottom: 30px;
   position: relative;
+  display: inline-block;
 }
 
 .ecom-title-header:after {
   content: '';
   background: black;
   position: absolute;
-  top: 40px;
+  top: 48px;
   left: 0;
   height: 1px;
-  width: 150px;
+  width: 120%;
 }
 
 .ecom-button {
@@ -233,6 +234,7 @@ Product card
 .ecom-button-next {
   padding: 5px 8px;
   border-radius: 5px;
+  font-size: 20px;
 }
 
 .ecom-product-tags {
@@ -757,5 +759,101 @@ Payment
   background-color: #c72b2b !important;
 }
 
-.ecom-payment-end-form {
+/* ==============================================================
+  Categories
+  ===============================================================*/
+.ecom-products-and-categories {
+  position: relative;
+}
+
+.ecom-products-and-categories > *:last-child {
+  margin-left: 200px;
+}
+
+.ecom-categories-panel {
+  z-index: 1;
+  width: 200px;
+  height: calc(100% - 61.75px);
+  position: absolute;
+  top: 61.75px;
+  left: 0;
+  box-shadow: 2px 0 2px #c4c4c4;
+}
+
+.ecom-categories-list ul,
+.ecom-categories-list li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ecom-category {
+  padding: 5px 0 0 15px;
+}
+
+.ecom-categories-panel a {
+  color: black;
+  font-size: 16px;
+}
+
+.ecom-categories-panel a:hover {
+  color: grey;
+}
+
+.ecom-category-opened {
+  color: var(--couleur-primaire) !important;
+  font-weight: bold;
+}
+
+.ecom-category-opened:hover {
+  color: var(--couleur-primaire-hover) !important;
+}
+
+.ecom-categories-list {
+  padding: 30px 5px 0 10px;
+}
+
+.ecom-categories-list > div {
+  padding-bottom: 10px;
+}
+
+.ecom-categories-children {
+  position: unset !important;
+  float: none !important;
+  border: none !important;
+  background: none !important;
+  margin: 0 !important;
+  padding: 5px 0 0 15px !important;
+  border-radius: unset !important;
+  transform: none !important;
+  will-change: unset !important;
+}
+
+.ecom-categories-list .ecom-title-header {
+  font-size: 20px;
+}
+
+.ecom-categories-list .ecom-title-header:after {
+  top: 30px;
+  width: 120px;
+}
+
+.ecom-categorie-first > div > ul > a {
+  font-size: 18px;
+}
+
+.ecom-categorie-withoutChild > div > ul > a {
+  position: relative;
+  padding-left: 13px;
+}
+
+.ecom-categorie-withoutChild > div > ul > a:before {
+  position: absolute;
+  content: '';
+  top: 10px;
+  left: 4px;
+  width: 5px;
+  height: 5px;
+  background-color: black;
+  border-radius: 50%;
 }

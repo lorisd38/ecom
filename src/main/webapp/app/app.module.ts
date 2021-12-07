@@ -28,6 +28,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { ComponentsRoutingModule } from './components/components-routing.module';
+import { CategoriesModule } from './components/categories/categories.module';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { ComponentsRoutingModule } from './components/components-routing.module'
         useFactory: missingTranslationHandler,
       },
     }),
+    CategoriesModule,
   ],
   providers: [
     Title,
