@@ -838,6 +838,22 @@ Payment
   width: 120px;
 }
 
-.ecom-categories-list > div:not(:first-child) > li > div > ul > a {
+.ecom-categorie-first > div > ul > a {
   font-size: 18px;
+}
+
+.ecom-categorie-withoutChild > div > ul > a {
+  position: relative;
+  padding-left: 13px;
+}
+
+.ecom-categorie-withoutChild > div > ul > a:before {
+  position: absolute;
+  content: '';
+  top: 10px;
+  left: 4px;
+  width: 5px;
+  height: 5px;
+  background-color: black;
+  border-radius: 50%;
 }

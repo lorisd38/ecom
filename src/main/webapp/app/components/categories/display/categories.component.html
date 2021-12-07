@@ -2,6 +2,7 @@
   <ng-template #categoryTemplateRef let-category>
     <li
       *ngIf="category.children == null || category.children.length! == 0; else elseBlockChildren"
+      [ngClass]="{ 'ecom-categorie-first': category.parent == null }"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
@@ -18,7 +19,12 @@
       </div>
     </li>
     <ng-template #elseBlockChildren>
-      <li ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <li
+        ngbDropdown
+        [ngClass]="{ 'ecom-categorie-first': category.parent == null }"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <div class="ecom-category">
           <ul>
             <a ngbDropdownToggle href="javascript:void(0);" class="dropdown-toggle"></a>
@@ -49,7 +55,11 @@
       <h2 class="ecom-title-header">Categories :</h2>
     </div>
     <div *ngFor="let cat of listCategory">
-      <li *ngIf="cat.children == null || cat.children.length! == 0; else elseBlock">
+      <li
+        [ngClass]="{ 'ecom-categorie-first': cat.parent == null }"
+        class="ecom-categorie-withoutChild"
+        *ngIf="cat.children == null || cat.children.length! == 0; else elseBlock"
+      >
         <div class="ecom-category">
           <ul>
             <a
