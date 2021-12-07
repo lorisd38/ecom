@@ -1,29 +1,70 @@
 <nav class="ecom-categories-panel" data-cy="categoriesList">
   <ng-template #categoryTemplateRef let-category>
-    <li ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <li
+      *ngIf="category.children == null || category.children.length! == 0; else elseBlockChildren"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <div class="ecom-category">
         <ul>
-          <a ngbDropdownToggle href="javascript:void(0);" class="dropdown-toggle"></a>
-          <a [routerLink]="['/']" [queryParams]="{ category: category.id }">
+          <a
+            [ngClass]="{ 'ecom-category-opened': this.router.url === '/?category=' + category.id }"
+            [routerLink]="['/']"
+            [queryParams]="{ category: category.id }"
+          >
             {{ category.name }}
           </a>
-          <div ngbDropdownMenu *ngIf="category.children.length" class="node__children ecom-categories-children">
-            <!-- Invoke the recursive template. -->
-            <ng-template ngFor [ngForOf]="category.children" [ngForTemplate]="categoryTemplateRef">
-              <!--
-                NOTE: The "$implicit" property of the ngFor context is what will
-                be made available to the template ref's implicit let-node binding.
-              -->
-            </ng-template>
-          </div>
         </ul>
       </div>
     </li>
+    <ng-template #elseBlockChildren>
+      <li ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <div class="ecom-category">
+          <ul>
+            <a ngbDropdownToggle href="javascript:void(0);" class="dropdown-toggle"></a>
+            <a
+              [ngClass]="{ 'ecom-category-opened': this.router.url === '/?category=' + category.id }"
+              [routerLink]="['/']"
+              [queryParams]="{ category: category.id }"
+            >
+              {{ category.name }}
+            </a>
+            <div ngbDropdownMenu *ngIf="category.children.length" class="node__children ecom-categories-children">
+              <!-- Invoke the recursive template. -->
+              <ng-template ngFor [ngForOf]="category.children" [ngForTemplate]="categoryTemplateRef">
+                <!--
+                  NOTE: The "$implicit" property of the ngFor context is what will
+                  be made available to the template ref's implicit let-node binding.
+                -->
+              </ng-template>
+            </div>
+          </ul>
+        </div>
+      </li>
+    </ng-template>
   </ng-template>
 
   <ul class="ecom-categories-list">
+    <div>
+      <h2 class="ecom-title-header">Categories :</h2>
+    </div>
     <div *ngFor="let cat of listCategory">
-      <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
+      <li *ngIf="cat.children == null || cat.children.length! == 0; else elseBlock">
+        <div class="ecom-category">
+          <ul>
+            <a
+              [ngClass]="{ 'ecom-category-opened': this.router.url === '/?category=' + cat.id }"
+              [routerLink]="['/']"
+              [queryParams]="{ category: cat.id }"
+            >
+              {{ cat.name }}
+            </a>
+          </ul>
+        </div>
+      </li>
+      <ng-template #elseBlock>
+        <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
+      </ng-template>
     </div>
   </ul>
 </nav>

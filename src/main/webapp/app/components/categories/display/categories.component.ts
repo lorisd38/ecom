@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category, ICategory } from '../../../entities/category/category.model';
 import { HttpResponse } from '@angular/common/http';
 import { CategoriesService } from '../../services/categories.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-categories',
@@ -11,7 +12,7 @@ import { CategoriesService } from '../../services/categories.service';
 export class CategoriesComponent implements OnInit {
   listCategory: Category[];
 
-  constructor(protected categoriesService: CategoriesService, protected modalService: NgbModal) {
+  constructor(protected categoriesService: CategoriesService, protected modalService: NgbModal, public router: Router) {
     this.listCategory = [];
   }
 

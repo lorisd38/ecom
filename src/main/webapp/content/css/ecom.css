@@ -4,19 +4,20 @@
 }
 
 .ecom-title-header {
-  font-size: 28px;
+  font-size: 38px;
   margin-bottom: 30px;
   position: relative;
+  display: inline-block;
 }
 
 .ecom-title-header:after {
   content: '';
   background: black;
   position: absolute;
-  top: 40px;
+  top: 48px;
   left: 0;
   height: 1px;
-  width: 150px;
+  width: 120%;
 }
 
 .ecom-button {
@@ -233,6 +234,7 @@ Product card
 .ecom-button-next {
   padding: 5px 8px;
   border-radius: 5px;
+  font-size: 20px;
 }
 
 .ecom-product-tags {
@@ -790,15 +792,25 @@ Payment
 }
 
 .ecom-categories-panel a {
-  color: var(--couleur-primaire);
+  color: black;
+  font-size: 16px;
 }
 
 .ecom-categories-panel a:hover {
-  color: var(--couleur-primaire-hover);
+  color: grey;
+}
+
+.ecom-category-opened {
+  color: var(--couleur-primaire) !important;
+  font-weight: bold;
+}
+
+.ecom-category-opened:hover {
+  color: var(--couleur-primaire-hover) !important;
 }
 
 .ecom-categories-list {
-  padding: 50px 5px 0 10px;
+  padding: 30px 5px 0 10px;
 }
 
 .ecom-categories-list > div {
@@ -812,8 +824,20 @@ Payment
   background: none !important;
   margin: 0 !important;
   padding: 5px 0 0 15px !important;
-  color: var(--couleur-primaire) !important;
   border-radius: unset !important;
   transform: none !important;
   will-change: unset !important;
+}
+
+.ecom-categories-list .ecom-title-header {
+  font-size: 20px;
+}
+
+.ecom-categories-list .ecom-title-header:after {
+  top: 30px;
+  width: 120px;
+}
+
+.ecom-categories-list > div:not(:first-child) > li > div > ul > a {
+  font-size: 18px;
 }
