@@ -39,14 +39,14 @@ public interface ProductService {
      *
      * @return the list of entities.
      */
-    List<Product> findResearch(String query);
+    Page<Product> findResearch(String query, Pageable pageable);
 
     /**
      * Get products from a category.
      *
      * @return the list of entities.
      */
-    List<Product> findCategory(Category cat);
+    Page<Product> findCategory(Category cat, Pageable pageable);
 
     /**
      * Get all the products with eager load of many-to-many relationships.
@@ -74,7 +74,7 @@ public interface ProductService {
     /**
      * Get all the favorite products of login.
      *
-     * @param login
+     * @param login is the login of the session
      * @return the list of favorite products.
      */
     List<Product> findAllFavorite(String login);

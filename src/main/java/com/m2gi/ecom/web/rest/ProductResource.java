@@ -20,6 +20,8 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -148,30 +150,33 @@ public class ProductResource {
     }
 
     /**
-     * {@code GET  /products} : get products from research.
+     * {@code GET  /products/:numPage} : get products of page numPage from research.
      *
+     * @param numPage the number of the page
      * @param query the research query.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
-    @GetMapping("/products")
+    @GetMapping("/products/")
     public List<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
-        @RequestParam(name = "category", required = false) Long categoryId
+        @RequestParam(name = "category", required = false) Long categoryId,
+        @RequestParam(name = "numPage", required = false) int numPage
     ) {
+        Pageable pageable = PageRequest.of(numPage, 28);
         if (query != null) {
             log.debug("REST request to get Research Products for query : {}", query);
-            return productService.findResearch(query);
+            return productService.findResearch(query, pageable).getContent();
         } else if (categoryId != null) {
             log.debug("REST request to get Products for category : {}", categoryId);
             Optional<Category> cat = categoryService.findOne(categoryId);
             if (cat.isPresent()) {
-                return productService.findCategory(cat.get());
+                return productService.findCategory(cat.get(), pageable).getContent();
             } else {
                 throw new BadRequestAlertException("Category unknown", "category", "idnotfound");
             }
         } else {
             log.debug("REST request to get all Products");
-            return productService.findAll();
+            return productService.findAllWithEagerRelationships(pageable).getContent();
         }
     }
 

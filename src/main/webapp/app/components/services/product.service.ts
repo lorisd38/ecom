@@ -19,21 +19,30 @@ export class ProductService {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(numPage: number): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    options.set('numPage', numPage);
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/?numPage=${numPage}`, { params: options, observe: 'response' });
   }
 
-  querySearch(req: string): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
-
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
+  querySearch(req: string, numPage: number): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    options.set('query', req);
+    options.set('numPage', numPage);
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/${numPage}?query=${req.toLowerCase()}&numPage=${numPage}`, {
+      params: options,
+      observe: 'response',
+    });
   }
 
-  queryByCategory(req: string): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
+  queryByCategory(req: string, numPage: number): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    options.set('category', req);
+    options.set('numPage', numPage);
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/${numPage}?category=${req}&numPage=${numPage}`, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   queryAddToFavorites(id: number): Observable<IProduct[]> {

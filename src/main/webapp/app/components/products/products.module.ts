@@ -15,7 +15,7 @@ import { WeightUnit } from '../../entities/enumerations/weight-unit.model';
 export class ProductsModule {}
 
 export function getPriceWeightStr(product?: IProduct): string {
-  let b = 0;
+  let b;
   b = product!.price! / product!.weight!;
   if (product!.weightUnit === WeightUnit.ML || product!.weightUnit === WeightUnit.G) {
     b = b * 1000;

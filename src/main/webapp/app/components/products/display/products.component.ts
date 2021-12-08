@@ -53,7 +53,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+      ? this.productService.querySearch(this.query, 0).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
         })
       : '';
@@ -61,14 +61,14 @@ export class ProductsComponent implements OnInit {
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.queryByCategory(this.category, 0).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
   }
 
   loadProduct(): void {
-    this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => {
+    this.productService.query(0).subscribe((res: HttpResponse<IProduct[]>) => {
       this.products = res.body ?? [];
     });
   }
