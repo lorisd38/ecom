@@ -74,7 +74,7 @@ public class Product implements Serializable {
     @JsonIgnoreProperties(value = { "parent", "children", "associatedProducts" }, allowSetters = true)
     private Set<Category> relatedCategories = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_product__tags",
         joinColumns = @JoinColumn(name = "product_id"),

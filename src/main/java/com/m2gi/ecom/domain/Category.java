@@ -34,7 +34,7 @@ public class Category implements Serializable {
     @JsonIgnoreProperties(value = { "parent", "associatedProducts" }, allowSetters = true)
     private Set<Category> children = new HashSet<>();
 
-    @ManyToMany(mappedBy = "relatedCategories")
+    @ManyToMany(mappedBy = "relatedCategories", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
             "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
