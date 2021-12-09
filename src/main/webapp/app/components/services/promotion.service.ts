@@ -35,6 +35,25 @@ export class PromotionService {
     }
   }
 
+  public ajouterProducts(previousValue:IProduct[], currentValue:IProduct[]): IProduct[]{
+    let res:IProduct[] = previousValue;
+    for (let i=0;i<currentValue.length ;i++){
+      if(!res.includes(currentValue[i])){
+        res = [...res,currentValue[i]];
+      }
+    }
+    return res;
+  }
+
+  public getProducts(): IProduct[]{
+    let res: IProduct[] = [];
+    const nbProm = this.promotions?.length ?? 0;
+    for(let i =0;i<nbProm;i++){
+      (this.promotions!==null) ? res = this.ajouterProducts(res,this.promotions[i]?.products ?? []) : "";
+    }
+    return res;
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IPromotion[]>(this.resourceUrl, { params: options, observe: 'response' });

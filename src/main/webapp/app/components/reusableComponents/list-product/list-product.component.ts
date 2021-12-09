@@ -19,7 +19,6 @@ export class ListProductComponent implements OnInit{
   ngOnInit(): void {
     this.promotionService.query().subscribe((res) => {
       this.promotionService.promotions = res.body;
-      console.log("res.body",res.body)
     })
   }
 }
