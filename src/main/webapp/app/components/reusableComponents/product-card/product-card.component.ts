@@ -6,6 +6,7 @@ import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
 import { getPriceWeightStr } from '../../products/products.module';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import {PromotionService} from "../../services/promotion.service";
 
 @Component({
   selector: 'jhi-product-card',
@@ -18,7 +19,8 @@ export class ProductCardComponent {
     protected productService: ProductService,
     public accountService: AccountService,
     private router: Router,
-    public cartService: CartService
+    public cartService: CartService,
+    public promotionService: PromotionService
   ) {}
 
   isFavorites(product: IProduct): boolean {

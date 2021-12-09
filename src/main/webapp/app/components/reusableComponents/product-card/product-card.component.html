@@ -1,5 +1,5 @@
 <div *ngIf="product" class="ecom-product">
-  <div class="ecom-product-promo-band" *ngIf="product.id === 1">-40%</div>
+  <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">{{this.promotionService.getPromotion(product)}}</div>
   <div class="ecom-product-heart">
     <img
       srcset="../../../content/images/{{(this.isFavorites(product))? 'heart-active': 'heart-inactive'}}.png"
