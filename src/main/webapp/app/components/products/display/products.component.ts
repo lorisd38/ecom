@@ -70,10 +70,6 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    /*this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => {
-      this.products = res.body ?? [];
-    });*/
-
     this.promotionService.query().subscribe((res) => {
       this.promotionService.promotions = res.body;
       if(this.promotionService.promotions){
