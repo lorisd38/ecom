@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import {PromotionService} from "../../services/promotion.service";
 
 @Component({
   selector: 'jhi-products',
@@ -22,7 +23,8 @@ export class ProductsComponent implements OnInit {
     protected modalService: NgbModal,
     public cartService: CartService,
     private accountService: AccountService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private promotionService: PromotionService,
   ) {}
 
   ngOnInit(): void {
@@ -68,9 +70,12 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => {
-      this.products = res.body ?? [];
-    });
+    this.promotionService.query().subscribe((res) => {
+      this.promotionService.promotions = res.body;
+      if(this.promotionService.promotions){
+        this.products = this.promotionService.getProductsPromotion();
+      }
+    })
   }
 
   loadCart(): void {

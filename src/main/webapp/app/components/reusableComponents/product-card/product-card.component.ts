@@ -6,6 +6,7 @@ import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
 import { getPriceWeightStr } from '../../products/products.module';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import {PromotionService} from "../../services/promotion.service";
 
 @Component({
   selector: 'jhi-product-card',
@@ -18,7 +19,8 @@ export class ProductCardComponent {
     protected productService: ProductService,
     public accountService: AccountService,
     private router: Router,
-    public cartService: CartService
+    public cartService: CartService,
+    public promotionService: PromotionService
   ) {}
 
   isFavorites(product: IProduct): boolean {
@@ -40,6 +42,37 @@ export class ProductCardComponent {
     return b[0];
   }
 
+  getIntegerOfPricePromo(promo:any,price?: number):any{
+    let res: any= "";
+    const subPromo = Number(promo.substr(1,promo.length -2))
+
+    if(promo.substr(promo.length -1) === "%"){
+      res = (price!-price!*subPromo/100);
+    }else{
+      res = (price!-subPromo);
+    }
+
+    res = res.toFixed(2).toString();
+    const b = res.split('.');
+    return b[0];
+  }
+
+
+  getDecimalsOfPricePromo(promo:any,price?: number):any{
+    let res: any= "";
+    const subPromo = Number(promo.substr(1,promo.length -2))
+
+    if(promo.substr(promo.length -1) === "%"){
+      res = (price!-price!*subPromo/100);
+    }else{
+      res = (price!-subPromo);
+    }
+
+    res = res.toFixed(2).toString();
+    const b = res.split('.');
+    return b[1];
+  }
+
   getDecimalsOfPrice(price?: number): string {
     const b = price!.toString().split('.');
     if (b[1].length <= 1) {
@@ -50,6 +83,16 @@ export class ProductCardComponent {
 
   getPriceWeightStrCard(product?: IProduct): string {
     return getPriceWeightStr(product);
+  }
+
+  getPriceWeightStrCardPromo(product: IProduct,promo:any): string {
+    const res = Number(getPriceWeightStr(product).replace(',', '.'));
+    const subPromo = Number(promo.substr(1,promo.length -2))
+    if(promo.substr(promo.length -1) === "%"){
+      return (res-res*subPromo/100).toFixed(2).toString().replace('.', ',');
+    }else{
+      return (res-subPromo).toFixed(2).toString().replace('.', ',');
+    }
   }
 
   getStringWeight(product?: IProduct): string {
