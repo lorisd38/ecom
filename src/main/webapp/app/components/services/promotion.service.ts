@@ -45,7 +45,7 @@ export class PromotionService {
     return res;
   }
 
-  public getProducts(): IProduct[]{
+  public getProductsPromotion(): IProduct[]{
     let res: IProduct[] = [];
     const nbProm = this.promotions?.length ?? 0;
     for(let i =0;i<nbProm;i++){

@@ -77,7 +77,7 @@ export class ProductsComponent implements OnInit {
     this.promotionService.query().subscribe((res) => {
       this.promotionService.promotions = res.body;
       if(this.promotionService.promotions){
-        this.products = this.promotionService.getProducts();
+        this.products = this.promotionService.getProductsPromotion();
       }
     })
   }
