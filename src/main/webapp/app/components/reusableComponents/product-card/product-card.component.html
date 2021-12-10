@@ -1,4 +1,4 @@
-<div *ngIf="product" class="ecom-product {{(this.product.quantity === 0)?'ecom-product-sold-out':''}}">
+<div *ngIf="product" class="ecom-product {{ this.product.quantity === 0 ? 'ecom-product-sold-out' : '' }}">
   <div class="ecom-product-sold-out-message" *ngIf="this.product.quantity === 0">RUPTURE DE STOCK</div>
   <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">
     {{ this.promotionService.getPromotion(product) }}
@@ -35,7 +35,7 @@
   </div>
   <div class="ecom-product-price-weight" [ngClass]="{ 'ecom-product-oldprice-weight': this.promotionService.inPromotion(product) }">
     <span>Soit : </span
-    ><span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCard(product) }} €/{{ getStringWeight(product) }}</span>
+    ><span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCard(product!) }} €/{{ getStringWeight(product) }}</span>
     <p *ngIf="this.promotionService.inPromotion(product)">
       <span class="ecom-product-price-decimalsWeight"
         >{{ getPriceWeightStrCardPromo(product, this.promotionService.getPromotion(product)) }} €/{{ getStringWeight(product) }}</span
@@ -56,8 +56,7 @@
       <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
     </span>
   </div>
-  <div *ngIf="this.product.quantity !== 0"
-       class="ecom-product-button">
+  <div *ngIf="this.product.quantity !== 0" class="ecom-product-button">
     <div *ngIf="!this.accountService.isAuthenticated() || !isPresent(product.id); else elseBlock">
       <button
         class="ecom-product-button-add ecom-button"

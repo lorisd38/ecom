@@ -6,6 +6,7 @@ import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { createRequestOption } from '../../core/request/request-util';
 import { getTotalCartItems, getTotalCartPrice, ICart } from '../../entities/cart/cart.model';
 import { IProduct } from '../../entities/product/product.model';
+import { PromotionService } from './promotion.service';
 
 export type EntityResponseType = HttpResponse<IProductCart>;
 export type EntityArrayResponseType = HttpResponse<IProductCart[]>;
@@ -13,16 +14,20 @@ export type EntityArrayResponseType = HttpResponse<IProductCart[]>;
 @Injectable({ providedIn: 'root' })
 export class CartService {
   cart?: ICart | null;
-  total = '0';
+  total = 0;
   public nbItems = 0;
   public productsMap: Map<number, IProductCart> = new Map();
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/cart');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  constructor(
+    protected http: HttpClient,
+    protected applicationConfigService: ApplicationConfigService,
+    public promotionService: PromotionService
+  ) {}
 
   calcTotal(): void {
-    this.total = getTotalCartPrice(this.cart).toLocaleString();
+    this.total = getTotalCartPrice(this.cart, this.promotionService);
     this.nbItems = getTotalCartItems(this.cart);
   }
 

@@ -19,7 +19,7 @@
         ></jhi-product-line>
       </div>
       <div class="ecom-cart-button">
-        <div>Total à payer : {{ this.cartService.total }} €</div>
+        <div>Total à payer : {{ this.cartService.total.toFixed(2) }} €</div>
         <div class="ecom-button-see-cart">
           <button type="submit" routerLink="/payment" class="ecom-button ecom-button-next ecom-shadow-button">Passer au paiement</button>
         </div>

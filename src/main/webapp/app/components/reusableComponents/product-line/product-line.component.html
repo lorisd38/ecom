@@ -8,6 +8,9 @@
         onerror="this.onerror=null; this.src='../../../../content/images/default-products.png'"
       />
     </div>
+    <div class="ecom-productCart-promo-band" *ngIf="this.promotionService.inPromotion(this.productCart.product!)">
+      {{ this.promotionService.getPromotion(this.productCart.product!) }}
+    </div>
   </div>
   <div>
     <div class="ecom-productCart-info">
@@ -17,13 +20,24 @@
       </span>
       <span>{{ this.productCart.product?.brand }} {{ this.productCart.product?.weight }} {{ this.productCart.product?.weightUnit }}</span>
     </div>
-    <div class="ecom-productCart-prices">
-      <span>Prix unitaire : {{ this.productCart.product?.price | number: '0.2' }} €</span>
-      <span *ngIf="this.productCart.product!.weightUnit !== 'U'"
-        >Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} :
-        {{ getPriceWeightStrLine(this.productCart.product!) }} €</span
-      >
-      <!-- <span>{{ product.weight * product.price / 1000 }}</span>-->
+    <div
+      class="ecom-productCart-prices"
+      [ngClass]="{ 'ecom-productCart-oldprice': this.promotionService.inPromotion(this.productCart.product!) }"
+    >
+      <div>
+        <span>Prix unitaire : </span>
+        <span>{{ this.productCart.product?.price | number: '0.2' }} €</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productCart.product!)">{{ this.getPrice(this.productCart).toFixed(2) }} €</span>
+      </div>
+      <div *ngIf="this.productCart.product!.weightUnit !== 'U'">
+        <span>Prix au {{ this.unitOfPrice(this.productCart.product!.weightUnit!) }} :</span>
+        <span>{{ getPriceWeightStrLine(this.productCart.product!) }} €/{{ this.getStringWeight(this.productCart.product!) }}</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productCart.product!)"
+          >{{ getPriceWeightStrCardPromo(this.promotionService.getPromotion(this.productCart.product!), this.productCart.product!) }} €/{{
+            this.getStringWeight(this.productCart.product!)
+          }}</span
+        >
+      </div>
     </div>
   </div>
   <div class="ecom-productCart-tags">
@@ -76,6 +90,6 @@
     </button>
   </div>
   <div class="ecom-productcart-price">
-    <span>Prix : {{ this.productCart.product!.price! * this.productCart!.quantity! | number: '0.2' }} €</span>
+    <span>Prix : {{ (getPrice(this.productCart) * this.productCart.quantity!).toFixed(2) }} €</span>
   </div>
 </div>
