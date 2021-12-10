@@ -29,7 +29,8 @@ export class FileUploadService {
           storageRef.getDownloadURL().subscribe(downloadURL => {
             fileUpload.url = downloadURL;
             this.saveFileData(fileUpload, subscriber);
-          });
+          },
+            () => console.log("FIREBASE ERROR."));
         })
       )
       .subscribe();

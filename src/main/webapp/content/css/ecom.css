@@ -17,7 +17,7 @@
   top: 48px;
   left: 0;
   height: 1px;
-  width: 120%;
+  width: 110%;
 }
 
 .ecom-button {
@@ -116,16 +116,27 @@ Product card
 /* */
 .ecom-product-img {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
   padding: 10px;
 }
 
 .ecom-product-img > div {
   border: solid 1px #c4c4c4;
   border-radius: 5px;
+  width: 183px;
+  height: 130px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .ecom-product-img img {
-  max-width: 158px;
+  max-width: 183px;
   max-height: 130px;
 }
 
@@ -836,6 +847,15 @@ Payment
 .ecom-categories-list .ecom-title-header:after {
   top: 30px;
   width: 120px;
+}
+
+.ecom-query-header .ecom-title-header:after {
+  width: 100%;
+}
+
+.ecom-query-header > span{
+  padding-left: 10px;
+  font-size: 26px;
 }
 
 .ecom-categorie-first > div > ul > a {
