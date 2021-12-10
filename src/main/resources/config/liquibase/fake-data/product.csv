@@ -1,11 +1,11 @@
 id;name;description;quantity;version;origin;brand;image_path;price;weight;weight_unit
-1;Carotte;description;10;1;Landes;Panier du primeur;image_path;0.79;1;KG
-2;Pomme de terre;description;10;1;Angers;Panier du primeur;image_path;2.59;1.5;KG
-3;Lait;description;10;1;Landes;GrandLait;image_path;0.99;1;L
-4;Tomates;description;10;1;Brest;brand;image_path;2.99;250;G
-5;Steak de boeuf;description;10;1;Aix-en-Provence;Bio village;image_path;4.99;240;G
-6;Oeufs;description;10;1;Perpignan;Bio Village;image_path;1.65;6;U
-7;Chips;description;10;1;Besançon;Lays;image_path;0.92;135;G
-8;Pain de campagne;description;10;1;Perpignan;brand;image_path;1.10;400;G
-9;Brioche;description;10;1;Caen;Pasquier;image_path;1.95;630;G
-10;Cerise;description;10;1;Le Mans;Bio Village;image_path;0.99;250;G
+1;Carotte;description;10;1;Landes;Panier du primeur;;0.79;1;KG
+2;Pomme de terre;description;10;1;Angers;Panier du primeur;;2.59;1.5;KG
+3;Lait;description;10;1;Landes;GrandLait;;0.99;1;L
+4;Tomates;description;10;1;Brest;brand;;2.99;250;G
+5;Steak de boeuf;description;10;1;Aix-en-Provence;Bio village;;4.99;240;G
+6;Oeufs;description;10;1;Perpignan;Bio Village;;1.65;6;U
+7;Chips;description;10;1;Besançon;Lays;;0.92;135;G
+8;Pain de campagne;description;10;1;Perpignan;brand;;1.10;400;G
+9;Brioche;description;10;1;Caen;Pasquier;;1.95;630;G
+10;Cerise;description;10;1;Le Mans;Bio Village;;0.99;250;G
