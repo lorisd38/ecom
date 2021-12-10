@@ -1,5 +1,7 @@
 <div *ngIf="product" class="ecom-product">
-  <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">{{this.promotionService.getPromotion(product)}}</div>
+  <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">
+    {{ this.promotionService.getPromotion(product) }}
+  </div>
   <div class="ecom-product-heart">
     <img
       srcset="../../../content/images/{{(this.isFavorites(product))? 'heart-active': 'heart-inactive'}}.png"
@@ -7,15 +9,26 @@
     />
   </div>
   <div class="ecom-product-img">
-    <div><img src="{{ product.imagePath }}" srcset="../../../../content/images/default-products.png" alt="Image produit" /></div>
+    <div>
+      <img
+        srcset="{{ product.imagePath }} ../../../../content/images/default-products.png"
+        alt="Image produit"
+        src="{{ product.imagePath }}"
+        onerror="this.onerror=null; this.src='../../../../content/images/default-products.png'"
+      />
+    </div>
   </div>
-  <div class="ecom-product-price" [ngClass]="{ 'ecom-product-oldprice': this.promotionService.inPromotion(product)}">
+  <div class="ecom-product-price" [ngClass]="{ 'ecom-product-oldprice': this.promotionService.inPromotion(product) }">
     <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
     <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
     <span class="ecom-product-price-euro">€</span>
     <p *ngIf="this.promotionService.inPromotion(product)">
-      <span class="ecom-product-price-integer-promo">{{getIntegerOfPricePromo(this.promotionService.getPromotion(product),product.price)}},</span>
-      <span class="ecom-product-price-decimals-promo">{{getDecimalsOfPricePromo(this.promotionService.getPromotion(product),product.price)}}</span>
+      <span class="ecom-product-price-integer-promo"
+        >{{ getIntegerOfPricePromo(this.promotionService.getPromotion(product), product.price) }},</span
+      >
+      <span class="ecom-product-price-decimals-promo">{{
+        getDecimalsOfPricePromo(this.promotionService.getPromotion(product), product.price)
+      }}</span>
       <span class="ecom-product-price-euro-promo">€</span>
     </p>
   </div>
@@ -23,7 +36,9 @@
     <span>Soit : </span
     ><span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCard(product) }} €/{{ getStringWeight(product) }}</span>
     <p *ngIf="this.promotionService.inPromotion(product)">
-      <span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCardPromo(product,this.promotionService.getPromotion(product)) }} €/{{ getStringWeight(product) }}</span>
+      <span class="ecom-product-price-decimalsWeight"
+        >{{ getPriceWeightStrCardPromo(product, this.promotionService.getPromotion(product)) }} €/{{ getStringWeight(product) }}</span
+      >
     </p>
   </div>
   <div class="ecom-product-info">

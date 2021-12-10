@@ -12,6 +12,8 @@ import { CategoryService } from 'app/entities/category/service/category.service'
 import { ITag } from 'app/entities/tag/tag.model';
 import { TagService } from 'app/entities/tag/service/tag.service';
 import { WeightUnit } from 'app/entities/enumerations/weight-unit.model';
+import { FileUpload } from '../../../components/firebase/file-upload.model';
+import { FileUploadService } from '../../../components/services/file-upload.service';
 
 @Component({
   selector: 'jhi-product-update',
@@ -23,6 +25,10 @@ export class ProductUpdateComponent implements OnInit {
 
   categoriesSharedCollection: ICategory[] = [];
   tagsSharedCollection: ITag[] = [];
+
+  selectedFiles?: FileList;
+  currentFileUpload?: FileUpload;
+  percentage = 0;
 
   editForm = this.fb.group({
     id: [],
@@ -45,6 +51,7 @@ export class ProductUpdateComponent implements OnInit {
     protected productService: ProductService,
     protected categoryService: CategoryService,
     protected tagService: TagService,
+    protected uploadService: FileUploadService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -99,6 +106,35 @@ export class ProductUpdateComponent implements OnInit {
       }
     }
     return option;
+  }
+
+  selectFile(event: any): void {
+    this.selectedFiles = event.target.files;
+  }
+
+  upload(): void {
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0);
+      this.selectedFiles = undefined;
+
+      if (file) {
+        this.currentFileUpload = new FileUpload(file, 'products', this.editForm.get('id')?.value);
+        const observables = this.uploadService.pushFileToStorage(this.currentFileUpload);
+        observables[0].subscribe(
+          percentage => {
+            this.percentage = Math.round(percentage ? percentage : 0);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+        observables[1].subscribe(filePath =>
+          this.editForm.patchValue({
+            imagePath: filePath,
+          })
+        );
+      }
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {

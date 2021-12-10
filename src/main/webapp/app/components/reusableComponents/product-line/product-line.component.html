@@ -1,7 +1,12 @@
 <div *ngIf="this.productCart" class="ecom-cart">
   <div class="ecom-cart-img">
     <div>
-      <img src="{{ this.productCart.product?.imagePath }}" srcset="../../../../content/images/default-products.png" alt="Image produit" />
+      <img
+        srcset="{{ this.productCart.product?.imagePath }} ../../../../content/images/default-products.png"
+        alt="Image produit"
+        src="{{ this.productCart.product?.imagePath }}"
+        onerror="this.onerror=null; this.src='../../../../content/images/default-products.png'"
+      />
     </div>
   </div>
   <div>

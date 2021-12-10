@@ -41,6 +41,9 @@
         <dt><span jhiTranslate="ecomApp.product.imagePath">Image Path</span></dt>
         <dd>
           <span>{{ product.imagePath }}</span>
+          <div *ngIf="product.imagePath != null">
+            <img [src]="product.imagePath" alt="Image produit" width="128" height="128" />
+          </div>
         </dd>
         <dt><span jhiTranslate="ecomApp.product.price">Price</span></dt>
         <dd>
