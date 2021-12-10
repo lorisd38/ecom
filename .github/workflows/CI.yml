@@ -32,14 +32,13 @@ jobs:
         run: mvn test
 
       - name: Deploy to Heroku
-        # uses: AkhileshNS/heroku-deploy@79ef2ae4ff9b897010907016b268fd0f88561820
-        uses: AkhileshNS/heroku-deploy@v3.12.12
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           # This will be used for authentication. You can find it in your heroku homepage account settings
           heroku_api_key: ${{secrets.HEROKU_DEPLOY}}
           # Email that you use with heroku
-          heroku_email: pixel38320@gmail.com
+          heroku_email: "pixel38320@gmail.com"
           # The appname to use for deploying/updating
-          heroku_app_name: devecom
+          heroku_app_name: "developecom"
           # The branch that you would like to deploy to Heroku
-          branch: develop
+          branch: "develop"
