@@ -150,7 +150,7 @@
               [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
-              {{ categoryOption.id }}
+              {{ categoryOption.name }}
             </option>
           </select>
         </div>
@@ -169,7 +169,7 @@
               [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCategories')!.value)"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
-              {{ categoryOption.id }}
+              {{ categoryOption.name }}
             </option>
           </select>
         </div>
@@ -181,7 +181,7 @@
               [ngValue]="getSelectedTag(tagOption, editForm.get('tags')!.value)"
               *ngFor="let tagOption of tagsSharedCollection; trackBy: trackTagById"
             >
-              {{ tagOption.id }}
+              {{ tagOption.name }}
             </option>
           </select>
         </div>

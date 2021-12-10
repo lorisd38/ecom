@@ -71,18 +71,18 @@
           <td jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</td>
           <td>
             <div *ngIf="product.category">
-              <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
+              <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.name }}</a>
             </div>
           </td>
           <td>
             <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
-              <a class="form-control-static" [routerLink]="['/category', relatedCategories.id, 'view']">{{ relatedCategories.id }}</a
+              <a class="form-control-static" [routerLink]="['/category', relatedCategories.id, 'view']">{{ relatedCategories.name }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>
           <td>
             <span *ngFor="let tags of product.tags; let last = last">
-              <a class="form-control-static" [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+              <a class="form-control-static" [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>

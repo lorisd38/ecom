@@ -105,7 +105,7 @@
               [ngValue]="getSelectedProduct(productOption, editForm.get('favorites')!.value)"
               *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById"
             >
-              {{ productOption.id }}
+              {{ productOption.name }}
             </option>
           </select>
         </div>
@@ -124,7 +124,7 @@
               [ngValue]="getSelectedTag(tagOption, editForm.get('preferences')!.value)"
               *ngFor="let tagOption of tagsSharedCollection; trackBy: trackTagById"
             >
-              {{ tagOption.id }}
+              {{ tagOption.name }}
             </option>
           </select>
         </div>

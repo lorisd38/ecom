@@ -54,7 +54,7 @@
           <td jhiTranslate="{{ 'ecomApp.ReductionType.' + promotionalCode.unit }}">{{ promotionalCode.unit }}</td>
           <td>
             <span *ngFor="let products of promotionalCode.products; let last = last">
-              <a class="form-control-static" [routerLink]="['/product', products.id, 'view']">{{ products.id }}</a
+              <a class="form-control-static" [routerLink]="['/product', products.id, 'view']">{{ products.name }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </td>
