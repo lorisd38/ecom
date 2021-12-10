@@ -40,6 +40,6 @@ jobs:
           # Email that you use with heroku
           heroku_email: pixel38320@gmail.com
           # The appname to use for deploying/updating
-          heroku_app_name: developecom
+          heroku_app_name: devecom
           # The branch that you would like to deploy to Heroku
           branch: develop
