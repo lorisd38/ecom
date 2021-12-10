@@ -52,7 +52,7 @@
               [ngValue]="getSelectedProduct(productOption, editForm.get('products')!.value)"
               *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById"
             >
-              {{ productOption.id }}
+              {{ productOption.name }}
             </option>
           </select>
         </div>

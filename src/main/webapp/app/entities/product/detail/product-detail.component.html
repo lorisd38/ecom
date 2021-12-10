@@ -60,20 +60,20 @@
         <dt><span jhiTranslate="ecomApp.product.category">Category</span></dt>
         <dd>
           <div *ngIf="product.category">
-            <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.id }}</a>
+            <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span></dt>
         <dd>
           <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
-            <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.id }}</a
+            <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.name }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>
         <dt><span jhiTranslate="ecomApp.product.tags">Tags</span></dt>
         <dd>
           <span *ngFor="let tags of product.tags; let last = last">
-            <a [routerLink]="['/tag', tags?.id, 'view']">{{ tags.id }}</a
+            <a [routerLink]="['/tag', tags?.id, 'view']">{{ tags.name }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

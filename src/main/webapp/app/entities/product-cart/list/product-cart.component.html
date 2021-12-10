@@ -47,7 +47,7 @@
           <td>{{ productCart.quantity }}</td>
           <td>
             <div *ngIf="productCart.product">
-              <a [routerLink]="['/product', productCart.product?.id, 'view']">{{ productCart.product?.id }}</a>
+              <a [routerLink]="['/product', productCart.product?.id, 'view']">{{ productCart.product?.name }}</a>
             </div>
           </td>
           <td>

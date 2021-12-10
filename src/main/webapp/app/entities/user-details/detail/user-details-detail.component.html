@@ -45,14 +45,14 @@
         <dt><span jhiTranslate="ecomApp.userDetails.favorites">Favorites</span></dt>
         <dd>
           <span *ngFor="let favorites of userDetails.favorites; let last = last">
-            <a [routerLink]="['/product', favorites?.id, 'view']">{{ favorites.id }}</a
+            <a [routerLink]="['/product', favorites?.id, 'view']">{{ favorites.name }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>
         <dt><span jhiTranslate="ecomApp.userDetails.preferences">Preferences</span></dt>
         <dd>
           <span *ngFor="let preferences of userDetails.preferences; let last = last">
-            <a [routerLink]="['/tag', preferences?.id, 'view']">{{ preferences.id }}</a
+            <a [routerLink]="['/tag', preferences?.id, 'view']">{{ preferences.name }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>
