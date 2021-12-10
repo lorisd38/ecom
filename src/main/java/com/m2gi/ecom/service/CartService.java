@@ -1,14 +1,18 @@
 package com.m2gi.ecom.service;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.ProductCart;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.repository.query.Param;
 
 /**
  * Service Interface for managing {@link Cart}.
  */
 public interface CartService {
+    ProductCart addLine(ProductCart line);
+    ProductCart updateLine(Long lineId, int quantity);
+    void removeLine(Long lineId);
+
     /**
      * Save a cart.
      *
