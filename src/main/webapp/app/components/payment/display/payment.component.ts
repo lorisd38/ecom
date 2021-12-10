@@ -104,6 +104,7 @@ export class PaymentComponent implements OnInit {
         const savedOrder: IOrder | null = res.body ?? null;
         console.log('Received order', savedOrder);
         // TODO Rediriger vers la page "Historique des commandes".
+        window.history.go(-2);
       },
       err => {
         console.log('Error :', err);
