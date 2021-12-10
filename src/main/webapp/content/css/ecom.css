@@ -287,6 +287,7 @@ Product card
   border-radius: 50%;
   border: solid 1px #c4c4c4;
   outline: 3px solid white;
+  z-index: 100;
 }
 
 .ecom-product-heart > img {
@@ -295,6 +296,28 @@ Product card
   cursor: pointer;
   border-radius: 50%;
 }
+
+.ecom-product-sold-out > .ecom-product-img{
+  opacity: 50%;
+  filter: blur(2px);
+}
+
+.ecom-product-sold-out-message{
+  position: absolute;
+  display: block;
+  transform-origin: top right;
+  transform: rotate(-35deg);
+  right: 24px;
+  top: 2px;
+  width: 216px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 28px;
+  border-radius: 50px;
+  z-index: 1;
+  font-weight: bold;
+}
+
 /* ==============================================================
 Product card in Cart
 ===============================================================*/
