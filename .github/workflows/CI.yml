@@ -30,3 +30,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Maven test
         run: mvn test
+
+      - name: Deploy to Heroku
+        # uses: AkhileshNS/heroku-deploy@79ef2ae4ff9b897010907016b268fd0f88561820
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: cb4e6bb4-6b01-4c88-8473-969966c2bbe7
+          # Email that you use with heroku
+          heroku_email: pixel38320@gmail.com
+          # The appname to use for deploying/updating
+          heroku_app_name: developecom
+          # The branch that you would like to deploy to Heroku
+          branch: develop
