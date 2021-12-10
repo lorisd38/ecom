@@ -122,8 +122,8 @@
         <div>
           <div class="ecom-payment-button">
             <div class="ecom-payment-button-price">
-              <div>{{ 'ecomApp.payment.totalPrice' | translate }} {{ totalPrice }} €</div>
-              <div>{{ 'ecomApp.payment.totalSaved' | translate }} {{ totalSaved }} €</div>
+              <div>{{ 'ecomApp.payment.totalPrice' | translate }} {{ totalPrice.toFixed(2) }} €</div>
+              <div>{{ 'ecomApp.payment.totalSaved' | translate }} {{ totalSaved.toFixed(2) }} €</div>
             </div>
             <div class="ecom-payment-button-button">
               <button

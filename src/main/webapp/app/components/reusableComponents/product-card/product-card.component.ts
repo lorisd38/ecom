@@ -6,7 +6,7 @@ import { WeightUnit } from '../../../entities/enumerations/weight-unit.model';
 import { getPriceWeightStr } from '../../products/products.module';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-import {PromotionService} from "../../services/promotion.service";
+import { PromotionService } from '../../services/promotion.service';
 
 @Component({
   selector: 'jhi-product-card',
@@ -42,14 +42,14 @@ export class ProductCardComponent {
     return b[0];
   }
 
-  getIntegerOfPricePromo(promo:any,price?: number):any{
-    let res: any= "";
-    const subPromo = Number(promo.substr(1,promo.length -2))
+  getIntegerOfPricePromo(promo: any, price?: number): any {
+    let res: any = '';
+    const subPromo = Number(promo.substr(1, promo.length - 2));
 
-    if(promo.substr(promo.length -1) === "%"){
-      res = (price!-price!*subPromo/100);
-    }else{
-      res = (price!-subPromo);
+    if (promo.substr(promo.length - 1) === '%') {
+      res = price! - (price! * subPromo) / 100;
+    } else {
+      res = price! - subPromo;
     }
 
     res = res.toFixed(2).toString();
@@ -57,15 +57,14 @@ export class ProductCardComponent {
     return b[0];
   }
 
+  getDecimalsOfPricePromo(promo: any, price?: number): any {
+    let res: any = '';
+    const subPromo = Number(promo.substr(1, promo.length - 2));
 
-  getDecimalsOfPricePromo(promo:any,price?: number):any{
-    let res: any= "";
-    const subPromo = Number(promo.substr(1,promo.length -2))
-
-    if(promo.substr(promo.length -1) === "%"){
-      res = (price!-price!*subPromo/100);
-    }else{
-      res = (price!-subPromo);
+    if (promo.substr(promo.length - 1) === '%') {
+      res = price! - (price! * subPromo) / 100;
+    } else {
+      res = price! - subPromo;
     }
 
     res = res.toFixed(2).toString();
@@ -81,17 +80,17 @@ export class ProductCardComponent {
     return b[1];
   }
 
-  getPriceWeightStrCard(product?: IProduct): string {
-    return getPriceWeightStr(product);
+  getPriceWeightStrCard(product: IProduct): string {
+    return getPriceWeightStr(product.price!, product.weight!, product.weightUnit!);
   }
 
-  getPriceWeightStrCardPromo(product: IProduct,promo:any): string {
-    const res = Number(getPriceWeightStr(product).replace(',', '.'));
-    const subPromo = Number(promo.substr(1,promo.length -2))
-    if(promo.substr(promo.length -1) === "%"){
-      return (res-res*subPromo/100).toFixed(2).toString().replace('.', ',');
-    }else{
-      return (res-subPromo).toFixed(2).toString().replace('.', ',');
+  getPriceWeightStrCardPromo(product: IProduct, promo: any): string {
+    const res = Number(getPriceWeightStr(product.price!, product.weight!, product.weightUnit!).replace(',', '.'));
+    const subPromo = Number(promo.substr(1, promo.length - 2));
+    if (promo.substr(promo.length - 1) === '%') {
+      return (res - (res * subPromo) / 100).toFixed(2).toString().replace('.', ',');
+    } else {
+      return (res - subPromo).toFixed(2).toString().replace('.', ',');
     }
   }
 

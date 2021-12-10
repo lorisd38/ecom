@@ -1,5 +1,6 @@
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { PromotionService } from '../../components/services/promotion.service';
 
 export interface ICart {
   id?: number;
@@ -15,12 +16,22 @@ export function getCartIdentifier(cart: ICart): number | undefined {
   return cart.id;
 }
 
-export function getTotalCartPrice(cart: ICart | null | undefined): number {
+export function getTotalCartPrice(cart: ICart | null | undefined, promotionService: PromotionService): number {
   let total = 0.0;
   if (cart?.lines != null) {
     for (const lineProduct of cart.lines) {
       if (lineProduct.quantity != null && lineProduct.product?.price != null) {
-        total += lineProduct.quantity * lineProduct.product.price;
+        if (promotionService.inPromotion(lineProduct.product)) {
+          const promo = promotionService.getPromotion(lineProduct.product);
+          const subPromo = Number(promo.substr(1, promo.length - 2));
+          if (promo.substr(promo.length - 1) === '%') {
+            total += lineProduct.product.price - (lineProduct.product.price * subPromo) / 100;
+          } else {
+            total += lineProduct.product.price - subPromo;
+          }
+        } else {
+          total += lineProduct.quantity * lineProduct.product.price;
+        }
       }
     }
   }

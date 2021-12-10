@@ -12,6 +12,7 @@ import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '../../../config/inpu
 import { IPromotionalCode } from '../../../entities/promotional-code/promotional-code.model';
 import { ReductionType } from '../../../entities/enumerations/reduction-type.model';
 import { IProductOrder, ProductOrder } from '../../../entities/product-order/product-order.model';
+import { PromotionService } from '../../services/promotion.service';
 
 @Component({
   selector: 'jhi-payment',
@@ -41,6 +42,7 @@ export class PaymentComponent implements OnInit {
     protected paymentService: PaymentService,
     protected cartService: CartService,
     protected modalService: NgbModal,
+    public promotionService: PromotionService,
     private fb: FormBuilder
   ) {}
 
@@ -70,7 +72,7 @@ export class PaymentComponent implements OnInit {
   }
 
   calcTotal(): void {
-    this.totalPrice = getTotalCartPrice(this.cart);
+    this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
   }
 
   calcTotalSaved(): void {
