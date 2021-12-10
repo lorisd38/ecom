@@ -5,8 +5,10 @@
         <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.home.title">Products</h2>
       </div>
       <ng-template #elseBlock>
-        <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
-        <span>"{{ this.query }}"</span>
+        <div class="ecom-query-header">
+          <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
+          <span>"{{ this.query }}"</span>
+        </div>
       </ng-template>
     </div>
 
