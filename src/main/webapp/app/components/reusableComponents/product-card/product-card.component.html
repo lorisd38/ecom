@@ -1,4 +1,5 @@
-<div *ngIf="product" class="ecom-product">
+<div *ngIf="product" class="ecom-product {{(this.product.quantity === 0)?'ecom-product-sold-out':''}}">
+  <div class="ecom-product-sold-out-message" *ngIf="this.product.quantity === 0">RUPTURE DE STOCK</div>
   <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">
     {{ this.promotionService.getPromotion(product) }}
   </div>
@@ -55,7 +56,8 @@
       <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
     </span>
   </div>
-  <div class="ecom-product-button">
+  <div *ngIf="this.product.quantity !== 0"
+       class="ecom-product-button">
     <div *ngIf="!this.accountService.isAuthenticated() || !isPresent(product.id); else elseBlock">
       <button
         class="ecom-product-button-add ecom-button"
