@@ -60,7 +60,12 @@
           <td>{{ product.version }}</td>
           <td>{{ product.origin }}</td>
           <td>{{ product.brand }}</td>
-          <td>{{ product.imagePath }}</td>
+          <td>
+            {{ product.imagePath }}
+            <div *ngIf="product.imagePath != null">
+              <img [src]="product.imagePath" alt="Image produit" width="128" height="128" />
+            </div>
+          </td>
           <td>{{ product.price }}</td>
           <td>{{ product.weight }}</td>
           <td jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</td>
