@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Service Interface for managing {@link Product}.
@@ -32,21 +33,21 @@ public interface ProductService {
      *
      * @return the list of entities.
      */
-    List<Product> findAll();
+    List<Product> findAll(Sort sort);
 
     /**
      * Get products from query.
      *
      * @return the list of entities.
      */
-    List<Product> findResearch(String query);
+    List<Product> findResearch(String query, Sort sort);
 
     /**
      * Get products from a category.
      *
      * @return the list of entities.
      */
-    List<Product> findCategory(Category cat);
+    List<Product> findCategory(Category cat, Sort sort);
 
     /**
      * Get all the products with eager load of many-to-many relationships.

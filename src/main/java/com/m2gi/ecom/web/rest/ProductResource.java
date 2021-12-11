@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -85,13 +86,12 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated product,
      * or with status {@code 400 (Bad Request)} if the product is not valid,
      * or with status {@code 500 (Internal Server Error)} if the product couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Product product
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to update Product : {}, {}", id, product);
         if (product.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -156,22 +156,30 @@ public class ProductResource {
     @GetMapping("/products")
     public List<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
-        @RequestParam(name = "category", required = false) Long categoryId
+        @RequestParam(name = "category", required = false) Long categoryId,
+        @RequestParam(name = "sortBy", required = false) String sortBy,
+        @RequestParam(name = "sortOrder", required = false) Sort.Direction sortOrder
     ) {
+        Sort sort;
+        if (sortBy != null && sortOrder != null) {
+            sort = Sort.by(sortOrder, sortBy);
+        } else {
+            sort = Sort.by(Sort.Direction.ASC, "name");
+        }
         if (query != null) {
             log.debug("REST request to get Research Products for query : {}", query);
-            return productService.findResearch(query);
+            return productService.findResearch(query, sort);
         } else if (categoryId != null) {
             log.debug("REST request to get Products for category : {}", categoryId);
             Optional<Category> cat = categoryService.findOne(categoryId);
             if (cat.isPresent()) {
-                return productService.findCategory(cat.get());
+                return productService.findCategory(cat.get(), sort);
             } else {
                 throw new BadRequestAlertException("Category unknown", "category", "idnotfound");
             }
         } else {
             log.debug("REST request to get all Products");
-            return productService.findAll();
+            return productService.findAll(sort);
         }
     }
 
@@ -211,8 +219,8 @@ public class ProductResource {
      */
     @GetMapping("/products/favorite-products")
     public List<Product> getFavoriteProductsForCurrentUser() {
-        log.debug("REST request to get all Favorite Products for user {}", SecurityUtils.getCurrentUserLogin().get());
-        return productService.findAllFavorite(SecurityUtils.getCurrentUserLogin().get());
+        log.debug("REST request to get all Favorite Products for user {}", SecurityUtils.getCurrentUserLogin().orElseThrow());
+        return productService.findAllFavorite(SecurityUtils.getCurrentUserLogin().orElseThrow());
     }
 
     /**
@@ -222,10 +230,10 @@ public class ProductResource {
      */
     @PostMapping("/products/favorite-products/{id}")
     public List<Product> updateFavoriteProductsForCurrentUser(@PathVariable Long id) {
-        String login = SecurityUtils.getCurrentUserLogin().get();
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
         log.debug("REST request to update product {} in Favorite Products for user {}", id, login);
         //Get Product
-        Product product = productService.findOne(id).get();
+        Product product = productService.findOne(id).orElseThrow();
         //get userDetails
         UserDetails user = productRepository.getUserDetails(login);
         //if favorite contains product we remove it, else we add it to Favorites

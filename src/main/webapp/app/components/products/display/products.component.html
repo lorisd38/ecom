@@ -11,6 +11,42 @@
       </ng-template>
     </div>
 
+    <div ngbDropdown class="ecom-button-sort">
+      <button ngbDropdownToggle type="submit" class="ecom-button ecom-button-next ecom-shadow-button">
+        <fa-icon icon="sort" [fixedWidth]="true"></fa-icon>Trier
+      </button>
+      <ul class="ecom-sort-option" ngbDropdownMenu>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'ASC')"
+        >
+          Nom croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'DESC')"
+        >
+          Nom décroissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'ASC')"
+        >
+          Prix croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'DESC')"
+        >
+          Prix décroissant
+        </li>
+      </ul>
+    </div>
+
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 

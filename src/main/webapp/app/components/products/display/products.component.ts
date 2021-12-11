@@ -17,6 +17,8 @@ export class ProductsComponent implements OnInit {
   products?: IProduct[];
   public query: string | null = '';
   public nbQuery: number | undefined = 0;
+  public sortBy: string | null = 'name';
+  public sortOrder: string | null = 'ASC';
   private category: string | null = '';
 
   constructor(
@@ -56,7 +58,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+      ? this.productService.querySearch(this.query, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
           this.nbQuery = res.body?.length;
         })
@@ -65,7 +67,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.queryByCategory(this.category, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
@@ -76,8 +78,52 @@ export class ProductsComponent implements OnInit {
       this.promotionService.promotions = res.body;
       if (this.promotionService.promotions) {
         this.products = this.promotionService.getProductsPromotion();
+        if (this.sortBy === 'name') {
+          this.products.sort((a, b) => {
+            if (a.name! > b.name!) {
+              if (this.sortOrder === 'DESC') {
+                return -1;
+              }
+              return 1;
+            }
+            if (a.name! < b.name!) {
+              if (this.sortOrder === 'DESC') {
+                return 1;
+              }
+              return -1;
+            }
+            return 0;
+          });
+        } else if (this.sortBy === 'price') {
+          if (this.sortOrder === 'ASC') {
+            this.products.sort(
+              (a, b) =>
+                this.getPricePromo(this.promotionService.getPromotion(a), a.price) -
+                this.getPricePromo(this.promotionService.getPromotion(b), b.price)
+            );
+          } else {
+            this.products.sort(
+              (a, b) =>
+                this.getPricePromo(this.promotionService.getPromotion(b), b.price) -
+                this.getPricePromo(this.promotionService.getPromotion(a), a.price)
+            );
+          }
+        }
       }
     });
+  }
+
+  getPricePromo(promo: any, price?: number): number {
+    let res = 0;
+    const subPromo = Number(promo.substr(1, promo.length - 2));
+
+    if (promo.substr(promo.length - 1) === '%') {
+      res = price! - (price! * subPromo) / 100;
+    } else {
+      res = price! - subPromo;
+    }
+
+    return res;
   }
 
   loadCart(): void {
@@ -86,5 +132,11 @@ export class ProductsComponent implements OnInit {
       this.cartService.buildCartContentMap();
       this.cartService.calcTotal();
     });
+  }
+
+  changeSort(sortBy: string, sortOrder: string): void {
+    this.sortBy = sortBy;
+    this.sortOrder = sortOrder;
+    this.ngOnInit();
   }
 }

@@ -3,7 +3,6 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { createRequestOption } from '../../core/request/request-util';
 import { getTotalCartItems, getTotalCartPrice, ICart } from '../../entities/cart/cart.model';
 import { IProduct } from '../../entities/product/product.model';
 import { PromotionService } from './promotion.service';
@@ -31,9 +30,8 @@ export class CartService {
     this.nbItems = getTotalCartItems(this.cart);
   }
 
-  queryOneCart(req?: any): Observable<EntityResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<ICart>(this.resourceUrl, { params: options, observe: 'response' });
+  queryOneCart(): Observable<EntityResponseType> {
+    return this.http.get<ICart>(this.resourceUrl, { observe: 'response' });
   }
 
   queryAddToCart(idProduct: number): Observable<EntityResponseType> {

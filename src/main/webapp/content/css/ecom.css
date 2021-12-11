@@ -39,8 +39,14 @@
   opacity: 0.33;
 }
 
-.ecom-button-back {
+.ecom-button-back,
+.ecom-button-sort {
   margin-bottom: 20px;
+}
+
+.ecom-button-sort {
+  text-align: right;
+  right: 15px;
 }
 
 .ecom-shadow-button {
@@ -60,8 +66,8 @@
 }
 
 /* ==============================================================
-Product card
-===============================================================*/
+   Product card
+   ===============================================================*/
 @media (min-width: 2070px) {
   .ecom-favoris-grid #ecom-list-products {
     display: grid;
@@ -366,6 +372,22 @@ Product card
   border-radius: 50px;
   z-index: 1;
   font-weight: bold;
+}
+
+.ecom-sort-option > li {
+  cursor: pointer;
+  color: #444444;
+}
+
+.ecom-sort-option > li:hover {
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+.ecom-sort-option-active {
+  background-color: var(--couleur-primaire) !important;
+  color: white !important;
+  cursor: default !important;
 }
 
 /* ==============================================================
