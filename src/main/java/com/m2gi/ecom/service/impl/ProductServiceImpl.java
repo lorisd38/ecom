@@ -2,18 +2,15 @@ package com.m2gi.ecom.service.impl;
 
 import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
-import com.m2gi.ecom.domain.UserDetails;
 import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.ProductService;
-import com.m2gi.ecom.service.UserDetailsService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import liquibase.pro.packaged.P;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,24 +80,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAll() {
+    public List<Product> findAll(Sort sort) {
         log.debug("Request to get all Products");
-        return productRepository.findAllWithEagerRelationships();
+        return productRepository.findAllWithEagerRelationships(sort);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findResearch(String query) {
+    public List<Product> findResearch(String query, Sort sort) {
         query = query.toLowerCase();
         log.debug("Request to get Products from query : (" + query + ")");
-        return productRepository.findAllFromResearch(query);
+        return productRepository.findAllFromResearch(query, sort);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findCategory(Category cat) {
+    public List<Product> findCategory(Category cat, Sort sort) {
         log.debug("Request to get Products from a catgeory : (" + cat + ")");
-        return productRepository.findAllFromCategory(cat);
+        return productRepository.findAllFromCategory(cat, sort);
     }
 
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {
@@ -121,8 +118,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllFavorite(String login) {
+    public List<Product> findAllFavorite(String login, Sort sort) {
         log.debug("Request to get Favorite products with login: {}", login);
-        return productRepository.findFavoriteByLogin(login);
+        return productRepository.findFavoriteByLogin(login, sort);
     }
 }
