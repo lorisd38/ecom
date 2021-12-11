@@ -31,7 +31,7 @@
   background-color: var(--couleur-primaire-hover);
 }
 
-.ecom-button:active {
+.ecom-button:active:not(:disabled) {
   transform: translate(2px, 1px);
 }
 
@@ -264,6 +264,10 @@ Product card
 
 .ecom-product-button-text {
   width: 25px;
+}
+
+.ecom-product-button-text::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 .ecom-product-button > div {
