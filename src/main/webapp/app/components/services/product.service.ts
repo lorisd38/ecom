@@ -19,21 +19,24 @@ export class ProductService {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}`, { params: options, observe: 'response' });
   }
 
-  querySearch(req: string): Observable<EntityArrayResponseType> {
+  querySearch(req: string, tagsId: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
 
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}&filter=${tagsId}`, {
+      params: options,
+      observe: 'response',
+    });
   }
 
-  queryByCategory(req: string): Observable<EntityArrayResponseType> {
+  queryByCategory(req: string, tagsId: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}&filter=${tagsId}`, { params: options, observe: 'response' });
   }
 
   queryAddToFavorites(id: number): Observable<IProduct[]> {

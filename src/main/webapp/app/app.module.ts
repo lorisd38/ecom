@@ -33,6 +33,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { ComponentsRoutingModule } from './components/components-routing.module';
 import { CategoriesModule } from './components/categories/categories.module';
 import { firebaseConfig } from './config/firebase-config';
+import { FilterModule } from './components/filter/filter.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -60,6 +61,7 @@ import { firebaseConfig } from './config/firebase-config';
     CategoriesModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireStorageModule,
+    FilterModule,
   ],
   providers: [
     Title,

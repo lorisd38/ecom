@@ -1,0 +1,4 @@
+<nav class="ecom-filter-panel" data-cy="filterList">
+  <div *ngFor="let filter of listFilter"><input type="checkbox" id="{{ filter.id }}" /> {{ filter.name }}</div>
+  <button (click)="submit()">filtrer</button>
+</nav>

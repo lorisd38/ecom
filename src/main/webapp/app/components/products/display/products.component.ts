@@ -7,28 +7,38 @@ import { CartService } from '../../services/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import {PromotionService} from "../../services/promotion.service";
+import { FilterService } from '../../services/filter.service';
+import { PromotionService } from '../../services/promotion.service';
 
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
 })
 export class ProductsComponent implements OnInit {
+  listProducts?: IProduct[];
   products?: IProduct[];
+
   public query: string | null = '';
   private category: string | null = '';
+  private tagsIdSelected?: number[];
 
   constructor(
     protected productService: ProductService,
     protected modalService: NgbModal,
     public cartService: CartService,
+    public filterService: FilterService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
-    private promotionService: PromotionService,
+    private promotionService: PromotionService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
+      if (params.filter !== undefined && params.filter !== '') {
+        this.tagsIdSelected = params.filter;
+      } else {
+        this.tagsIdSelected = [];
+      }
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
         this.loadProductSearch();
@@ -55,27 +65,30 @@ export class ProductsComponent implements OnInit {
 
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
-          this.products = res.body ?? [];
+      ? this.productService.querySearch(this.query, this.tagsIdSelected!.toString()).subscribe((res: HttpResponse<IProduct[]>) => {
+          this.listProducts = res.body ?? [];
+          this.products = this.listProducts;
         })
       : '';
   }
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
-        this.products = res.body ?? [];
+      this.productService.queryByCategory(this.category, this.tagsIdSelected!.toString()).subscribe((res: HttpResponse<IProduct[]>) => {
+        this.listProducts = res.body ?? [];
+        this.products = this.listProducts;
       });
     }
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe((res) => {
+    this.promotionService.query().subscribe(res => {
       this.promotionService.promotions = res.body;
-      if(this.promotionService.promotions){
-        this.products = this.promotionService.getProductsPromotion();
+      if (this.promotionService.promotions) {
+        this.listProducts = this.promotionService.getProductsPromotion();
+        this.products = this.listProducts;
       }
-    })
+    });
   }
 
   loadCart(): void {
@@ -85,4 +98,19 @@ export class ProductsComponent implements OnInit {
       this.cartService.calcTotal();
     });
   }
+
+  /* chargeTags(): void {
+    this.products?.forEach( (p) => {
+      if(this.tags == null){
+        this.tags = [];
+      }
+      this.tags = this.tags.concat(p.tags!);
+    });
+  } */
+
+  /* filter(): void{
+    this.products = this.listProducts?.filter((p) => {
+      p.tags?.some(tagChecked => this.tags?.find(t => t.id === tagChecked.id) !== undefined)
+    }) ?? [];
+  } */
 }

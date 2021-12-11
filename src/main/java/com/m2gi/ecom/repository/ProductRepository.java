@@ -27,12 +27,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllWithEagerRelationships();
 
     @Query(
-        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags " +
+        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags pt " +
         "where(  lower(product.name)        like concat('%', :query, '%')   " +
         "or      lower(product.origin)      like concat('%', :query, '%')   " +
-        "or      lower(product.brand)       like concat('%', :query, '%')  )"
+        "or      lower(product.brand)       like concat('%', :query, '%')  ) and (:filter is null or pt.id in :filter)"
     )
-    List<Product> findAllFromResearch(@Param("query") String query);
+    List<Product> findAllFromResearch(@Param("query") String query, @Param("filter") List<Long> tagsId);
 
     @Query(
         "select product from Product product left join fetch product.relatedCategories left join fetch product.tags where product.id =:id"
@@ -45,6 +45,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select userDetails from UserDetails userDetails left join fetch userDetails.favorites where userDetails.user.login =:login")
     UserDetails getUserDetails(@Param("login") String login);
 
-    @Query("select product from Product product left join fetch product.relatedCategories rc left join fetch product.tags where :cat = rc")
-    List<Product> findAllFromCategory(@Param("cat") Category cat);
+    @Query(
+        "select product.id from Product product left join fetch product.relatedCategories rc left join fetch product.tags pt " +
+        " where :cat = rc and (:filter is null or pt.id in :filter) "
+    )
+    List<Long> findAllFromCategory(@Param("cat") Category cat, @Param("filter") List<Long> tagsId);
 }

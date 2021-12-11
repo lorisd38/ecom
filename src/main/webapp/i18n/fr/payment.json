@@ -1,6 +1,9 @@
 {
   "ecomApp": {
     "payment": {
+      "home": {
+        "title": "Payment"
+      },
       "title": "Paiement",
       "totalPrice": "Total à payer :",
       "totalSaved": "Total économisé :",

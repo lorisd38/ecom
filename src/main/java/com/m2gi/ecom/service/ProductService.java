@@ -39,14 +39,14 @@ public interface ProductService {
      *
      * @return the list of entities.
      */
-    List<Product> findResearch(String query);
+    List<Product> findResearch(String query, List<Long> tagsId);
 
     /**
      * Get products from a category.
      *
      * @return the list of entities.
      */
-    List<Product> findCategory(Category cat);
+    List<Product> findCategory(Category cat, List<Long> tagsId);
 
     /**
      * Get all the products with eager load of many-to-many relationships.

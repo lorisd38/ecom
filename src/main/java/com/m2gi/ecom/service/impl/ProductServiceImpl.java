@@ -90,17 +90,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findResearch(String query) {
+    public List<Product> findResearch(String query, List<Long> tagsId) {
         query = query.toLowerCase();
         log.debug("Request to get Products from query : (" + query + ")");
-        return productRepository.findAllFromResearch(query);
+        return productRepository.findAllFromResearch(query, tagsId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findCategory(Category cat) {
+    public List<Product> findCategory(Category cat, List<Long> tagsId) {
         log.debug("Request to get Products from a catgeory : (" + cat + ")");
-        return productRepository.findAllFromCategory(cat);
+        final List<Long> ids = productRepository.findAllFromCategory(cat, tagsId);
+        return productRepository.findAllById(ids);
     }
 
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {

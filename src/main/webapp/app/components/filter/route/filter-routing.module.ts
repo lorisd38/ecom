@@ -7,7 +7,6 @@ const FilterRoute: Routes = [
   {
     path: '',
     component: FilterComponent,
-    outlet: 'filter',
   },
 ];
 

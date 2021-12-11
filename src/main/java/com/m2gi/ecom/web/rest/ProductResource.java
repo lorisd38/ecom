@@ -156,16 +156,20 @@ public class ProductResource {
     @GetMapping("/products")
     public List<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
-        @RequestParam(name = "category", required = false) Long categoryId
+        @RequestParam(name = "category", required = false) Long categoryId,
+        @RequestParam(name = "filter", required = false) List<Long> tagsId
     ) {
+        if (tagsId == null || tagsId.isEmpty()) {
+            tagsId = null;
+        }
         if (query != null) {
             log.debug("REST request to get Research Products for query : {}", query);
-            return productService.findResearch(query);
+            return productService.findResearch(query, tagsId);
         } else if (categoryId != null) {
             log.debug("REST request to get Products for category : {}", categoryId);
             Optional<Category> cat = categoryService.findOne(categoryId);
             if (cat.isPresent()) {
-                return productService.findCategory(cat.get());
+                return productService.findCategory(cat.get(), tagsId);
             } else {
                 throw new BadRequestAlertException("Category unknown", "category", "idnotfound");
             }
