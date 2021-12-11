@@ -285,6 +285,7 @@ Product card
 
 .ecom-button-see-cart {
   margin-top: 25px;
+  text-align: right;
 }
 
 .ecom-button-next {
@@ -492,6 +493,7 @@ Product card in Cart
 
 .ecom-cart-button {
   margin: 10px 0 0 30px;
+  text-align: right;
 }
 
 .ecom-cart-button > div {
