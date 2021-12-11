@@ -1,5 +1,6 @@
 package com.m2gi.ecom.service;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,13 @@ public interface ProductService {
     List<Product> findResearch(String query);
 
     /**
+     * Get products from a category.
+     *
+     * @return the list of entities.
+     */
+    List<Product> findCategory(Category cat);
+
+    /**
      * Get all the products with eager load of many-to-many relationships.
      *
      * @param pageable the pagination information.
@@ -62,4 +70,12 @@ public interface ProductService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the favorite products of login.
+     *
+     * @param login
+     * @return the list of favorite products.
+     */
+    List<Product> findAllFavorite(String login);
 }

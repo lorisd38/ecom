@@ -33,7 +33,7 @@
         <dt><span jhiTranslate="ecomApp.promotion.products">Products</span></dt>
         <dd>
           <span *ngFor="let products of promotion.products; let last = last">
-            <a [routerLink]="['/product', products?.id, 'view']">{{ products.id }}</a
+            <a [routerLink]="['/product', products?.id, 'view']">{{ products.name }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

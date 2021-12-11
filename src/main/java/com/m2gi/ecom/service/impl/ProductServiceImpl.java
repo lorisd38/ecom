@@ -1,10 +1,15 @@
 package com.m2gi.ecom.service.impl;
 
+import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.UserDetails;
 import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.ProductService;
+import com.m2gi.ecom.service.UserDetailsService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import liquibase.pro.packaged.P;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -91,6 +96,13 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllFromResearch(query);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findCategory(Category cat) {
+        log.debug("Request to get Products from a catgeory : (" + cat + ")");
+        return productRepository.findAllFromCategory(cat);
+    }
+
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {
         return productRepository.findAllWithEagerRelationships(pageable);
     }
@@ -106,5 +118,11 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> findAllFavorite(String login) {
+        log.debug("Request to get Favorite products with login: {}", login);
+        return productRepository.findFavoriteByLogin(login);
     }
 }

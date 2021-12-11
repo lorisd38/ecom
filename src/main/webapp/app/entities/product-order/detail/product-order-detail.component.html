@@ -25,7 +25,7 @@
         <dt><span jhiTranslate="ecomApp.productOrder.product">Product</span></dt>
         <dd>
           <div *ngIf="productOrder.product">
-            <a [routerLink]="['/product', productOrder.product?.id, 'view']">{{ productOrder.product?.id }}</a>
+            <a [routerLink]="['/product', productOrder.product?.id, 'view']">{{ productOrder.product?.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="ecomApp.productOrder.order">Order</span></dt>

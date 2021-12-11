@@ -1,0 +1,153 @@
+<div>
+  <div class="ecom-payement">
+    <div>
+      <h2 class="ecom-title-header" data-cy="OrderCreateUpdateHeading" jhiTranslate="ecomApp.payment.title">Paiement</h2>
+    </div>
+    <form class="ecom-payment-form" role="form" (ngSubmit)="generateOrder()" [formGroup]="editForm">
+      <div>
+        <div class="ecom-payment-date">
+          <label jhiTranslate="ecomApp.payment.form.order.receptionDate.label" for="field_receptionDate">Date de réception</label>
+          <div>
+            <input
+              id="field_receptionDate"
+              data-cy="receptionDate"
+              type="date"
+              class="ecom-input-default"
+              name="receptionDate"
+              formControlName="receptionDate"
+              placeholder="YYYY-MM-DD"
+            />
+            <input
+              id="field_receptionTime"
+              data-cy="receptionTime"
+              type="time"
+              class="ecom-input-default"
+              name="receptionTime"
+              formControlName="receptionTime"
+              placeholder="HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="
+              editForm.get('receptionDate')!.invalid && (editForm.get('receptionDate')!.dirty || editForm.get('receptionDate')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('receptionDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('receptionDate')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="ecom-payment-cb">
+          <label jhiTranslate="ecomApp.payment.form.cb.title" for="field_cbName">Carte bancaire</label>
+          <input
+            type="text"
+            class="ecom-input-default"
+            name="cbName"
+            id="field_cbName"
+            data-cy="cbName"
+            formControlName="cbName"
+            oninput="this.value = this.value.toUpperCase()"
+            placeholder="{{ 'ecomApp.payment.form.cb.name.placeholder' | translate }}"
+          />
+          <input
+            type="text"
+            class="ecom-input-default"
+            name="cbNumber"
+            id="field_cbNumber"
+            data-cy="cbNumber"
+            formControlName="cbNumber"
+            placeholder="{{ 'ecomApp.payment.form.cb.number.placeholder' | translate }}"
+          />
+          <div>
+            <input
+              type="text"
+              class="ecom-input-default"
+              name="cbExpirationDate"
+              id="field_cbExpirationDate"
+              data-cy="cbExpirationDate"
+              formControlName="cbExpirationDate"
+              maxlength="5"
+              placeholder="{{ 'ecomApp.payment.form.cb.expirationDate.placeholder' | translate }}"
+            />
+            <input
+              type="text"
+              class="ecom-input-default"
+              name="cbCVC"
+              id="field_cbCVC"
+              data-cy="cbCVC"
+              formControlName="cbCVC"
+              maxlength="3"
+              placeholder="{{ 'ecomApp.payment.form.cb.cvc.placeholder' | translate }}"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ecom-payment-promo-code">
+          <label jhiTranslate="ecomApp.payment.form.order.promoCode.label" for="field_promoCode">Promo Code</label>
+          <input
+            type="text"
+            class="ecom-input-default"
+            name="promoCode"
+            id="field_promoCode"
+            data-cy="promoCode"
+            formControlName="promoCode"
+            oninput="this.value = this.value.toUpperCase()"
+          />
+          <div>
+            <button
+              type="button"
+              class="ecom-button ecom-button-next"
+              (click)="applyPromoCode()"
+              [disabled]="isLoadingCart || isLoadingPromoCode || isSaving"
+            >
+              <fa-icon icon="search"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.applyPromoCode"
+                >Appliquer le code promo</span
+              >
+            </button>
+          </div>
+        </div>
+        <div>
+          <div class="ecom-payment-button">
+            <div class="ecom-payment-button-price">
+              <div>{{ 'ecomApp.payment.totalPrice' | translate }} {{ totalPrice.toFixed(2) }} €</div>
+              <div>{{ 'ecomApp.payment.totalSaved' | translate }} {{ totalSaved.toFixed(2) }} €</div>
+            </div>
+            <div class="ecom-payment-button-button">
+              <button
+                type="submit"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                class="ecom-button ecom-button-next"
+                [disabled]="editForm.invalid || isLoadingCart || isLoadingPromoCode || isSaving"
+              >
+                <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.pay">Payer</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        id="cancel-save"
+        data-cy="entityCreateCancelButton"
+        class="ecom-button ecom-button-next ecom-payement-button-clear"
+        (click)="previousState()"
+      >
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.seeCart">Panier</span>
+      </button>
+    </form>
+  </div>
+</div>

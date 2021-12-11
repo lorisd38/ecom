@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import {RouterModule, Routes} from "@angular/router";
-import {CartComponent} from "../list/cart.component";
-import {UserRouteAccessService} from "../../../core/auth/user-route-access.service";
+import { RouterModule, Routes } from '@angular/router';
+import { CartComponent } from '../display/cart.component';
+import { UserRouteAccessService } from '../../../core/auth/user-route-access.service';
 
 const cartRoute: Routes = [
   {
@@ -15,4 +15,4 @@ const cartRoute: Routes = [
   imports: [RouterModule.forChild(cartRoute)],
   exports: [RouterModule],
 })
-export class CartRoutingModule { }
+export class CartRoutingModule {}

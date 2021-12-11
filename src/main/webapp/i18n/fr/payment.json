@@ -2,7 +2,8 @@
   "ecomApp": {
     "payment": {
       "title": "Paiement",
-      "totalPrice": "Total :",
+      "totalPrice": "Total à payer :",
+      "totalSaved": "Total économisé :",
       "form": {
         "order": {
           "promoCode": {

@@ -1,6 +1,8 @@
 package com.m2gi.ecom.service.impl;
 
+import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.Order;
+import com.m2gi.ecom.repository.CartRepository;
 import com.m2gi.ecom.repository.OrderRepository;
 import com.m2gi.ecom.service.OrderService;
 import java.util.List;
@@ -20,15 +22,25 @@ public class OrderServiceImpl implements OrderService {
     private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, CartRepository cartRepository) {
         this.orderRepository = orderRepository;
+        this.cartRepository = cartRepository;
     }
 
     @Override
     public Order save(Order order) {
         log.debug("Request to save Order : {}", order);
         return orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public Order createOrder(Order order, Cart cart) {
+        log.debug("Request to create Order : {} corresponding to Cart : {}", order, cart);
+        this.cartRepository.empty(cart);
+        return this.orderRepository.save(order);
     }
 
     @Override

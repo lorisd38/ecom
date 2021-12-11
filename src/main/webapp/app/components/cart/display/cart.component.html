@@ -1,0 +1,29 @@
+<div>
+  <h2 data-cy="ProductsHeading" class="ecom-title-header">Cart</h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div *ngIf="this.cartService.cart?.lines?.length === 0">
+    <span jhiTranslate="ecomApp.cart.empty">Empty card</span>
+  </div>
+
+  <div *ngIf="this.cartService.cart && this.cartService.cart?.lines?.length !== 0">
+    <div>
+      <div id="ecom-cart-products">
+        <jhi-product-line
+          *ngFor="let lineProduct of this.cartService.cart?.lines; trackBy: trackId"
+          data-cy="entityTable"
+          [productCart]="lineProduct"
+        ></jhi-product-line>
+      </div>
+      <div class="ecom-cart-button">
+        <div>Total à payer : {{ this.cartService.total.toFixed(2) }} €</div>
+        <div class="ecom-button-see-cart">
+          <button type="submit" routerLink="/payment" class="ecom-button ecom-button-next ecom-shadow-button">Passer au paiement</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

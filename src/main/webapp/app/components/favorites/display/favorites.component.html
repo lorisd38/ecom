@@ -1,0 +1,8 @@
+<div data-cy="ProductsHeading">
+  <div>
+    <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.favorites">Favorites</h2>
+  </div>
+</div>
+
+<jhi-list-product class="ecom-favoris-grid" *ngIf="this.productService.listFavorites" [products]="this.productService.listFavorites"></jhi-list-product>
+

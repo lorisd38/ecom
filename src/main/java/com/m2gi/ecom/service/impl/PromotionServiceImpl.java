@@ -1,8 +1,10 @@
 package com.m2gi.ecom.service.impl;
 
+import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.Promotion;
 import com.m2gi.ecom.repository.PromotionRepository;
 import com.m2gi.ecom.service.PromotionService;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -80,5 +82,19 @@ public class PromotionServiceImpl implements PromotionService {
     public void delete(Long id) {
         log.debug("Request to delete Promotion : {}", id);
         promotionRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Promotion> findActiveWithEagerRelationships(Instant instant) {
+        log.debug("Request to get Promotions active at : {}", instant);
+        return promotionRepository.findActiveWithEagerRelationships(instant);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Promotion> findActiveForProduct(Instant instant, Product product) {
+        log.debug("Request to get Promotions active at : {}, for Product : {}", instant, product.getId());
+        return promotionRepository.findActiveForProduct(instant, product);
     }
 }

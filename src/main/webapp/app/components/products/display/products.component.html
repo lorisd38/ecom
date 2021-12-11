@@ -1,0 +1,23 @@
+<div class="ecom-products-and-categories">
+  <div>
+    <div data-cy="ProductsHeading">
+      <div *ngIf="this.query === undefined || this.query === ''; else elseBlock">
+        <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.home.title">Products</h2>
+      </div>
+      <ng-template #elseBlock>
+        <div class="ecom-query-header">
+          <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
+          <span>"{{ this.query }}"</span>
+        </div>
+      </ng-template>
+    </div>
+
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+
+    <jhi-list-product [products]="this.products"></jhi-list-product>
+    <div class="ecom-button-see-cart">
+      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
+    </div>
+  </div>
+</div>

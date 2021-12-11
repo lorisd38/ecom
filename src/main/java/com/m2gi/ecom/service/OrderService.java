@@ -1,5 +1,6 @@
 package com.m2gi.ecom.service;
 
+import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.Order;
 import java.util.List;
 import java.util.Optional;
@@ -9,12 +10,19 @@ import java.util.Optional;
  */
 public interface OrderService {
     /**
-     * Save a order.
+     * Save an order.
      *
      * @param order the entity to save.
      * @return the persisted entity.
      */
     Order save(Order order);
+
+    /**
+     * Create an order, empty the cart and changes the products' quantities
+     * @param order the order to create.
+     * @return the persisted entity.
+     */
+    Order createOrder(Order order, Cart cart);
 
     /**
      * Partially updates a order.

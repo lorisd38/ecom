@@ -44,7 +44,7 @@
     {
       "fieldName": "weightUnit",
       "fieldType": "WeightUnit",
-      "fieldValues": "L,ML,KG,G"
+      "fieldValues": "L,ML,KG,G,U"
     }
   ],
   "relationships": [

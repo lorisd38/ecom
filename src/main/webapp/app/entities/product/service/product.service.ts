@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IProduct, getProductIdentifier } from '../product.model';
+import { getProductIdentifier, IProduct } from '../product.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -39,6 +39,8 @@ export class ProductService {
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
+    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
+
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 

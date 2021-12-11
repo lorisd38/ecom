@@ -1,0 +1,103 @@
+<div *ngIf="product" class="ecom-product {{ this.product.quantity === 0 ? 'ecom-product-sold-out' : '' }}">
+  <div class="ecom-product-sold-out-message" *ngIf="this.product.quantity === 0">RUPTURE DE STOCK</div>
+  <div class="ecom-product-promo-band" *ngIf="this.promotionService.inPromotion(product)">
+    {{ this.promotionService.getPromotion(product) }}
+  </div>
+  <div class="ecom-product-heart">
+    <img
+      srcset="../../../content/images/{{(this.isFavorites(product))? 'heart-active': 'heart-inactive'}}.png"
+      (click)="addToFavorite(product)"
+    />
+  </div>
+  <div class="ecom-product-img">
+    <div>
+      <img
+        srcset="{{ product.imagePath }} ../../../../content/images/default-products.png"
+        alt="Image produit"
+        src="{{ product.imagePath }}"
+        onerror="this.onerror=null; this.src='../../../../content/images/default-products.png'"
+      />
+    </div>
+  </div>
+  <div class="ecom-product-price" [ngClass]="{ 'ecom-product-oldprice': this.promotionService.inPromotion(product) }">
+    <span class="ecom-product-price-integer">{{ getIntegerOfPrice(product.price) }},</span>
+    <span class="ecom-product-price-decimals">{{ getDecimalsOfPrice(product.price) }}</span>
+    <span class="ecom-product-price-euro">€</span>
+    <p *ngIf="this.promotionService.inPromotion(product)">
+      <span class="ecom-product-price-integer-promo"
+        >{{ getIntegerOfPricePromo(this.promotionService.getPromotion(product), product.price) }},</span
+      >
+      <span class="ecom-product-price-decimals-promo">{{
+        getDecimalsOfPricePromo(this.promotionService.getPromotion(product), product.price)
+      }}</span>
+      <span class="ecom-product-price-euro-promo">€</span>
+    </p>
+  </div>
+  <div class="ecom-product-price-weight" [ngClass]="{ 'ecom-product-oldprice-weight': this.promotionService.inPromotion(product) }">
+    <span>Soit : </span
+    ><span class="ecom-product-price-decimalsWeight">{{ getPriceWeightStrCard(product!) }} €/{{ getStringWeight(product) }}</span>
+    <p *ngIf="this.promotionService.inPromotion(product)">
+      <span class="ecom-product-price-decimalsWeight"
+        >{{ getPriceWeightStrCardPromo(product, this.promotionService.getPromotion(product)) }} €/{{ getStringWeight(product) }}</span
+      >
+    </p>
+  </div>
+  <div class="ecom-product-info">
+    <span
+      ><a [routerLink]="['/product', product.id, 'view']"
+        ><span>{{ product.name }}</span> - {{ product.brand }}</a
+      ></span
+    >
+    <span>{{ product.weight }} {{ product.weightUnit }}</span>
+    <div>Origine : {{ product.origin }}</div>
+  </div>
+  <div class="ecom-product-tags">
+    <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of product.tags">
+      <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
+    </span>
+  </div>
+  <div *ngIf="this.product.quantity !== 0" class="ecom-product-button">
+    <div *ngIf="!this.accountService.isAuthenticated() || !isPresent(product.id); else elseBlock">
+      <button
+        class="ecom-product-button-add ecom-button"
+        type="submit"
+        (click)="addToCart(product)"
+        data-cy="entityAddTodCartButton"
+        title="Ajouter au panier"
+      >
+        <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
+        <fa-icon icon="plus"></fa-icon>
+      </button>
+    </div>
+    <ng-template #elseBlock>
+      <div>
+        <button
+          class="ecom-product-button-minus ecom-button"
+          type="submit"
+          (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+          data-cy="entityDecreaseProductCartButton"
+          title="Diminuer la quantite"
+        >
+          <fa-icon icon="minus"></fa-icon>
+        </button>
+        <input
+          class="ecom-product-button-text"
+          type="text"
+          pattern="[0-9]*"
+          (change)="updateQuantityProductByText(product, $event)"
+          [value]="quantityProduct(product)"
+          title="Définir la quantite"
+        />
+        <button
+          class="ecom-product-button-plus ecom-button"
+          type="submit"
+          (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+          data-cy="entityIncreaseProductCartButton"
+          title="Augmenter la quantite"
+        >
+          <fa-icon icon="plus"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

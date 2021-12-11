@@ -1,6 +1,8 @@
 package com.m2gi.ecom.service;
 
+import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.Promotion;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -55,4 +57,21 @@ public interface PromotionService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get the list of active promotions at the given instant.
+     *
+     * @param instant the instant to search with.
+     * @return the list of active promotions.
+     */
+    List<Promotion> findActiveWithEagerRelationships(Instant instant);
+
+    /**
+     * Get the list of active promotions for the product at the given instant.
+     *
+     * @param instant the instant to search with.
+     * @param product the concerned product.
+     * @return the list of active promotions for the product.
+     */
+    List<Promotion> findActiveForProduct(Instant instant, Product product);
 }

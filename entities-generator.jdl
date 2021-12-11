@@ -83,7 +83,7 @@ enum ReductionType {
 }
 
 enum WeightUnit {
-  L, ML, KG, G
+  L, ML, KG, G, U
 }
 
 relationship OneToMany {

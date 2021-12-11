@@ -89,6 +89,28 @@
 
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="ecomApp.product.imagePath" for="field_imagePath">Image Path</label>
+
+          <div *ngIf="editForm.get('id')!.value != null">
+            <label><input type="file" class="text-nowrap text-truncate" (change)="selectFile($event)" /></label>
+            <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
+            <div *ngIf="currentFileUpload" class="progress mt-2">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                attr.aria-valuenow="{{ percentage }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                [ngStyle]="{ width: percentage + '%' }"
+              >
+                {{ percentage }}%
+              </div>
+            </div>
+
+            <div *ngIf="editForm.get('imagePath')!.value != null">
+              <img [src]="editForm.get('imagePath')!.value" alt="Image produit" width="128" height="128" />
+            </div>
+          </div>
+
           <input type="text" class="form-control" name="imagePath" id="field_imagePath" data-cy="imagePath" formControlName="imagePath" />
         </div>
 
@@ -128,7 +150,7 @@
               [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
-              {{ categoryOption.id }}
+              {{ categoryOption.name }}
             </option>
           </select>
         </div>
@@ -147,7 +169,7 @@
               [ngValue]="getSelectedCategory(categoryOption, editForm.get('relatedCategories')!.value)"
               *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
-              {{ categoryOption.id }}
+              {{ categoryOption.name }}
             </option>
           </select>
         </div>
@@ -159,7 +181,7 @@
               [ngValue]="getSelectedTag(tagOption, editForm.get('tags')!.value)"
               *ngFor="let tagOption of tagsSharedCollection; trackBy: trackTagById"
             >
-              {{ tagOption.id }}
+              {{ tagOption.name }}
             </option>
           </select>
         </div>
