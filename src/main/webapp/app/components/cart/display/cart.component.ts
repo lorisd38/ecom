@@ -38,4 +38,8 @@ export class CartComponent implements OnInit {
   trackId(index: number, item: IProductCart): number {
     return item.id!;
   }
+
+  previousState(): void {
+    window.history.back();
+  }
 }

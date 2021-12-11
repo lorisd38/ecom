@@ -267,6 +267,7 @@
         display="dynamic"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
+        title="Options profil"
       >
         <a class="ecom-nav-profile dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-cy="accountMenu">
           <span *ngIf="!account?.imageUrl">
@@ -277,25 +278,25 @@
           </span>
         </a>
         <ul class="dropdown-menu ecom-nav-menu" ngbDropdownMenu aria-labelledby="account-menu">
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" title="Voir/Modifier mes informations personnel">
             <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
               <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.settings">Settings</span>
             </a>
           </li>
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" title="Voir mes favoris">
             <a class="dropdown-item" data-cy="favorites" routerLink="/account/favorites">
               <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.favorites">Favorites</span>
             </a>
           </li>
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" title="Voir l'historique de mes commandes">
             <a class="dropdown-item" data-cy="history">
               <fa-icon icon="paste" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.history">History</span>
             </a>
           </li>
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" title="Modifier mon mot de passe">
             <a
               class="dropdown-item"
               routerLink="account/password"
@@ -307,13 +308,13 @@
               <span jhiTranslate="global.menu.account.password">Password</span>
             </a>
           </li>
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" title="Se déconnecter">
             <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
               <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.logout">Sign out</span>
             </a>
           </li>
-          <li *ngSwitchCase="false">
+          <li *ngSwitchCase="false" title="Se connecter">
             <a
               class="dropdown-item"
               [ngClass]="{ 'ecom-nav-signin-opened': router.url.includes('/login') }"
@@ -325,7 +326,7 @@
               <span jhiTranslate="global.menu.account.login">Sign in</span>
             </a>
           </li>
-          <li *ngSwitchCase="false">
+          <li *ngSwitchCase="false" title="Créer un compte">
             <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()" data-cy="register">
               <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.register">Register</span>
