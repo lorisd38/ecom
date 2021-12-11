@@ -78,8 +78,52 @@ export class ProductsComponent implements OnInit {
       this.promotionService.promotions = res.body;
       if (this.promotionService.promotions) {
         this.products = this.promotionService.getProductsPromotion();
+        if (this.sortBy === 'name') {
+          this.products.sort((a, b) => {
+            if (a.name! > b.name!) {
+              if (this.sortOrder === 'DESC') {
+                return -1;
+              }
+              return 1;
+            }
+            if (a.name! < b.name!) {
+              if (this.sortOrder === 'DESC') {
+                return 1;
+              }
+              return -1;
+            }
+            return 0;
+          });
+        } else if (this.sortBy === 'price') {
+          if (this.sortOrder === 'ASC') {
+            this.products.sort(
+              (a, b) =>
+                this.getPricePromo(this.promotionService.getPromotion(a), a.price) -
+                this.getPricePromo(this.promotionService.getPromotion(b), b.price)
+            );
+          } else {
+            this.products.sort(
+              (a, b) =>
+                this.getPricePromo(this.promotionService.getPromotion(b), b.price) -
+                this.getPricePromo(this.promotionService.getPromotion(a), a.price)
+            );
+          }
+        }
       }
     });
+  }
+
+  getPricePromo(promo: any, price?: number): number {
+    let res = 0;
+    const subPromo = Number(promo.substr(1, promo.length - 2));
+
+    if (promo.substr(promo.length - 1) === '%') {
+      res = price! - (price! * subPromo) / 100;
+    } else {
+      res = price! - subPromo;
+    }
+
+    return res;
   }
 
   loadCart(): void {
