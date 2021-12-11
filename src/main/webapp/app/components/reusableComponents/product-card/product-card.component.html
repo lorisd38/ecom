@@ -56,8 +56,8 @@
       <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
     </span>
   </div>
-  <div *ngIf="this.product.quantity !== 0" class="ecom-product-button">
-    <div *ngIf="!this.accountService.isAuthenticated() || !isPresent(product.id); else elseBlock">
+  <div class="ecom-product-button">
+    <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
       <button
         class="ecom-product-button-add ecom-button"
         type="submit"
@@ -82,7 +82,7 @@
         </button>
         <input
           class="ecom-product-button-text"
-          type="text"
+          type="number"
           pattern="[0-9]*"
           (change)="updateQuantityProductByText(product, $event)"
           [value]="quantityProduct(product)"
@@ -94,6 +94,7 @@
           (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
           data-cy="entityIncreaseProductCartButton"
           title="Augmenter la quantite"
+          [disabled]="this.product.quantity! <= 0"
         >
           <fa-icon icon="plus"></fa-icon>
         </button>

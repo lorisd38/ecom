@@ -65,6 +65,7 @@ export class CartService {
       if (productCartToUpdate != null) {
         this.cart!.lines?.push(productCartToUpdate);
       }
+      product.quantity! -= 1;
       this.buildCartContentMap();
       this.calcTotal();
     });
@@ -92,7 +93,9 @@ export class CartService {
         // Reload component
         if (this.cart?.lines != null) {
           const indexProductCart = this.cart.lines.indexOf(lineProduct);
+          const oldQuantity: number = this.cart.lines[indexProductCart].quantity!;
           this.cart.lines[indexProductCart].quantity = quantity;
+          product.quantity! -= quantity - oldQuantity;
           this.calcTotal();
         }
       });
@@ -107,9 +110,11 @@ export class CartService {
         if (this.cart?.lines != null) {
           const indexProductCart = this.cart.lines.indexOf(lineProduct);
           // Splice is a method to delete starting from <index> a given <number of elements>.
+          product.quantity! += this.cart.lines[indexProductCart].quantity!;
           this.cart.lines.splice(indexProductCart, 1);
           this.buildCartContentMap();
           this.calcTotal();
+          console.log(this.cart.lines);
         }
       });
     }

@@ -73,6 +73,7 @@
         (click)="this.updateQuantityProductCart(this.productCart, (this.productCart.quantity ?? 0) + 1)"
         data-cy="entityIncreaseProductCartButton"
         title="Augmenter la quantite"
+        [disabled]="this.productCart.product!.quantity! <= 0"
       >
         <fa-icon icon="plus"></fa-icon>
       </button>
