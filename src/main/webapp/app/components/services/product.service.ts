@@ -19,17 +19,30 @@ export class ProductService {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(): Observable<EntityArrayResponseType> {
-    return this.http.get<IProduct[]>(this.resourceUrl, { observe: 'response' });
-  }
-
-  querySearch(req: string): Observable<EntityArrayResponseType> {
-    const parameters = new HttpParams().set('query', req);
+  query(sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
+    const parameters = new HttpParams();
+    if (sort != null && sortType != null) {
+      parameters.append('sort', sort);
+      parameters.append('sortType', sortType);
+    }
     return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }
 
-  queryByCategory(req: string): Observable<EntityArrayResponseType> {
+  querySearch(req: string, sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
+    const parameters = new HttpParams().set('query', req);
+    if (sort != null && sortType != null) {
+      parameters.append('sort', sort);
+      parameters.append('sortType', sortType);
+    }
+    return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
+  }
+
+  queryByCategory(req: string, sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
     const parameters = new HttpParams().set('category', req);
+    if (sort != null && sortType != null) {
+      parameters.append('sort', sort);
+      parameters.append('sortType', sortType);
+    }
     return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }
 

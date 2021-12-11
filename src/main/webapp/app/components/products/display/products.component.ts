@@ -18,6 +18,8 @@ export class ProductsComponent implements OnInit {
   public query: string | null = '';
   public nbQuery: number | undefined = 0;
   private category: string | null = '';
+  private sort: string | null = '';
+  private sortType: string | null = '';
 
   constructor(
     protected productService: ProductService,
@@ -56,7 +58,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+      ? this.productService.querySearch(this.query, this.sort, this.sortType).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
           this.nbQuery = res.body?.length;
         })
@@ -65,14 +67,14 @@ export class ProductsComponent implements OnInit {
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.queryByCategory(this.category, this.sort, this.sortType).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe(res => {
+    this.promotionService.query(this.sort, this.sortType).subscribe(res => {
       this.promotionService.promotions = res.body;
       if (this.promotionService.promotions) {
         this.products = this.promotionService.getProductsPromotion();
@@ -86,5 +88,10 @@ export class ProductsComponent implements OnInit {
       this.cartService.buildCartContentMap();
       this.cartService.calcTotal();
     });
+  }
+
+  changeSort(sort: string, sortType: string): void {
+    this.sort = sort;
+    this.sortType = sortType;
   }
 }
