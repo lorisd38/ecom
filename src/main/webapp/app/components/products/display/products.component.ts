@@ -74,7 +74,7 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    this.promotionService.query(this.sort, this.sortType).subscribe(res => {
+    this.promotionService.query().subscribe(res => {
       this.promotionService.promotions = res.body;
       if (this.promotionService.promotions) {
         this.products = this.promotionService.getProductsPromotion();
