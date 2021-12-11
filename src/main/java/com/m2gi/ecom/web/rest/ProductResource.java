@@ -1,5 +1,6 @@
 package com.m2gi.ecom.web.rest;
 
+import com.m2gi.ecom.config.Constants;
 import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.UserDetails;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -157,26 +159,26 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products/")
-    public List<Product> getProducts(
+    public Page<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
         @RequestParam(name = "category", required = false) Long categoryId,
         @RequestParam(name = "numPage", required = false) int numPage
     ) {
-        Pageable pageable = PageRequest.of(numPage, 28);
+        Pageable pageable = PageRequest.of(numPage, Constants.DEFAULT_PAGE_SIZE);
         if (query != null) {
             log.debug("REST request to get Research Products for query : {}", query);
-            return productService.findResearch(query, pageable).getContent();
+            return productService.findResearch(query, pageable);
         } else if (categoryId != null) {
             log.debug("REST request to get Products for category : {}", categoryId);
             Optional<Category> cat = categoryService.findOne(categoryId);
             if (cat.isPresent()) {
-                return productService.findCategory(cat.get(), pageable).getContent();
+                return productService.findCategory(cat.get(), pageable);
             } else {
                 throw new BadRequestAlertException("Category unknown", "category", "idnotfound");
             }
         } else {
             log.debug("REST request to get all Products");
-            return productService.findAllWithEagerRelationships(pageable).getContent();
+            return productService.findAllWithEagerRelationships(pageable);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.m2gi.ecom.repository;
 
-import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
 import com.m2gi.ecom.domain.UserDetails;
@@ -17,17 +16,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(
-        value = "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags",
-        countQuery = "select count(distinct product) from Product product"
-    )
+    @Query(value = "select distinct product from Product product ", countQuery = "select count(distinct product) from Product product")
     Page<Product> findAllWithEagerRelationships(Pageable pageable);
 
     @Query("select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags")
     List<Product> findAllWithEagerRelationships();
 
     @Query(
-        value = "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags " +
+        value = "select distinct product from Product product " +
         "where(  lower(product.name)        like concat('%', :query, '%')   " +
         "or      lower(product.origin)      like concat('%', :query, '%')   " +
         "or      lower(product.brand)       like concat('%', :query, '%')  )",
@@ -46,9 +42,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select userDetails from UserDetails userDetails left join fetch userDetails.favorites where userDetails.user.login =:login")
     UserDetails getUserDetails(@Param("login") String login);
 
-    @Query(
-        value = "select product from Product product left join fetch product.relatedCategories rc left join fetch product.tags where :cat = rc",
-        countQuery = "select count(distinct product) from Product product"
-    )
+    @Query(value = "select product from Product product ", countQuery = "select count(distinct product) from Product product")
     Page<Product> findAllFromCategory(@Param("cat") Category cat, Pageable pageable);
 }

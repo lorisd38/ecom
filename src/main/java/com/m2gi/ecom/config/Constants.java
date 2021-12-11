@@ -11,5 +11,7 @@ public final class Constants {
     public static final String SYSTEM = "system";
     public static final String DEFAULT_LANGUAGE = "fr";
 
+    public static final int DEFAULT_PAGE_SIZE = 20;
+
     private Constants() {}
 }

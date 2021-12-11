@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IProduct } from '../../entities/product/product.model';
+import { Page } from '../../shared/pagination/page.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -19,27 +20,28 @@ export class ProductService {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(numPage: number): Observable<EntityArrayResponseType> {
+  query(numPage: number): Observable<HttpResponse<Page<IProduct>>> {
     const options = createRequestOption();
     options.set('numPage', numPage);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/?numPage=${numPage}`, { params: options, observe: 'response' });
+    return this.http.get<Page<IProduct>>(`${this.resourceUrl}/?numPage=${numPage}`, { params: options, observe: 'response' });
   }
 
-  querySearch(req: string, numPage: number): Observable<EntityArrayResponseType> {
+  querySearch(req: string, numPage: number): Observable<HttpResponse<Page<IProduct>>> {
+    console.log('req: ', req);
     const options = createRequestOption();
     options.set('query', req);
     options.set('numPage', numPage);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/${numPage}?query=${req.toLowerCase()}&numPage=${numPage}`, {
+    return this.http.get<Page<IProduct>>(`${this.resourceUrl}/?query=${req.toLowerCase()}&numPage=${numPage}`, {
       params: options,
       observe: 'response',
     });
   }
 
-  queryByCategory(req: string, numPage: number): Observable<EntityArrayResponseType> {
+  queryByCategory(req: string, numPage: number): Observable<HttpResponse<Page<IProduct>>> {
     const options = createRequestOption();
     options.set('category', req);
     options.set('numPage', numPage);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/${numPage}?category=${req}&numPage=${numPage}`, {
+    return this.http.get<Page<IProduct>>(`${this.resourceUrl}/?category=${req}&numPage=${numPage}`, {
       params: options,
       observe: 'response',
     });
