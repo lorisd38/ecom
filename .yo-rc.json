@@ -57,6 +57,9 @@
       "UserDetails",
       "PromotionalCode"
     ],
-    "lastLiquibaseTimestamp": 1637880152000
+    "lastLiquibaseTimestamp": 1637880152000,
+    "herokuDeployType": "jar",
+    "herokuJavaVersion": "11",
+    "herokuAppName": "still-brushlands-00406"
   }
 }
