@@ -7,7 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import {PromotionService} from "../../services/promotion.service";
+import { PromotionService } from '../../services/promotion.service';
 
 @Component({
   selector: 'jhi-products',
@@ -16,6 +16,7 @@ import {PromotionService} from "../../services/promotion.service";
 export class ProductsComponent implements OnInit {
   products?: IProduct[];
   public query: string | null = '';
+  public nbQuery: number | undefined = 0;
   private category: string | null = '';
 
   constructor(
@@ -24,7 +25,7 @@ export class ProductsComponent implements OnInit {
     public cartService: CartService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
-    private promotionService: PromotionService,
+    private promotionService: PromotionService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class ProductsComponent implements OnInit {
     this.query
       ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
+          this.nbQuery = res.body?.length;
         })
       : '';
   }
@@ -70,12 +72,12 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe((res) => {
+    this.promotionService.query().subscribe(res => {
       this.promotionService.promotions = res.body;
-      if(this.promotionService.promotions){
+      if (this.promotionService.promotions) {
         this.products = this.promotionService.getProductsPromotion();
       }
-    })
+    });
   }
 
   loadCart(): void {
