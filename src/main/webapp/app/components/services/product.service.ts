@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
@@ -19,21 +19,18 @@ export class ProductService {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<EntityArrayResponseType> {
+    return this.http.get<IProduct[]>(this.resourceUrl, { observe: 'response' });
   }
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
-
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
+    const parameters = new HttpParams().set('query', req);
+    return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }
 
   queryByCategory(req: string): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(`${this.resourceUrl}?category=${req}`, { params: options, observe: 'response' });
+    const parameters = new HttpParams().set('category', req);
+    return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }
 
   queryAddToFavorites(id: number): Observable<IProduct[]> {

@@ -31,9 +31,8 @@ export class CartService {
     this.nbItems = getTotalCartItems(this.cart);
   }
 
-  queryOneCart(req?: any): Observable<EntityResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<ICart>(this.resourceUrl, { params: options, observe: 'response' });
+  queryOneCart(): Observable<EntityResponseType> {
+    return this.http.get<ICart>(this.resourceUrl, { observe: 'response' });
   }
 
   queryAddToCart(idProduct: number): Observable<EntityResponseType> {
