@@ -1,7 +1,7 @@
 <nav data-cy="navbar" id="ecom-nav-navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
-    <span jhiTranslate="global.title" class="ecom-nav-title navbar-title">ECOM</span>
+    <span jhiTranslate="global.title" class="ecom-nav-title navbar-title">BigFood</span>
   </a>
   <a
     class="navbar-toggler d-lg-none"
@@ -284,10 +284,7 @@
             </a>
           </li>
           <li *ngSwitchCase="true">
-            <a
-              class="dropdown-item"
-              data-cy="favorites"
-              routerLink="/account/favorites">
+            <a class="dropdown-item" data-cy="favorites" routerLink="/account/favorites">
               <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.favorites">Favorites</span>
             </a>
