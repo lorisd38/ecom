@@ -118,8 +118,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllFavorite(String login, Sort sort) {
+    public List<Product> findAllFavorite(String login) {
         log.debug("Request to get Favorite products with login: {}", login);
-        return productRepository.findFavoriteByLogin(login, sort);
+        return productRepository.findFavoriteByLogin(login);
     }
 }

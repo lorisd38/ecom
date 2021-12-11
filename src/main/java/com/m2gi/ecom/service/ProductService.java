@@ -78,5 +78,5 @@ public interface ProductService {
      * @param login
      * @return the list of favorite products.
      */
-    List<Product> findAllFavorite(String login, Sort sort);
+    List<Product> findAllFavorite(String login);
 }

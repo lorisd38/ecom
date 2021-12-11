@@ -86,7 +86,6 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated product,
      * or with status {@code 400 (Bad Request)} if the product is not valid,
      * or with status {@code 500 (Internal Server Error)} if the product couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(
@@ -221,7 +220,7 @@ public class ProductResource {
     @GetMapping("/products/favorite-products")
     public List<Product> getFavoriteProductsForCurrentUser() {
         log.debug("REST request to get all Favorite Products for user {}", SecurityUtils.getCurrentUserLogin().orElseThrow());
-        return productService.findAllFavorite(SecurityUtils.getCurrentUserLogin().orElseThrow(), Sort.by(Sort.Direction.DESC, "name"));
+        return productService.findAllFavorite(SecurityUtils.getCurrentUserLogin().orElseThrow());
     }
 
     /**
