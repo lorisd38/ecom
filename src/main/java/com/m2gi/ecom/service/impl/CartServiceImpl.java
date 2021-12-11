@@ -82,6 +82,7 @@ public class CartServiceImpl implements CartService {
                 applied = true;
             } catch (VersionConflictException ignored) {}
         }
+        productCartRepository.deleteWithId(line.getId());
     }
 
     private void createLineAndUpdateProductQuantity(ProductCart line) {
