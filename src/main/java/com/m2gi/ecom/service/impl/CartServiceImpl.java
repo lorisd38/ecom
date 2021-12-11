@@ -1,8 +1,14 @@
 package com.m2gi.ecom.service.impl;
 
 import com.m2gi.ecom.domain.Cart;
+import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.repository.CartRepository;
+import com.m2gi.ecom.repository.ProductCartRepository;
+import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.CartService;
+import com.m2gi.ecom.service.errors.InsufficientQuantityException;
+import com.m2gi.ecom.service.errors.VersionConflictException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,8 +29,99 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
 
-    public CartServiceImpl(CartRepository cartRepository) {
+    private final ProductRepository productRepository;
+    private final ProductCartRepository productCartRepository;
+
+    public CartServiceImpl(
+        CartRepository cartRepository,
+        ProductRepository productRepository,
+        ProductCartRepository productCartRepository
+    ) {
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
+        this.productCartRepository = productCartRepository;
+    }
+
+    @Override
+    public ProductCart addLine(ProductCart line) {
+        boolean applied = false;
+        while (!applied) {
+            try {
+                createLineAndUpdateProductQuantity(line);
+                applied = true;
+            } catch (VersionConflictException ignored) {}
+        }
+
+        return productCartRepository.save(line);
+    }
+
+    @Override
+    public ProductCart updateLine(Long lineId, int newQuantity) {
+        final ProductCart line = productCartRepository.findById(lineId).orElseThrow();
+        final int deltaQuantity = newQuantity - line.getQuantity();
+        line.setQuantity(newQuantity);
+
+        boolean applied = false;
+        while (!applied) {
+            try {
+                updateLineAndProductQuantity(line, deltaQuantity);
+                applied = true;
+            } catch (VersionConflictException ignored) {}
+        }
+
+        return productCartRepository.save(line);
+    }
+
+    @Override
+    public void removeLine(Long lineId) {
+        final ProductCart line = productCartRepository.findById(lineId).orElseThrow();
+        boolean applied = false;
+        while (!applied) {
+            try {
+                deleteLineAndUpdateProductQuantity(line);
+                applied = true;
+            } catch (VersionConflictException ignored) {}
+        }
+    }
+
+    private void createLineAndUpdateProductQuantity(ProductCart line) {
+        final Product original = productRepository.findById(line.getProduct().getId()).orElseThrow();
+        final int newQuantity = original.getQuantity() - line.getQuantity();
+
+        if (newQuantity < 0) {
+            throw new InsufficientQuantityException();
+        }
+
+        original.setQuantity(newQuantity);
+        final Product updated = productRepository.save(original);
+        if (updated.getVersion().equals(original.getVersion() + 1)) {
+            throw new VersionConflictException();
+        }
+    }
+
+    private void updateLineAndProductQuantity(ProductCart line, int deltaQuantity) {
+        final Product original = productRepository.findById(line.getProduct().getId()).orElseThrow();
+        final int newQuantity = original.getQuantity() - deltaQuantity;
+
+        if (newQuantity < 0) {
+            throw new InsufficientQuantityException();
+        }
+
+        original.setQuantity(newQuantity);
+        final Product updated = productRepository.save(original);
+        if (updated.getVersion().equals(original.getVersion() + 1)) {
+            throw new VersionConflictException();
+        }
+    }
+
+    private void deleteLineAndUpdateProductQuantity(ProductCart line) {
+        final Product original = productRepository.findById(line.getProduct().getId()).orElseThrow();
+        final int newQuantity = original.getQuantity() + line.getQuantity();
+        original.setQuantity(newQuantity);
+        final Product updated = productRepository.save(original);
+        if (updated.getVersion().equals(original.getVersion() + 1)) {
+            throw new VersionConflictException();
+        }
     }
 
     @Override

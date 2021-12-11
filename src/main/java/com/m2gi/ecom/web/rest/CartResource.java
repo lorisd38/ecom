@@ -8,7 +8,6 @@ import com.m2gi.ecom.repository.ProductCartRepository;
 import com.m2gi.ecom.repository.UserRepository;
 import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
-import com.m2gi.ecom.service.ProductCartService;
 import com.m2gi.ecom.service.ProductService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -40,8 +39,6 @@ public class CartResource {
 
     private final CartService cartService;
 
-    private final ProductCartService productCartService;
-
     private final CartRepository cartRepository;
 
     private final ProductCartRepository productCartRepository;
@@ -53,14 +50,12 @@ public class CartResource {
     public CartResource(
         ProductService productService,
         UserRepository userRepo,
-        ProductCartService productCartService,
         ProductCartRepository productCartRepository,
         CartService cartService,
         CartRepository cartRepository
     ) {
         this.productService = productService;
         this.userRepo = userRepo;
-        this.productCartService = productCartService;
         this.productCartRepository = productCartRepository;
         this.cartService = cartService;
         this.cartRepository = cartRepository;
@@ -244,13 +239,13 @@ public class CartResource {
     public ResponseEntity<ProductCart> createProductCart(@PathVariable(value = "id") final Long idProduct) throws URISyntaxException {
         log.debug("REST request to add product to a productCart to Cart : {}", idProduct);
 
-        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         final ProductCart productCart = new ProductCart();
         productCart.setCart(user.getDetails().getCart());
-        productCart.setProduct(productService.findOne(idProduct).get());
+        productCart.setProduct(productService.findOne(idProduct).orElseThrow());
         productCart.setQuantity(1);
 
-        final ProductCart result = productCartService.save(productCart);
+        final ProductCart result = cartService.addLine(productCart);
 
         return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
@@ -269,7 +264,7 @@ public class CartResource {
         if (!productCartRepository.existsById(idProductCart)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        final ProductCart result = productCartService.updateQuantity(idProductCart, quantity);
+        final ProductCart result = cartService.updateLine(idProductCart, quantity);
         return ResponseEntity.created(new URI("/api/product-carts/" + result.getId())).body(result);
     }
 
@@ -282,7 +277,7 @@ public class CartResource {
     @DeleteMapping("/cart/products/{id}")
     public ResponseEntity<Void> deleteProductCart(@PathVariable Long id) {
         log.debug("REST request to delete ProductCart : {}", id);
-        productCartService.delete(id);
+        cartService.removeLine(id);
         return ResponseEntity.noContent().build();
     }
 }
