@@ -53,12 +53,7 @@ export class PromotionService {
     return res;
   }
 
-  query(sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
-    const parameters = new HttpParams();
-    if (sort != null && sortType != null) {
-      parameters.append('sort', sort);
-      parameters.append('sortType', sortType);
-    }
-    return this.http.get<IPromotion[]>(this.resourceUrl, { params: parameters, observe: 'response' });
+  query(): Observable<EntityArrayResponseType> {
+    return this.http.get<IPromotion[]>(this.resourceUrl, { observe: 'response' });
   }
 }
