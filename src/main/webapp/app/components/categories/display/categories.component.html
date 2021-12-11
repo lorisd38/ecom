@@ -63,7 +63,7 @@
         </div>
       </li>
     </div>
-    <div *ngFor="let cat of listCategory">
+    <div *ngFor="let cat of this.categoriesService.listCategory">
       <li
         [ngClass]="{ 'ecom-categorie-first': cat.parent == null }"
         class="ecom-categorie-withoutChild"

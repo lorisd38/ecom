@@ -8,12 +8,14 @@ import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { PromotionService } from '../../services/promotion.service';
+import {CategoriesService} from "../../services/categories.service";
 
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
 })
 export class ProductsComponent implements OnInit {
+  public title: string | undefined = 'Products';
   products?: IProduct[];
   public query: string | null = '';
   public nbQuery: number | undefined = 0;
@@ -27,7 +29,8 @@ export class ProductsComponent implements OnInit {
     public cartService: CartService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
-    private promotionService: PromotionService
+    private promotionService: PromotionService,
+    public categoriesService: CategoriesService,
   ) {}
 
   ngOnInit(): void {
@@ -36,9 +39,11 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else if (params.category !== undefined && params.category !== '') {
+        this.title = this.categoriesService.listCategory[Number(params.category)-1].name;
         this.category = params.category;
         this.loadProductCategories();
       } else {
+        this.title = 'Promotions';
         this.query = '';
         this.loadProduct();
       }
