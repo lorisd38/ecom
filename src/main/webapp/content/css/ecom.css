@@ -58,11 +58,48 @@
 /* ==============================================================
 Product card
 ===============================================================*/
-#ecom-list-products {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
+@media (min-width: 2070px) {
+  .ecom-favoris-grid #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+  }
+  #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (max-width: 2069px) and (min-width: 1770px) {
+  .ecom-favoris-grid #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+  }
+  #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (max-width: 1769px) and (min-width: 1560px) {
+  .ecom-favoris-grid #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1559px) {
+  .ecom-favoris-grid #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  #ecom-list-products {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 .ecom-product {
