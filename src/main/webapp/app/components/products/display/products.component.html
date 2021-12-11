@@ -16,10 +16,34 @@
         <fa-icon icon="sort" [fixedWidth]="true"></fa-icon>Trier
       </button>
       <ul class="ecom-sort-option" ngbDropdownMenu>
-        <li ngbDropdownItem (click)="changeSort('price', 'asc')">Prix croissant</li>
-        <li ngbDropdownItem (click)="changeSort('price', 'desc')">Prix décroissant</li>
-        <li ngbDropdownItem (click)="changeSort('name', 'asc')">Nom croissant</li>
-        <li ngbDropdownItem (click)="changeSort('name', 'desc')">Nom décroissant</li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'ASC')"
+        >
+          Nom croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'DESC')"
+        >
+          Nom décroissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'ASC')"
+        >
+          Prix croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'DESC')"
+        >
+          Prix décroissant
+        </li>
       </ul>
     </div>
 

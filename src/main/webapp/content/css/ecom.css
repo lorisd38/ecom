@@ -46,6 +46,7 @@
 
 .ecom-button-sort {
   text-align: right;
+  right: 15px;
 }
 
 .ecom-shadow-button {
@@ -373,7 +374,20 @@
   font-weight: bold;
 }
 
-.ecom-sort-option {
+.ecom-sort-option > li {
+  cursor: pointer;
+  color: #444444;
+}
+
+.ecom-sort-option > li:hover {
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+.ecom-sort-option-active {
+  background-color: var(--couleur-primaire) !important;
+  color: white !important;
+  cursor: default !important;
 }
 
 /* ==============================================================

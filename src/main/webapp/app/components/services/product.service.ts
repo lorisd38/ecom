@@ -24,19 +24,17 @@ export class ProductService {
   }
 
   querySearch(req: string, sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
-    const parameters = new HttpParams().set('query', req);
+    let parameters = new HttpParams().set('query', req);
     if (sort != null && sortType != null) {
-      parameters.append('sort', sort);
-      parameters.append('sortType', sortType);
+      parameters = parameters.set('sortBy', sort).set('sortOrder', sortType);
     }
     return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }
 
   queryByCategory(req: string, sort: string | null, sortType: string | null): Observable<EntityArrayResponseType> {
-    const parameters = new HttpParams().set('category', req);
+    let parameters = new HttpParams().set('category', req);
     if (sort != null && sortType != null) {
-      parameters.append('sort', sort);
-      parameters.append('sortType', sortType);
+      parameters = parameters.set('sortBy', sort).set('sortOrder', sortType);
     }
     return this.http.get<IProduct[]>(this.resourceUrl, { params: parameters, observe: 'response' });
   }

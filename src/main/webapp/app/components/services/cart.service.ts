@@ -3,7 +3,6 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { createRequestOption } from '../../core/request/request-util';
 import { getTotalCartItems, getTotalCartPrice, ICart } from '../../entities/cart/cart.model';
 import { IProduct } from '../../entities/product/product.model';
 import { PromotionService } from './promotion.service';

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { IPromotion } from '../../entities/promotion/promotion.model';
 import { IProduct } from '../../entities/product/product.model';
 import { Observable } from 'rxjs';
-import { createRequestOption } from '../../core/request/request-util';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
 
 export type EntityArrayResponseType = HttpResponse<IPromotion[]>;

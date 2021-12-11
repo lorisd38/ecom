@@ -157,9 +157,16 @@ public class ProductResource {
     @GetMapping("/products")
     public List<Product> getProducts(
         @RequestParam(name = "query", required = false) String query,
-        @RequestParam(name = "category", required = false) Long categoryId
+        @RequestParam(name = "category", required = false) Long categoryId,
+        @RequestParam(name = "sortBy", required = false) String sortBy,
+        @RequestParam(name = "sortOrder", required = false) Sort.Direction sortOrder
     ) {
-        final Sort sort = Sort.by(Sort.Direction.DESC, "name");
+        Sort sort;
+        if (sortBy != null && sortOrder != null) {
+            sort = Sort.by(sortOrder, sortBy);
+        } else {
+            sort = Sort.by(Sort.Direction.ASC, "name");
+        }
         if (query != null) {
             log.debug("REST request to get Research Products for query : {}", query);
             return productService.findResearch(query, sort);

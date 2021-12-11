@@ -17,9 +17,9 @@ export class ProductsComponent implements OnInit {
   products?: IProduct[];
   public query: string | null = '';
   public nbQuery: number | undefined = 0;
+  public sortBy: string | null = 'name';
+  public sortOrder: string | null = 'ASC';
   private category: string | null = '';
-  private sort: string | null = '';
-  private sortType: string | null = '';
 
   constructor(
     protected productService: ProductService,
@@ -58,7 +58,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query, this.sort, this.sortType).subscribe((res: HttpResponse<IProduct[]>) => {
+      ? this.productService.querySearch(this.query, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
           this.nbQuery = res.body?.length;
         })
@@ -67,7 +67,7 @@ export class ProductsComponent implements OnInit {
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category, this.sort, this.sortType).subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.queryByCategory(this.category, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
@@ -90,8 +90,9 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  changeSort(sort: string, sortType: string): void {
-    this.sort = sort;
-    this.sortType = sortType;
+  changeSort(sortBy: string, sortOrder: string): void {
+    this.sortBy = sortBy;
+    this.sortOrder = sortOrder;
+    this.ngOnInit();
   }
 }
