@@ -3,6 +3,16 @@
     <div>
       <h2 class="ecom-title-header" data-cy="OrderCreateUpdateHeading" jhiTranslate="ecomApp.payment.title">Paiement</h2>
     </div>
+    <div class="ecom-button-back">
+      <button
+        class="ecom-button ecom-button-next ecom-shadow-button"
+        type="submit"
+        (click)="previousState()"
+        data-cy="entityDetailsBackButton"
+      >
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+    </div>
     <form class="ecom-payment-form" role="form" (ngSubmit)="generateOrder()" [formGroup]="editForm">
       <div>
         <div class="ecom-payment-date">
@@ -139,15 +149,6 @@
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        id="cancel-save"
-        data-cy="entityCreateCancelButton"
-        class="ecom-button ecom-button-next ecom-payement-button-clear"
-        (click)="previousState()"
-      >
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="ecomApp.payment.action.seeCart">Panier</span>
-      </button>
     </form>
   </div>
 </div>

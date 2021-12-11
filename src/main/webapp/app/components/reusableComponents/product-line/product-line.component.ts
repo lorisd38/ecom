@@ -31,7 +31,9 @@ export class ProductLineComponent {
   }
 
   deleteLine(productCart: IProductCart): void {
-    this.updateQuantityProductCart(productCart, 0);
+    if (confirm("Voulez-vous supprimer l'article '".concat(productCart.product!.name!, "' de votre panier ?"))) {
+      this.updateQuantityProductCart(productCart, 0);
+    }
   }
 
   unitOfPrice(weightUnit: WeightUnit): string {
