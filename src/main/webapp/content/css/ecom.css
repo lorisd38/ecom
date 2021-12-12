@@ -870,6 +870,8 @@ Payment
   ===============================================================*/
 .ecom-products-and-categories {
   position: relative;
+  height: calc(100vh - 110px);
+  overflow-y: scroll;
 }
 
 .ecom-products-and-categories > *:last-child {
@@ -917,6 +919,8 @@ Payment
 
 .ecom-categories-list {
   padding: 30px 5px 0 10px;
+  height: calc(100vh - 90px);
+  overflow-y: scroll;
 }
 
 .ecom-categories-list > div {
