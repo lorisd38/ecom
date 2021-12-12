@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A UserDetails.
@@ -43,7 +43,7 @@ public class UserDetails implements Serializable {
     private User user;
 
     @JsonIgnoreProperties(value = { "lines", "user" }, allowSetters = true)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(unique = true)
     private Cart cart;
 
