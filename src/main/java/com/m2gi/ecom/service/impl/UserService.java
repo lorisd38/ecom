@@ -156,6 +156,7 @@ public class UserService {
         if (existingUser.isActivated()) {
             return false;
         }
+        if (existingUser.getDetails() != null) userDetailsRepository.delete(existingUser.getDetails());
         userRepository.delete(existingUser);
         userRepository.flush();
         this.clearUserCaches(existingUser);
@@ -244,6 +245,7 @@ public class UserService {
         userRepository
             .findOneByLogin(login)
             .ifPresent(user -> {
+                if (user.getDetails() != null) userDetailsRepository.delete(user.getDetails());
                 userRepository.delete(user);
                 this.clearUserCaches(user);
                 log.debug("Deleted User: {}", user);
