@@ -68,13 +68,18 @@
 /* ==============================================================
    Product card
    ===============================================================*/
+#ecom-list-products {
+  display: grid;
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+}
+
 @media (min-width: 2070px) {
   .ecom-favoris-grid #ecom-list-products {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(8, 1fr);
   }
 }
@@ -85,7 +90,6 @@
     grid-template-columns: repeat(8, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(7, 1fr);
   }
 }
@@ -96,7 +100,6 @@
     grid-template-columns: repeat(7, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(6, 1fr);
   }
 }
@@ -107,7 +110,6 @@
     grid-template-columns: repeat(6, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(5, 1fr);
   }
 }
@@ -870,8 +872,6 @@ Payment
   ===============================================================*/
 .ecom-products-and-categories {
   position: relative;
-  height: calc(100vh - 110px);
-  overflow-y: scroll;
 }
 
 .ecom-products-and-categories > *:last-child {
@@ -919,12 +919,15 @@ Payment
 
 .ecom-categories-list {
   padding: 30px 5px 0 10px;
-  height: calc(100vh - 90px);
-  overflow-y: scroll;
+}
+
+.ecom-categories-list > div > div {
+  padding-bottom: 10px;
 }
 
 .ecom-categories-list > div {
-  padding-bottom: 10px;
+  max-height: calc(100vh - 146px);
+  overflow-y: auto;
 }
 
 .ecom-categories-children {
