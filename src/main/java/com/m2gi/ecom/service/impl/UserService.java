@@ -2,8 +2,12 @@ package com.m2gi.ecom.service.impl;
 
 import com.m2gi.ecom.config.Constants;
 import com.m2gi.ecom.domain.Authority;
+import com.m2gi.ecom.domain.Cart;
 import com.m2gi.ecom.domain.User;
+import com.m2gi.ecom.domain.UserDetails;
+import com.m2gi.ecom.domain.enumeration.Role;
 import com.m2gi.ecom.repository.AuthorityRepository;
+import com.m2gi.ecom.repository.UserDetailsRepository;
 import com.m2gi.ecom.repository.UserRepository;
 import com.m2gi.ecom.security.AuthoritiesConstants;
 import com.m2gi.ecom.security.SecurityUtils;
@@ -38,6 +42,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final UserDetailsRepository userDetailsRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -46,11 +52,13 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
+        UserDetailsRepository userDetailsRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
+        this.userDetailsRepository = userDetailsRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -132,8 +140,14 @@ public class UserService {
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
+        newUser = userRepository.save(newUser);
+
         this.clearUserCaches(newUser);
+
+        final UserDetails userDetails = new UserDetails();
+        userDetails.user(newUser).cart(new Cart()).role(Role.CLIENT);
+        userDetailsRepository.save(userDetails);
+
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
