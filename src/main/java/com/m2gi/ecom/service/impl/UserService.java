@@ -191,7 +191,12 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        final UserDetails userDetails = new UserDetails();
+        userDetails.user(user).cart(new Cart()).role(Role.CLIENT);
+        userDetailsRepository.save(userDetails);
+
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
