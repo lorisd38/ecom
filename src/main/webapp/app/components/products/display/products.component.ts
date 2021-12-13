@@ -82,7 +82,7 @@ export class ProductsComponent implements OnInit {
     if (this.promotionService.getPromotions() != null) {
       this.actOnPromotions();
     } else {
-      this.promotionService.promotionsObs.subscribe(promotions => {
+      this.promotionService.promotionsObs.subscribe(() => {
         this.actOnPromotions();
       });
     }

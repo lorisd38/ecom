@@ -29,7 +29,7 @@ export class CartService {
     if (this.promotionService.getPromotions() != null) {
       this.total = getTotalCartPrice(this.cart, this.promotionService);
     } else {
-      this.promotionService.promotionsObs.subscribe(promotions => {
+      this.promotionService.promotionsObs.subscribe(() => {
         this.total = getTotalCartPrice(this.cart, this.promotionService);
       });
     }
