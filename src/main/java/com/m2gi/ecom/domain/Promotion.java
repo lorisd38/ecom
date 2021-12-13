@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Promotion.
@@ -26,7 +26,7 @@ public class Promotion implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date", nullable = false, updatable = false)
     private Instant startDate;
 
     @NotNull
@@ -34,12 +34,12 @@ public class Promotion implements Serializable {
     private Instant endDate;
 
     @NotNull
-    @Column(name = "value", precision = 21, scale = 2, nullable = false)
+    @Column(name = "value", precision = 21, scale = 2, nullable = false, updatable = false)
     private BigDecimal value;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "unit", nullable = false)
+    @Column(name = "unit", nullable = false, updatable = false)
     private ReductionType unit;
 
     @ManyToMany(fetch = FetchType.LAZY)
