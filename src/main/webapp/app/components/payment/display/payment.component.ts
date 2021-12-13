@@ -72,7 +72,13 @@ export class PaymentComponent implements OnInit {
   }
 
   calcTotal(): void {
-    this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+    if (this.promotionService.getPromotions() != null) {
+      this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+    } else {
+      this.promotionService.promotionsObs.subscribe(promotions => {
+        this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+      });
+    }
   }
 
   calcTotalSaved(): void {

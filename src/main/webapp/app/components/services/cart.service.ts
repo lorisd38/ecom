@@ -26,7 +26,13 @@ export class CartService {
   ) {}
 
   calcTotal(): void {
-    this.total = getTotalCartPrice(this.cart, this.promotionService);
+    if (this.promotionService.getPromotions() != null) {
+      this.total = getTotalCartPrice(this.cart, this.promotionService);
+    } else {
+      this.promotionService.promotionsObs.subscribe(promotions => {
+        this.total = getTotalCartPrice(this.cart, this.promotionService);
+      });
+    }
     this.nbItems = getTotalCartItems(this.cart);
   }
 
