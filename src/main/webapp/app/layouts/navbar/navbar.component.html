@@ -91,7 +91,7 @@
           <li>
             <a
               class="dropdown-item"
-              routerLink="cart"
+              routerLink="carts"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
@@ -249,9 +249,9 @@
       </li>
       <li class="nav-item">
         <a
-          [ngClass]="{ 'ecom-nav-opened': router.url === '/panier' }"
+          [ngClass]="{ 'ecom-nav-opened': router.url === '/cart' }"
           class="ecom-nav-cart panier"
-          routerLink="/panier"
+          routerLink="/cart"
           (click)="collapseNavbar()"
           title="Afficher votre panier"
         >
