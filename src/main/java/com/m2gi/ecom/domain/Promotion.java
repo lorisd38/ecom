@@ -49,9 +49,7 @@ public class Promotion implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "products_id")
     )
     @JsonIgnoreProperties(
-        value = {
-            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
-        },
+        value = { "category", "relatedCategories", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
         allowSetters = true
     )
     private Set<Product> products = new HashSet<>();

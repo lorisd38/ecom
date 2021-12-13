@@ -23,6 +23,7 @@ export class PromotionService {
     this.promotionsObs.subscribe();
     this.query().subscribe(res => {
       this.promotions = res.body ?? [];
+      console.log('Promotions', this.promotions);
       this.promotionsSubscriber?.next(this.promotions);
     });
   }
@@ -67,6 +68,6 @@ export class PromotionService {
   }
 
   private query(): Observable<EntityArrayResponseType> {
-    return this.http.get<IPromotion[]>(this.resourceUrl, { observe: 'response' });
+    return this.http.get<IPromotion[]>(`${this.resourceUrl}/active`, { observe: 'response' });
   }
 }

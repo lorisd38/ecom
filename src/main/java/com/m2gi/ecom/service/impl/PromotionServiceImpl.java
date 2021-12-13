@@ -89,7 +89,10 @@ public class PromotionServiceImpl implements PromotionService {
     @Transactional(readOnly = true)
     public List<Promotion> findActiveWithEagerRelationships(Instant instant) {
         log.debug("Request to get Promotions active at : {}", instant);
-        return promotionRepository.findActiveWithEagerRelationships(instant);
+        final List<Promotion> promotions = promotionRepository.findActiveWithEagerRelationships(instant);
+        // To force the loading of the lazily fetched product tags
+        promotions.forEach(promotion -> promotion.getProducts().forEach(product -> product.getTags().isEmpty()));
+        return promotions;
     }
 
     @Override
