@@ -21,17 +21,17 @@ export function getTotalCartPrice(cart: ICart | null | undefined, promotionServi
   if (cart?.lines != null) {
     for (const lineProduct of cart.lines) {
       if (lineProduct.quantity != null && lineProduct.product?.price != null) {
+        let productUnitPrice: number = lineProduct.product.price;
         if (promotionService.inPromotion(lineProduct.product)) {
           const promo = promotionService.getPromotion(lineProduct.product);
           const subPromo = Number(promo.substr(1, promo.length - 2));
           if (promo.substr(promo.length - 1) === '%') {
-            total += lineProduct.product.price - (lineProduct.product.price * subPromo) / 100;
+            productUnitPrice = lineProduct.product.price - (lineProduct.product.price * subPromo) / 100;
           } else {
-            total += lineProduct.product.price - subPromo;
+            productUnitPrice = lineProduct.product.price - subPromo;
           }
-        } else {
-          total += lineProduct.quantity * lineProduct.product.price;
         }
+        total += lineProduct.quantity * productUnitPrice;
       }
     }
   }

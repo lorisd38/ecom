@@ -1,9 +1,6 @@
 package com.m2gi.ecom.web.rest;
 
-import com.m2gi.ecom.domain.Cart;
-import com.m2gi.ecom.domain.Order;
-import com.m2gi.ecom.domain.ProductOrder;
-import com.m2gi.ecom.domain.PromotionalCode;
+import com.m2gi.ecom.domain.*;
 import com.m2gi.ecom.repository.OrderRepository;
 import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
@@ -12,6 +9,7 @@ import com.m2gi.ecom.service.PromotionService;
 import com.m2gi.ecom.service.PromotionalCodeService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -251,11 +249,17 @@ public class OrderResource {
             throw new BadRequestAlertException("Cart has been modified.", ENTITY_NAME, "cartmodified");
         }
 
-        if (calculateOrderPrice(order, promoCode).doubleValue() != order.getTotalPrice().doubleValue()) {
+        final List<Promotion> promotions = promotionService.findActiveForProducts(
+            Instant.now(),
+            orderLinesFromCart.stream().map(ProductOrder::getProduct).collect(Collectors.toList())
+        );
+
+        if (
+            calculateOrderPrice(order, promoCode, promotions).doubleValue() !=
+            order.getTotalPrice().setScale(2, RoundingMode.HALF_UP).doubleValue()
+        ) {
             throw new BadRequestAlertException("Incorrect order total price.", ENTITY_NAME, "wrongprice");
         }
-
-        // TODO Check if there are active promotions on the cart's products.
 
         order.paymentDate(Instant.now()).lines(orderLinesFromCart);
 
@@ -282,48 +286,53 @@ public class OrderResource {
         return true;
     }
 
-    // TODO Utiliser aussi les promotions
-    private BigDecimal calculateOrderPrice(Order order, PromotionalCode promoCode) {
+    private BigDecimal calculateOrderPrice(Order order, PromotionalCode promoCode, List<Promotion> promotions) {
         BigDecimal total = BigDecimal.ZERO;
-        if (promoCode == null) {
-            total =
-                order
-                    .getLines()
-                    .stream()
-                    .map(po -> {
-                        final BigDecimal finalUnitPrice = po.getProduct().getPrice();
-                        po.setPrice(finalUnitPrice);
-                        return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
-                    })
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        } else {
-            total =
-                total
-                    .add(
-                        order
-                            .getLines()
-                            .stream()
-                            .filter(po -> promoCode.getProducts().contains(po.getProduct()))
-                            .map(po -> {
-                                final BigDecimal finalUnitPrice = promoCode.applyTo(po.getProduct().getPrice());
-                                po.setPrice(finalUnitPrice);
-                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
-                            })
-                            .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    )
-                    .add(
-                        order
-                            .getLines()
-                            .stream()
-                            .filter(po -> !promoCode.getProducts().contains(po.getProduct()))
-                            .map(po -> {
-                                final BigDecimal finalUnitPrice = po.getProduct().getPrice();
-                                po.setPrice(finalUnitPrice);
-                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
-                            })
-                            .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    );
-        }
-        return total;
+        total =
+            total
+                .add(
+                    order
+                        .getLines()
+                        .stream()
+                        .filter(po -> promoCode != null && promoCode.getProducts().contains(po.getProduct()))
+                        .map(po -> {
+                            final Optional<Promotion> promotion = promotions
+                                .stream()
+                                .filter(p -> p.getProducts().contains(po.getProduct()))
+                                .findFirst();
+                            BigDecimal productBasePrice = po.getProduct().getPrice();
+                            if (promotion.isPresent()) {
+                                productBasePrice = promotion.get().applyTo(productBasePrice);
+                            }
+
+                            final BigDecimal finalUnitPrice = promoCode.applyTo(productBasePrice);
+                            po.setPrice(finalUnitPrice);
+                            return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                        })
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+                )
+                .add(
+                    order
+                        .getLines()
+                        .stream()
+                        .filter(po -> promoCode == null || !promoCode.getProducts().contains(po.getProduct()))
+                        .map(po -> {
+                            final Optional<Promotion> promotion = promotions
+                                .stream()
+                                .filter(p -> p.getProducts().contains(po.getProduct()))
+                                .findFirst();
+                            BigDecimal productBasePrice = po.getProduct().getPrice();
+                            if (promotion.isPresent()) {
+                                productBasePrice = promotion.get().applyTo(productBasePrice);
+                            }
+
+                            final BigDecimal finalUnitPrice = productBasePrice;
+                            po.setPrice(finalUnitPrice);
+                            return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                        })
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+                );
+
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 }

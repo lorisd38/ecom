@@ -74,4 +74,13 @@ public interface PromotionService {
      * @return the list of active promotions for the product.
      */
     List<Promotion> findActiveForProduct(Instant instant, Product product);
+
+    /**
+     * Get the list of active promotions for the products at the given instant.
+     *
+     * @param instant the instant to search with.
+     * @param products the concerned products.
+     * @return the list of active promotions for the product.
+     */
+    List<Promotion> findActiveForProducts(Instant instant, List<Product> products);
 }

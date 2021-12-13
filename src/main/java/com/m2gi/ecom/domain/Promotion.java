@@ -58,6 +58,12 @@ public class Promotion implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    public BigDecimal applyTo(BigDecimal amount) {
+        if (this.unit == ReductionType.FIX) return amount.subtract(this.value); else return amount.subtract(
+            amount.multiply(this.value.scaleByPowerOfTen(-2))
+        );
+    }
+
     public Long getId() {
         return this.id;
     }
