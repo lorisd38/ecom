@@ -8,7 +8,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { PromotionService } from '../../services/promotion.service';
-import {CategoriesService} from "../../services/categories.service";
+import { CategoriesService } from '../../services/categories.service';
 
 @Component({
   selector: 'jhi-products',
@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private promotionService: PromotionService,
-    public categoriesService: CategoriesService,
+    public categoriesService: CategoriesService
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else if (params.category !== undefined && params.category !== '') {
-        this.title = this.categoriesService.listCategory[Number(params.category)-1].name;
+        this.title = this.categoriesService.listCategory[Number(params.category) - 1].name;
         this.category = params.category;
         this.loadProductCategories();
       } else {
@@ -79,43 +79,13 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe(res => {
-      this.promotionService.promotions = res.body;
-      if (this.promotionService.promotions) {
-        this.products = this.promotionService.getProductsPromotion();
-        if (this.sortBy === 'name') {
-          this.products.sort((a, b) => {
-            if (a.name! > b.name!) {
-              if (this.sortOrder === 'DESC') {
-                return -1;
-              }
-              return 1;
-            }
-            if (a.name! < b.name!) {
-              if (this.sortOrder === 'DESC') {
-                return 1;
-              }
-              return -1;
-            }
-            return 0;
-          });
-        } else if (this.sortBy === 'price') {
-          if (this.sortOrder === 'ASC') {
-            this.products.sort(
-              (a, b) =>
-                this.getPricePromo(this.promotionService.getPromotion(a), a.price) -
-                this.getPricePromo(this.promotionService.getPromotion(b), b.price)
-            );
-          } else {
-            this.products.sort(
-              (a, b) =>
-                this.getPricePromo(this.promotionService.getPromotion(b), b.price) -
-                this.getPricePromo(this.promotionService.getPromotion(a), a.price)
-            );
-          }
-        }
-      }
-    });
+    if (this.promotionService.getPromotions() != null) {
+      this.actOnPromotions();
+    } else {
+      this.promotionService.promotionsObs.subscribe(promotions => {
+        this.actOnPromotions();
+      });
+    }
   }
 
   getPricePromo(promo: any, price?: number): number {
@@ -143,5 +113,40 @@ export class ProductsComponent implements OnInit {
     this.sortBy = sortBy;
     this.sortOrder = sortOrder;
     this.ngOnInit();
+  }
+
+  private actOnPromotions(): void {
+    this.products = this.promotionService.getProductsPromotion();
+    if (this.sortBy === 'name') {
+      this.products.sort((a, b) => {
+        if (a.name! > b.name!) {
+          if (this.sortOrder === 'DESC') {
+            return -1;
+          }
+          return 1;
+        }
+        if (a.name! < b.name!) {
+          if (this.sortOrder === 'DESC') {
+            return 1;
+          }
+          return -1;
+        }
+        return 0;
+      });
+    } else if (this.sortBy === 'price') {
+      if (this.sortOrder === 'ASC') {
+        this.products.sort(
+          (a, b) =>
+            this.getPricePromo(this.promotionService.getPromotion(a), a.price) -
+            this.getPricePromo(this.promotionService.getPromotion(b), b.price)
+        );
+      } else {
+        this.products.sort(
+          (a, b) =>
+            this.getPricePromo(this.promotionService.getPromotion(b), b.price) -
+            this.getPricePromo(this.promotionService.getPromotion(a), a.price)
+        );
+      }
+    }
   }
 }

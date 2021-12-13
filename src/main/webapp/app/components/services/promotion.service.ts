@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IPromotion } from '../../entities/promotion/promotion.model';
 import { IProduct } from '../../entities/product/product.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
 
@@ -11,11 +11,25 @@ export type EntityArrayResponseType = HttpResponse<IPromotion[]>;
   providedIn: 'root',
 })
 export class PromotionService {
-  public promotions: IPromotion[] | null = null;
+  public promotionsObs: Observable<IPromotion[]>;
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/promotions');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  private promotions: IPromotion[] | null = null;
+  private promotionsSubscriber: Subscriber<IPromotion[]> | undefined;
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {
+    this.promotionsObs = new Observable<IPromotion[]>(subscriber => (this.promotionsSubscriber = subscriber));
+    this.promotionsObs.subscribe();
+    this.query().subscribe(res => {
+      this.promotions = res.body ?? [];
+      this.promotionsSubscriber?.next(this.promotions);
+    });
+  }
+
+  public getPromotions(): IPromotion[] | null {
+    return this.promotions;
+  }
 
   public inPromotion(product: IProduct): boolean {
     const size = this.promotions?.filter(promo => promo.products?.filter(p => p.id === product.id).length !== 0).length ?? 0;
@@ -52,7 +66,7 @@ export class PromotionService {
     return res;
   }
 
-  query(): Observable<EntityArrayResponseType> {
+  private query(): Observable<EntityArrayResponseType> {
     return this.http.get<IPromotion[]>(this.resourceUrl, { observe: 'response' });
   }
 }
