@@ -42,7 +42,7 @@ public class Promotion implements Serializable {
     @Column(name = "unit", nullable = false)
     private ReductionType unit;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_promotion__products",
         joinColumns = @JoinColumn(name = "promotion_id"),
