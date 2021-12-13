@@ -9,7 +9,12 @@
     *ngIf="this.router.url === '/' || this.router.url.indexOf('/?query=') > -1 || this.router.url.indexOf('/?category=') > -1"
   ></jhi-filter>-->
   <jhi-categories
-    *ngIf="this.router.url === '/' || this.router.url.indexOf('/?query=') > -1 || this.router.url.indexOf('/?category=') > -1"
+    *ngIf="
+      this.router.url === '/' ||
+      this.router.url.indexOf('/?query=') > -1 ||
+      this.router.url.indexOf('/?category=') > -1 ||
+      this.router.url.indexOf('/?filter=') > -1
+    "
   ></jhi-categories>
   <div class="card jh-card">
     <router-outlet></router-outlet>

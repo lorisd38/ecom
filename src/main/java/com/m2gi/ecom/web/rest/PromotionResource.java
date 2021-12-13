@@ -139,9 +139,12 @@ public class PromotionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of promotions in body.
      */
     @GetMapping("/promotions")
-    public List<Promotion> getAllPromotions(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public List<Promotion> getAllPromotionsWithFilters(
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload,
+        @RequestParam(required = false) List<Long> tagsId
+    ) {
         log.debug("REST request to get all Promotions");
-        return promotionService.findAll();
+        return promotionService.findAll(tagsId);
     }
 
     /**

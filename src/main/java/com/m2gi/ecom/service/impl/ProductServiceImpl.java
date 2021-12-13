@@ -100,8 +100,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<Product> findCategory(Category cat, List<Long> tagsId) {
         log.debug("Request to get Products from a catgeory : (" + cat + ")");
-        final List<Long> ids = productRepository.findAllFromCategory(cat, tagsId);
-        return productRepository.findAllById(ids);
+        return productRepository.findAllFromCategory(cat, tagsId);
     }
 
     public Page<Product> findAllWithEagerRelationships(Pageable pageable) {

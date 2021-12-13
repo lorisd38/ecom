@@ -33,7 +33,7 @@ public interface PromotionService {
      *
      * @return the list of entities.
      */
-    List<Promotion> findAll();
+    List<Promotion> findAll(List<Long> tagsId);
 
     /**
      * Get all the promotions with eager load of many-to-many relationships.

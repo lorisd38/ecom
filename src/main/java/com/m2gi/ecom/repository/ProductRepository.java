@@ -18,19 +18,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(
-        value = "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags",
+        value = "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags where product.id in (select distinct p.id from Product p left join p.relatedCategories left join p.tags)",
         countQuery = "select count(distinct product) from Product product"
     )
     Page<Product> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags")
+    @Query(
+        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags where product.id in (select distinct p.id from Product p left join p.relatedCategories left join p.tags)"
+    )
     List<Product> findAllWithEagerRelationships();
 
     @Query(
-        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags pt " +
-        "where(  lower(product.name)        like concat('%', :query, '%')   " +
-        "or      lower(product.origin)      like concat('%', :query, '%')   " +
-        "or      lower(product.brand)       like concat('%', :query, '%')  ) and (:filter is null or pt.id in :filter)"
+        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags pt where product.id in (select p.id from Product p left join p.relatedCategories left join p.tags pt where(  lower(product.name)        like concat('%', :query, '%')   or      lower(product.origin)      like concat('%', :query, '%')  or      lower(product.brand)       like concat('%', :query, '%')  ) and ((:filter) is null or pt.id in :filter))"
     )
     List<Product> findAllFromResearch(@Param("query") String query, @Param("filter") List<Long> tagsId);
 
@@ -46,8 +45,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     UserDetails getUserDetails(@Param("login") String login);
 
     @Query(
-        "select product.id from Product product left join fetch product.relatedCategories rc left join fetch product.tags pt " +
-        " where :cat = rc and (:filter is null or pt.id in :filter) "
+        "select distinct product from Product product left join fetch product.relatedCategories left join fetch product.tags where product.id in (select p.id from Product p left join p.relatedCategories rc left join p.tags pt where :cat = rc and ((:filter) is null or pt.id in :filter)) "
     )
-    List<Long> findAllFromCategory(@Param("cat") Category cat, @Param("filter") List<Long> tagsId);
+    List<Product> findAllFromCategory(@Param("cat") Category cat, @Param("filter") List<Long> tagsId);
 }

@@ -62,9 +62,9 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Promotion> findAll() {
+    public List<Promotion> findAll(List<Long> tagsId) {
         log.debug("Request to get all Promotions");
-        return promotionRepository.findAllWithEagerRelationships();
+        return promotionRepository.findAllWithEagerRelationships(tagsId);
     }
 
     public Page<Promotion> findAllWithEagerRelationships(Pageable pageable) {

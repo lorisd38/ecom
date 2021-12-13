@@ -36,8 +36,6 @@ export class ProductsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (params.filter !== undefined && params.filter !== '') {
         this.tagsIdSelected = params.filter;
-      } else {
-        this.tagsIdSelected = [];
       }
       if (params.query !== undefined && params.query !== '') {
         this.query = params.query;
@@ -82,7 +80,7 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe(res => {
+    this.promotionService.query(this.tagsIdSelected).subscribe(res => {
       this.promotionService.promotions = res.body;
       if (this.promotionService.promotions) {
         this.listProducts = this.promotionService.getProductsPromotion();
@@ -98,19 +96,4 @@ export class ProductsComponent implements OnInit {
       this.cartService.calcTotal();
     });
   }
-
-  /* chargeTags(): void {
-    this.products?.forEach( (p) => {
-      if(this.tags == null){
-        this.tags = [];
-      }
-      this.tags = this.tags.concat(p.tags!);
-    });
-  } */
-
-  /* filter(): void{
-    this.products = this.listProducts?.filter((p) => {
-      p.tags?.some(tagChecked => this.tags?.find(t => t.id === tagChecked.id) !== undefined)
-    }) ?? [];
-  } */
 }
