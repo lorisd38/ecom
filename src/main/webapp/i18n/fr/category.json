@@ -18,10 +18,10 @@
         "title": "Category"
       },
       "id": "ID",
-      "name": "Name",
+      "name": "Nom",
       "parent": "Parent",
-      "children": "Children",
-      "associatedProducts": "Associated Products"
+      "children": "Enfant",
+      "associatedProducts": "Produits associés"
     }
   }
 }

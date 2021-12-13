@@ -2,7 +2,7 @@
   <div>
     <div data-cy="ProductsHeading">
       <div *ngIf="this.query === undefined || this.query === ''; else elseBlock">
-        <h2 class="ecom-title-header">{{this.title}}</h2>
+        <h2 class="ecom-title-header">{{ this.title }}</h2>
       </div>
       <ng-template #elseBlock>
         <div class="ecom-query-header">
@@ -52,7 +52,7 @@
 
     <jhi-list-product [products]="this.products"></jhi-list-product>
     <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
+      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/cart">Voir panier</button>
     </div>
   </div>
 </div>

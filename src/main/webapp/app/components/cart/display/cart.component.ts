@@ -5,7 +5,6 @@ import { HttpResponse } from '@angular/common/http';
 import { CartService } from '../../services/cart.service';
 
 @Component({
-  selector: 'jhi-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
