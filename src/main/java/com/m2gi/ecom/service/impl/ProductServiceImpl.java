@@ -2,10 +2,10 @@ package com.m2gi.ecom.service.impl;
 
 import com.m2gi.ecom.domain.Category;
 import com.m2gi.ecom.domain.Product;
+import com.m2gi.ecom.repository.CategoryRepository;
 import com.m2gi.ecom.repository.ProductRepository;
 import com.m2gi.ecom.service.ProductService;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,14 +25,24 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    private final CategoryRepository categoryRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public Product save(Product product) {
         log.debug("Request to save Product : {}", product);
+        product.setRelatedCategories(buildRelatedCategories(product.getCategory()));
         return productRepository.save(product);
+    }
+
+    private Set<Category> buildRelatedCategories(final Category category) {
+        if (category == null) return Collections.emptySet();
+        final Category entity = categoryRepository.findById(category.getId()).orElse(null);
+        return Category.buildRelatedCategories(entity);
     }
 
     @Override
