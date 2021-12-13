@@ -84,6 +84,10 @@ export class PromotionalCodeUpdateComponent implements OnInit {
     return option;
   }
 
+  toDatetime(val: any): dayjs.Dayjs {
+    return dayjs(val, DATE_TIME_FORMAT);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPromotionalCode>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
