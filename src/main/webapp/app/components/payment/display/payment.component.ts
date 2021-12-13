@@ -75,7 +75,7 @@ export class PaymentComponent implements OnInit {
     if (this.promotionService.getPromotions() != null) {
       this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
     } else {
-      this.promotionService.promotionsObs.subscribe(promotions => {
+      this.promotionService.promotionsObs.subscribe(() => {
         this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
       });
     }
