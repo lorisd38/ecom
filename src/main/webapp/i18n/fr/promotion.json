@@ -18,11 +18,11 @@
         "title": "Promotion"
       },
       "id": "ID",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "value": "Value",
-      "unit": "Unit",
-      "products": "Products"
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "value": "Valeur",
+      "unit": "Unité",
+      "products": "Produits"
     }
   }
 }

@@ -2,26 +2,26 @@
   "ecomApp": {
     "productOrder": {
       "home": {
-        "title": "ProductOrders",
+        "title": "Lignes de commande",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Product Order",
-        "createOrEditLabel": "Créer ou éditer un Product Order",
-        "notFound": "Aucun Product Order trouvé"
+        "createLabel": "Créer une nouvelle Ligne de commande",
+        "createOrEditLabel": "Créer ou éditer une Ligne de commande",
+        "notFound": "Aucune Ligne de commande trouvé"
       },
-      "created": "Un nouveau Product Order a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Product Order avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Product Order avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Ligne de commande a été créée avec l'identifiant {{ param }}",
+      "updated": "La Ligne de commande avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Ligne de commande avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Product Order {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Ligne de commande {{ id }} ?"
       },
       "detail": {
-        "title": "Product Order"
+        "title": "Ligne de commande"
       },
       "id": "ID",
-      "quantity": "Quantity",
-      "price": "Price",
-      "product": "Product",
-      "order": "Order"
+      "quantity": "Quantité",
+      "price": "Prix",
+      "product": "Produit",
+      "order": "Commande"
     }
   }
 }

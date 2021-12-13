@@ -2,27 +2,27 @@
   "ecomApp": {
     "order": {
       "home": {
-        "title": "Orders",
+        "title": "Commandes",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Order",
-        "createOrEditLabel": "Créer ou éditer un Order",
-        "notFound": "Aucun Order trouvé"
+        "createLabel": "Créer une nouvelle Commande",
+        "createOrEditLabel": "Créer ou éditer une Commande",
+        "notFound": "Aucune Commande trouvée"
       },
-      "created": "Un nouveau Order a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Order avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Order avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Commande a été créée avec l'identifiant {{ param }}",
+      "updated": "La Commande avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Commande avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Order {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Commande {{ id }} ?"
       },
       "detail": {
-        "title": "Order"
+        "title": "Commande"
       },
       "id": "ID",
-      "paymentDate": "Payment Date",
-      "receptionDate": "Reception Date",
-      "totalPrice": "Total Price",
+      "paymentDate": "Date de paiement",
+      "receptionDate": "Date de réception",
+      "totalPrice": "Prix total",
       "promotionalCode": "Code promo",
-      "lines": "Lines"
+      "lines": "Lignes"
     }
   }
 }

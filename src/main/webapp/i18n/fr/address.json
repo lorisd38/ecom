@@ -18,11 +18,11 @@
         "title": "Address"
       },
       "id": "ID",
-      "road": "Road",
-      "postalCode": "Postal Code",
-      "city": "City",
-      "country": "Country",
-      "additionalDetails": "Additional Details"
+      "road": "Route",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "country": "Pays",
+      "additionalDetails": "Détails supplémentaires"
     }
   }
 }

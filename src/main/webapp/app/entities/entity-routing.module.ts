@@ -25,7 +25,7 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
       },
       {
-        path: 'cart',
+        path: 'carts',
         data: { pageTitle: 'ecomApp.cart.home.title' },
         loadChildren: () => import('./cart/cart.module').then(m => m.CartModule),
       },
