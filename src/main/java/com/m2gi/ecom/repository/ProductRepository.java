@@ -45,6 +45,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select userDetails from UserDetails userDetails left join fetch userDetails.favorites where userDetails.user.login =:login")
     UserDetails getUserDetails(@Param("login") String login);
 
-    @Query("select product from Product product left join fetch product.relatedCategories rc left join fetch product.tags where :cat = rc")
+    @Query(
+        "select distinct product from Product product left join fetch product.relatedCategories rc left join fetch product.tags where :cat = rc"
+    )
     List<Product> findAllFromCategory(@Param("cat") Category cat, Sort sort);
 }
