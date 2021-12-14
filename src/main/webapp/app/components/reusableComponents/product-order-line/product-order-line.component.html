@@ -25,7 +25,24 @@
     <div
       class="ecom-productCart-prices"
       [ngClass]="{ 'ecom-productCart-oldprice': this.promotionService.inPromotion(this.productOrder.product!) }"
-    ></div>
+    >
+      <div>
+        <span>Prix unitaire : </span>
+        <span>{{ this.productOrder.product?.price | number: '0.2' }} €</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productOrder.product!)"
+          >{{ this.getPrice(this.productOrder).toFixed(2) }} €</span
+        >
+      </div>
+      <div *ngIf="this.productOrder.product!.weightUnit !== 'U'">
+        <span>Prix au {{ this.unitOfPrice(this.productOrder.product!.weightUnit!) }} :</span>
+        <span>{{ getPriceWeightStrLine(this.productOrder.product!) }} €/{{ this.getStringWeight(this.productOrder.product!) }}</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productOrder.product!)"
+          >{{ getPriceWeightStrCardPromo(this.promotionService.getPromotion(this.productOrder.product!), this.productOrder.product!) }} €/{{
+            this.getStringWeight(this.productOrder.product!)
+          }}</span
+        >
+      </div>
+    </div>
   </div>
   <div class="ecom-productCart-tags">
     <p *ngIf="this.productOrder.product?.tags?.length != 0">
@@ -36,6 +53,8 @@
     </p>
   </div>
   <div class="ecom-productcart-price">
-    <span>Prix : {{ this.productOrder.price!.toFixed(2) }} €</span>
+    <span>Quantité : {{ this.productOrder.quantity }}</span>
+    <br />
+    <span>Prix total : {{ this.productOrder.price!.toFixed(2) }} €</span>
   </div>
 </div>
