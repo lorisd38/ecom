@@ -2,7 +2,7 @@
   "ecomApp": {
     "cart": {
       "home": {
-        "title": "Panier",
+        "title": "Paniers",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un nouveau Panier",
         "createOrEditLabel": "Créer ou éditer un Panier",
