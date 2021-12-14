@@ -41,7 +41,7 @@ public interface PromotionService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Promotion> findAllWithEagerRelationships(Pageable pageable);
+    Page<Promotion> findAllWithEagerRelationships(Pageable pageable, List<Long> tagsId);
 
     /**
      * Get the "id" promotion.

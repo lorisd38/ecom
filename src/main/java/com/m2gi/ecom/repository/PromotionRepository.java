@@ -20,7 +20,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
         value = "select distinct promotion from Promotion promotion left join fetch promotion.products pc where pc.id in (select p.id from Product p left join p.relatedCategories rc left join p.tags pt where :cat = rc and ((:filter) is null or pt.id in :filter))",
         countQuery = "select count(distinct promotion) from Promotion promotion"
     )
-    Page<Promotion> findAllWithEagerRelationships(Pageable pageable);
+    Page<Promotion> findAllWithEagerRelationships(Pageable pageable, @Param("filter") List<Long> tagsId);
 
     @Query("select distinct promotion from Promotion promotion left join fetch promotion.products pc left join fetch pc.tags")
     List<Promotion> findAllWithEagerRelationships(@Param("filter") List<Long> tagsId);

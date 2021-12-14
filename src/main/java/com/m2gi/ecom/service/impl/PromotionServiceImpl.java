@@ -67,8 +67,8 @@ public class PromotionServiceImpl implements PromotionService {
         return promotionRepository.findAllWithEagerRelationships(tagsId);
     }
 
-    public Page<Promotion> findAllWithEagerRelationships(Pageable pageable) {
-        return promotionRepository.findAllWithEagerRelationships(pageable);
+    public Page<Promotion> findAllWithEagerRelationships(Pageable pageable, List<Long> tagsId) {
+        return promotionRepository.findAllWithEagerRelationships(pageable, tagsId);
     }
 
     @Override
