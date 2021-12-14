@@ -139,6 +139,11 @@
       "patternLogin": "This field can only contain letters, digits and e-mail addresses."
     }
   },
+  "confirmDialog": {
+    "title": "Do you want to proceed ?",
+    "cancel": "Cancel",
+    "continue": "Continue"
+  },
   "error": {
     "internalServerError": "Internal server error",
     "server.not.reachable": "Server not reachable",
