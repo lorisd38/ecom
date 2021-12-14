@@ -37,6 +37,7 @@
           <th scope="col"><span jhiTranslate="ecomApp.order.receptionDate">Reception Date</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.order.totalPrice">Total Price</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.order.promotionalCode">Promotional Code</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.order.user">User</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -51,6 +52,11 @@
           <td>
             <div *ngIf="order.promotionalCode">
               <a [routerLink]="['/promotional-code', order.promotionalCode?.id, 'view']">{{ order.promotionalCode?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="order.user">
+              <a [routerLink]="['/user-details', order.user?.id, 'view']">{{ order.user?.id }}</a>
             </div>
           </td>
           <td class="text-right">

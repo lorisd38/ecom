@@ -22,7 +22,8 @@
       "receptionDate": "Reception Date",
       "totalPrice": "Total Price",
       "promotionalCode": "Promo code",
-      "lines": "Lines"
+      "lines": "Lines",
+      "user": "User"
     }
   }
 }

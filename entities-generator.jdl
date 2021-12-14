@@ -93,7 +93,8 @@ enum WeightUnit {
 
 relationship OneToMany {
   Order{lines} to ProductOrder{order},
-  Cart{lines} to ProductCart{cart}
+  Cart{lines} to ProductCart{cart},
+  UserDetails{orders} to Order{user}
 }
 
 relationship ManyToOne {

@@ -12,6 +12,8 @@ import { IOrder, Order } from '../order.model';
 import { OrderService } from '../service/order.service';
 import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
 import { PromotionalCodeService } from 'app/entities/promotional-code/service/promotional-code.service';
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 
 @Component({
   selector: 'jhi-order-update',
@@ -21,6 +23,7 @@ export class OrderUpdateComponent implements OnInit {
   isSaving = false;
 
   promotionalCodesSharedCollection: IPromotionalCode[] = [];
+  userDetailsSharedCollection: IUserDetails[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -28,11 +31,13 @@ export class OrderUpdateComponent implements OnInit {
     receptionDate: [null, [Validators.required]],
     totalPrice: [null, [Validators.required]],
     promotionalCode: [],
+    user: [],
   });
 
   constructor(
     protected orderService: OrderService,
     protected promotionalCodeService: PromotionalCodeService,
+    protected userDetailsService: UserDetailsService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -69,6 +74,10 @@ export class OrderUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  trackUserDetailsById(index: number, item: IUserDetails): number {
+    return item.id!;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IOrder>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -95,11 +104,16 @@ export class OrderUpdateComponent implements OnInit {
       receptionDate: order.receptionDate ? order.receptionDate.format(DATE_TIME_FORMAT) : null,
       totalPrice: order.totalPrice,
       promotionalCode: order.promotionalCode,
+      user: order.user,
     });
 
     this.promotionalCodesSharedCollection = this.promotionalCodeService.addPromotionalCodeToCollectionIfMissing(
       this.promotionalCodesSharedCollection,
       order.promotionalCode
+    );
+    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing(
+      this.userDetailsSharedCollection,
+      order.user
     );
   }
 
@@ -113,6 +127,16 @@ export class OrderUpdateComponent implements OnInit {
         )
       )
       .subscribe((promotionalCodes: IPromotionalCode[]) => (this.promotionalCodesSharedCollection = promotionalCodes));
+
+    this.userDetailsService
+      .query()
+      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
+      .pipe(
+        map((userDetails: IUserDetails[]) =>
+          this.userDetailsService.addUserDetailsToCollectionIfMissing(userDetails, this.editForm.get('user')!.value)
+        )
+      )
+      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
   }
 
   protected createFromForm(): IOrder {
@@ -127,6 +151,7 @@ export class OrderUpdateComponent implements OnInit {
         : undefined,
       totalPrice: this.editForm.get(['totalPrice'])!.value,
       promotionalCode: this.editForm.get(['promotionalCode'])!.value,
+      user: this.editForm.get(['user'])!.value,
     };
   }
 }

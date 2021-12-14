@@ -36,13 +36,17 @@ public class Order implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "product", "order" }, allowSetters = true)
+    private Set<ProductOrder> lines = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private PromotionalCode promotionalCode;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
-    private Set<ProductOrder> lines = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "address", "user", "cart", "orders", "favorites", "preferences" }, allowSetters = true)
+    private UserDetails user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -139,6 +143,19 @@ public class Order implements Serializable {
 
     public Order promotionalCode(PromotionalCode promotionalCode) {
         this.setPromotionalCode(promotionalCode);
+        return this;
+    }
+
+    public UserDetails getUser() {
+        return this.user;
+    }
+
+    public void setUser(UserDetails userDetails) {
+        this.user = userDetails;
+    }
+
+    public Order user(UserDetails userDetails) {
+        this.setUser(userDetails);
         return this;
     }
 
