@@ -84,4 +84,11 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Request to delete Order : {}", id);
         orderRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Order> findAllByUserLogin(String login) {
+        log.debug("Request to get all Orders for User with login: {}", login);
+        return orderRepository.findAllWithEagerRelationshipsByLogin(login);
+    }
 }
