@@ -168,7 +168,9 @@ export class PaymentComponent implements OnInit {
 
     const orderLines: IProductOrder[] = [];
     for (const line of this.cart.lines!) {
-      orderLines.push(new ProductOrder(NaN, line.quantity, line.product!.price! * line.quantity!, line.product, null));
+      orderLines.push(
+        new ProductOrder(NaN, line.quantity, line.product!.price! * line.quantity!, null, null, null, null, line.product, null)
+      );
     }
 
     return orderLines;
