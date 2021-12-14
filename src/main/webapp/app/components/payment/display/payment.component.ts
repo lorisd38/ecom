@@ -73,10 +73,10 @@ export class PaymentComponent implements OnInit {
 
   calcTotal(): void {
     if (this.promotionService.getPromotions() != null) {
-      this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+      this.totalPrice = getTotalCartPrice(this.cart, this.promotionService) - this.totalSaved;
     } else {
       this.promotionService.promotionsObs.subscribe(() => {
-        this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+        this.totalPrice = getTotalCartPrice(this.cart, this.promotionService) - this.totalSaved;
       });
     }
   }
@@ -98,6 +98,7 @@ export class PaymentComponent implements OnInit {
       });
     }
     this.totalSaved = total;
+    this.calcTotal();
   }
 
   generateOrder(): void {
@@ -155,7 +156,7 @@ export class PaymentComponent implements OnInit {
             DATE_TIME_FORMAT
           )
         : undefined,
-      totalPrice: +(+this.totalPrice - +this.totalSaved).toFixed(2),
+      totalPrice: +(+this.totalPrice).toFixed(2),
       promotionalCode: this.promoCode,
       lines: this.generateOrderLinesFromCart(),
     };
