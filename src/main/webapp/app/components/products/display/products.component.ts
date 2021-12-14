@@ -9,6 +9,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { PromotionService } from '../../services/promotion.service';
 import { CategoriesService } from '../../services/categories.service';
+import { ICategory } from '../../../entities/category/category.model';
 
 @Component({
   selector: 'jhi-products',
@@ -39,8 +40,8 @@ export class ProductsComponent implements OnInit {
         this.query = params.query;
         this.loadProductSearch();
       } else if (params.category !== undefined && params.category !== '') {
-        this.title = this.categoriesService.listCategory[Number(params.category) - 1].name;
         this.category = params.category;
+        this.title = this.getCategoryName(params.category);
         this.loadProductCategories();
       } else {
         this.title = 'Promotions';
@@ -59,6 +60,25 @@ export class ProductsComponent implements OnInit {
         }
       });
     });
+  }
+
+  getCategoryName(id: string): string {
+    const toExplore: ICategory[] = [];
+    let exploredCategory: ICategory | undefined;
+    this.categoriesService.listCategory.forEach(cate => toExplore.push(cate));
+
+    while (toExplore.length > 0) {
+      exploredCategory = toExplore.pop();
+      console.log('====================================', exploredCategory?.id?.toString(), id);
+      if (exploredCategory?.id?.toString() === id) {
+        console.log('=========================ICI');
+        return exploredCategory.name ?? 'Produits';
+      }
+      if (exploredCategory?.children && exploredCategory.children.length > 0) {
+        exploredCategory.children.forEach(cate => toExplore.push(cate));
+      }
+    }
+    return 'Produits';
   }
 
   loadProductSearch(): void {
