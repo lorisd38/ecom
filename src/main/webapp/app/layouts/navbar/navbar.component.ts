@@ -74,11 +74,6 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['']);
       }
     });
-    // if (confirm('Etes-vous sur de vouloir vous deconnecter ?')) {
-    //   this.collapseNavbar();
-    //   this.loginService.logout();
-    //   this.router.navigate(['']);
-    // }
   }
 
   toggleNavbar(): void {
