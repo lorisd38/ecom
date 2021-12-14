@@ -29,6 +29,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'ecomApp.payment.home.title' },
         loadChildren: () => import('./favorites/favorites.module').then(m => m.FavoritesModule),
       },
+      {
+        path: 'orders',
+        data: { pageTitle: 'ecomApp.order.home.title' },
+        loadChildren: () => import('./order/order.module').then(m => m.OrderModule),
+      },
     ]),
   ],
 })
