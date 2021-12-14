@@ -21,7 +21,11 @@
       "quantity": "Quantité",
       "price": "Prix",
       "product": "Produit",
-      "order": "Commande"
+      "order": "Commande",
+      "promotionValue": "Valeur promotion",
+      "promotionType": "Type promotion",
+      "promoCodeValue": "Valeur code promo",
+      "promoCodeType": "Type code promo"
     }
   }
 }

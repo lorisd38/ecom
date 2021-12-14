@@ -1,6 +1,7 @@
 package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.m2gi.ecom.domain.enumeration.ReductionType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.*;
@@ -29,6 +30,20 @@ public class ProductOrder implements Serializable, Comparable<ProductOrder> {
     @NotNull
     @Column(name = "price", precision = 21, scale = 2, nullable = false)
     private BigDecimal price;
+
+    @Column(name = "promotion_value", precision = 21, scale = 2)
+    private BigDecimal promotionValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "promotion_type")
+    private ReductionType promotionType;
+
+    @Column(name = "promo_code_value", precision = 21, scale = 2)
+    private BigDecimal promoCodeValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "promo_code_type")
+    private ReductionType promoCodeType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
@@ -89,6 +104,58 @@ public class ProductOrder implements Serializable, Comparable<ProductOrder> {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getPromotionValue() {
+        return this.promotionValue;
+    }
+
+    public ProductOrder promotionValue(BigDecimal promotionValue) {
+        this.setPromotionValue(promotionValue);
+        return this;
+    }
+
+    public void setPromotionValue(BigDecimal promotionValue) {
+        this.promotionValue = promotionValue;
+    }
+
+    public ReductionType getPromotionType() {
+        return this.promotionType;
+    }
+
+    public ProductOrder promotionType(ReductionType promotionType) {
+        this.setPromotionType(promotionType);
+        return this;
+    }
+
+    public void setPromotionType(ReductionType promotionType) {
+        this.promotionType = promotionType;
+    }
+
+    public BigDecimal getPromoCodeValue() {
+        return this.promoCodeValue;
+    }
+
+    public ProductOrder promoCodeValue(BigDecimal promoCodeValue) {
+        this.setPromoCodeValue(promoCodeValue);
+        return this;
+    }
+
+    public void setPromoCodeValue(BigDecimal promoCodeValue) {
+        this.promoCodeValue = promoCodeValue;
+    }
+
+    public ReductionType getPromoCodeType() {
+        return this.promoCodeType;
+    }
+
+    public ProductOrder promoCodeType(ReductionType promoCodeType) {
+        this.setPromoCodeType(promoCodeType);
+        return this;
+    }
+
+    public void setPromoCodeType(ReductionType promoCodeType) {
+        this.promoCodeType = promoCodeType;
     }
 
     public Product getProduct() {

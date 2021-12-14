@@ -20,6 +20,18 @@
             <column name="price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
+            <column name="promotion_value" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="promotion_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="promo_code_value" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="promo_code_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="product_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -49,6 +61,10 @@
             <column name="id" type="numeric"/>
             <column name="quantity" type="numeric"/>
             <column name="price" type="numeric"/>
+            <column name="promotion_value" type="numeric"/>
+            <column name="promotion_type" type="string"/>
+            <column name="promo_code_value" type="numeric"/>
+            <column name="promo_code_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -44,6 +44,18 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 if (productOrder.getPrice() != null) {
                     existingProductOrder.setPrice(productOrder.getPrice());
                 }
+                if (productOrder.getPromotionValue() != null) {
+                    existingProductOrder.setPromotionValue(productOrder.getPromotionValue());
+                }
+                if (productOrder.getPromotionType() != null) {
+                    existingProductOrder.setPromotionType(productOrder.getPromotionType());
+                }
+                if (productOrder.getPromoCodeValue() != null) {
+                    existingProductOrder.setPromoCodeValue(productOrder.getPromoCodeValue());
+                }
+                if (productOrder.getPromoCodeType() != null) {
+                    existingProductOrder.setPromoCodeType(productOrder.getPromoCodeType());
+                }
 
                 return existingProductOrder;
             })

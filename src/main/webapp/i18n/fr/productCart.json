@@ -20,7 +20,8 @@
       "id": "ID",
       "quantity": "Quantité",
       "product": "Produit",
-      "cart": "Panier"
+      "cart": "Panier",
+      "creationDatetime": "Date de création"
     }
   }
 }

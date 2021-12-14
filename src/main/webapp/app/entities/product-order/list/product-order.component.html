@@ -35,6 +35,10 @@
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.quantity">Quantity</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.price">Price</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productOrder.promotionValue">Promotion Value</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productOrder.promotionType">Promotion Type</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productOrder.promoCodeValue">Promo Code Value</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productOrder.promoCodeType">Promo Code Type</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.product">Product</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productOrder.order">Order</span></th>
           <th scope="col"></th>
@@ -47,6 +51,10 @@
           </td>
           <td>{{ productOrder.quantity }}</td>
           <td>{{ productOrder.price }}</td>
+          <td>{{ productOrder.promotionValue }}</td>
+          <td jhiTranslate="{{ 'ecomApp.ReductionType.' + productOrder.promotionType }}">{{ productOrder.promotionType }}</td>
+          <td>{{ productOrder.promoCodeValue }}</td>
+          <td jhiTranslate="{{ 'ecomApp.ReductionType.' + productOrder.promoCodeType }}">{{ productOrder.promoCodeType }}</td>
           <td>
             <div *ngIf="productOrder.product">
               <a [routerLink]="['/product', productOrder.product?.id, 'view']">{{ productOrder.product?.name }}</a>

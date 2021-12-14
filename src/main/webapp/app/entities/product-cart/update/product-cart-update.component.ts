@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
+import * as dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+
 import { IProductCart, ProductCart } from '../product-cart.model';
 import { ProductCartService } from '../service/product-cart.service';
 import { IProduct } from 'app/entities/product/product.model';
@@ -25,6 +28,7 @@ export class ProductCartUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     quantity: [null, [Validators.required, Validators.min(1)]],
+    creationDatetime: [null, [Validators.required]],
     product: [],
     cart: [],
   });
@@ -39,6 +43,11 @@ export class ProductCartUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ productCart }) => {
+      if (productCart.id === undefined) {
+        const today = dayjs().startOf('day');
+        productCart.creationDatetime = today;
+      }
+
       this.updateForm(productCart);
 
       this.loadRelationshipsOptions();
@@ -90,6 +99,7 @@ export class ProductCartUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: productCart.id,
       quantity: productCart.quantity,
+      creationDatetime: productCart.creationDatetime ? productCart.creationDatetime.format(DATE_TIME_FORMAT) : null,
       product: productCart.product,
       cart: productCart.cart,
     });
@@ -119,6 +129,9 @@ export class ProductCartUpdateComponent implements OnInit {
       ...new ProductCart(),
       id: this.editForm.get(['id'])!.value,
       quantity: this.editForm.get(['quantity'])!.value,
+      creationDatetime: this.editForm.get(['creationDatetime'])!.value
+        ? dayjs(this.editForm.get(['creationDatetime'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       product: this.editForm.get(['product'])!.value,
       cart: this.editForm.get(['cart'])!.value,
     };
