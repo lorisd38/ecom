@@ -27,10 +27,10 @@ export class CartService {
 
   calcTotal(): void {
     if (this.promotionService.getPromotions() != null) {
-      this.total = getTotalCartPrice(this.cart, this.promotionService);
+      this.total = getTotalCartPrice(this.cart, this.promotionService)[0];
     } else {
       this.promotionService.promotionsObs.subscribe(() => {
-        this.total = getTotalCartPrice(this.cart, this.promotionService);
+        this.total = getTotalCartPrice(this.cart, this.promotionService)[0];
       });
     }
     this.nbItems = getTotalCartItems(this.cart);

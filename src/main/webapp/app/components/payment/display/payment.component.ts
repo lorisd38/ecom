@@ -23,6 +23,7 @@ export class PaymentComponent implements OnInit {
   promoCode?: IPromotionalCode | null;
   totalPrice = 0;
   totalSaved = 0;
+  promoCodeSavings = 0;
   codeUsed = '';
   isLoadingCart = true;
   isLoadingPromoCode = false;
@@ -73,17 +74,21 @@ export class PaymentComponent implements OnInit {
 
   calcTotal(): void {
     if (this.promotionService.getPromotions() != null) {
-      this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+      const results: number[] = getTotalCartPrice(this.cart, this.promotionService);
+      this.totalSaved = results[1] + this.promoCodeSavings;
+      this.totalPrice = results[0] - this.promoCodeSavings;
     } else {
       this.promotionService.promotionsObs.subscribe(() => {
-        this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+        const results: number[] = getTotalCartPrice(this.cart, this.promotionService);
+        this.totalSaved = results[1] + this.promoCodeSavings;
+        this.totalPrice = results[0] - this.promoCodeSavings;
       });
     }
   }
 
   calcTotalSaved(): void {
     if (this.promoCode == null || this.cart == null) {
-      this.totalSaved = 0;
+      this.promoCodeSavings = 0;
       return;
     }
     let total = 0;
@@ -97,7 +102,8 @@ export class PaymentComponent implements OnInit {
         total += p.price! * percentage * getProductQuantity(this.cart, p.id!);
       });
     }
-    this.totalSaved = total;
+    this.promoCodeSavings = total;
+    this.calcTotal();
   }
 
   generateOrder(): void {
@@ -155,7 +161,7 @@ export class PaymentComponent implements OnInit {
             DATE_TIME_FORMAT
           )
         : undefined,
-      totalPrice: +(+this.totalPrice - +this.totalSaved).toFixed(2),
+      totalPrice: +(+this.totalPrice).toFixed(2),
       promotionalCode: this.promoCode,
       lines: this.generateOrderLinesFromCart(),
     };

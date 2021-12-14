@@ -16,8 +16,9 @@ export function getCartIdentifier(cart: ICart): number | undefined {
   return cart.id;
 }
 
-export function getTotalCartPrice(cart: ICart | null | undefined, promotionService: PromotionService): number {
+export function getTotalCartPrice(cart: ICart | null | undefined, promotionService: PromotionService): [number, number] {
   let total = 0.0;
+  let totalSaved = 0.0;
   if (cart?.lines != null) {
     for (const lineProduct of cart.lines) {
       if (lineProduct.quantity != null && lineProduct.product?.price != null) {
@@ -31,11 +32,12 @@ export function getTotalCartPrice(cart: ICart | null | undefined, promotionServi
             productUnitPrice = lineProduct.product.price - subPromo;
           }
         }
+        totalSaved += (lineProduct.product.price - productUnitPrice) * lineProduct.quantity;
         total += lineProduct.quantity * productUnitPrice;
       }
     }
   }
-  return total;
+  return [total, totalSaved];
 }
 
 export function getTotalCartItems(cart: ICart | null | undefined): number {
