@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { ReductionType } from 'app/entities/enumerations/reduction-type.model';
 import { IProductOrder, ProductOrder } from '../product-order.model';
 
 import { ProductOrderService } from './product-order.service';
@@ -23,6 +24,10 @@ describe('ProductOrder Service', () => {
       id: 0,
       quantity: 0,
       price: 0,
+      promotionValue: 0,
+      promotionType: ReductionType.FIX,
+      promoCodeValue: 0,
+      promoCodeType: ReductionType.FIX,
     };
   });
 
@@ -60,6 +65,10 @@ describe('ProductOrder Service', () => {
           id: 1,
           quantity: 1,
           price: 1,
+          promotionValue: 1,
+          promotionType: 'BBBBBB',
+          promoCodeValue: 1,
+          promoCodeType: 'BBBBBB',
         },
         elemDefault
       );
@@ -77,6 +86,9 @@ describe('ProductOrder Service', () => {
       const patchObject = Object.assign(
         {
           price: 1,
+          promotionValue: 1,
+          promotionType: 'BBBBBB',
+          promoCodeValue: 1,
         },
         new ProductOrder()
       );
@@ -98,6 +110,10 @@ describe('ProductOrder Service', () => {
           id: 1,
           quantity: 1,
           price: 1,
+          promotionValue: 1,
+          promotionType: 'BBBBBB',
+          promoCodeValue: 1,
+          promoCodeType: 'BBBBBB',
         },
         elemDefault
       );
@@ -149,7 +165,7 @@ describe('ProductOrder Service', () => {
       });
 
       it('should add only unique ProductOrder to an array', () => {
-        const productOrderArray: IProductOrder[] = [{ id: 123 }, { id: 456 }, { id: 54083 }];
+        const productOrderArray: IProductOrder[] = [{ id: 123 }, { id: 456 }, { id: 5575 }];
         const productOrderCollection: IProductOrder[] = [{ id: 123 }];
         expectedResult = service.addProductOrderToCollectionIfMissing(productOrderCollection, ...productOrderArray);
         expect(expectedResult).toHaveLength(3);

@@ -73,6 +73,10 @@ class ProductOrderGatlingTest extends Simulation {
             .body(StringBody("""{
                 "quantity":"0"
                 , "price":"0"
+                , "promotionValue":"0"
+                , "promotionType":"FIX"
+                , "promoCodeValue":"0"
+                , "promoCodeType":"FIX"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_productOrder_url"))).exitHereIfFailed

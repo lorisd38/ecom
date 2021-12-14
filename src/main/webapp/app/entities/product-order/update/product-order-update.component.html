@@ -60,6 +60,70 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.productOrder.promotionValue" for="field_promotionValue"
+            >Promotion Value</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="promotionValue"
+            id="field_promotionValue"
+            data-cy="promotionValue"
+            formControlName="promotionValue"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.productOrder.promotionType" for="field_promotionType"
+            >Promotion Type</label
+          >
+          <select
+            class="form-control"
+            name="promotionType"
+            formControlName="promotionType"
+            id="field_promotionType"
+            data-cy="promotionType"
+          >
+            <option [ngValue]="null">{{ 'ecomApp.ReductionType.null' | translate }}</option>
+            <option *ngFor="let reductionType of reductionTypeValues" [value]="reductionType">
+              {{ 'ecomApp.ReductionType.' + reductionType | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.productOrder.promoCodeValue" for="field_promoCodeValue"
+            >Promo Code Value</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="promoCodeValue"
+            id="field_promoCodeValue"
+            data-cy="promoCodeValue"
+            formControlName="promoCodeValue"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.productOrder.promoCodeType" for="field_promoCodeType"
+            >Promo Code Type</label
+          >
+          <select
+            class="form-control"
+            name="promoCodeType"
+            formControlName="promoCodeType"
+            id="field_promoCodeType"
+            data-cy="promoCodeType"
+          >
+            <option [ngValue]="null">{{ 'ecomApp.ReductionType.null' | translate }}</option>
+            <option *ngFor="let reductionType of reductionTypeValues" [value]="reductionType">
+              {{ 'ecomApp.ReductionType.' + reductionType | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="ecomApp.productOrder.product" for="field_product">Product</label>
           <select class="form-control" id="field_product" data-cy="product" name="product" formControlName="product">
             <option [ngValue]="null"></option>

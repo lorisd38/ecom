@@ -2,6 +2,7 @@ package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.Instant;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -24,6 +25,10 @@ public class ProductCart implements Serializable {
     @Min(value = 1)
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    @NotNull
+    @Column(name = "creation_datetime", nullable = false)
+    private Instant creationDatetime;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
@@ -62,6 +67,19 @@ public class ProductCart implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Instant getCreationDatetime() {
+        return this.creationDatetime;
+    }
+
+    public ProductCart creationDatetime(Instant creationDatetime) {
+        this.setCreationDatetime(creationDatetime);
+        return this;
+    }
+
+    public void setCreationDatetime(Instant creationDatetime) {
+        this.creationDatetime = creationDatetime;
     }
 
     public Product getProduct() {
@@ -115,6 +133,7 @@ public class ProductCart implements Serializable {
         return "ProductCart{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
+            ", creationDatetime='" + getCreationDatetime() + "'" +
             "}";
     }
 }

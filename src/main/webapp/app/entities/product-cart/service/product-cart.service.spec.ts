@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import * as dayjs from 'dayjs';
 
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IProductCart, ProductCart } from '../product-cart.model';
 
 import { ProductCartService } from './product-cart.service';
@@ -10,6 +12,7 @@ describe('ProductCart Service', () => {
   let httpMock: HttpTestingController;
   let elemDefault: IProductCart;
   let expectedResult: IProductCart | IProductCart[] | boolean | null;
+  let currentDate: dayjs.Dayjs;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,16 +21,23 @@ describe('ProductCart Service', () => {
     expectedResult = null;
     service = TestBed.inject(ProductCartService);
     httpMock = TestBed.inject(HttpTestingController);
+    currentDate = dayjs();
 
     elemDefault = {
       id: 0,
       quantity: 0,
+      creationDatetime: currentDate,
     };
   });
 
   describe('Service methods', () => {
     it('should find an element', () => {
-      const returnedFromService = Object.assign({}, elemDefault);
+      const returnedFromService = Object.assign(
+        {
+          creationDatetime: currentDate.format(DATE_TIME_FORMAT),
+        },
+        elemDefault
+      );
 
       service.find(123).subscribe(resp => (expectedResult = resp.body));
 
@@ -40,11 +50,17 @@ describe('ProductCart Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 0,
+          creationDatetime: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
 
-      const expected = Object.assign({}, returnedFromService);
+      const expected = Object.assign(
+        {
+          creationDatetime: currentDate,
+        },
+        returnedFromService
+      );
 
       service.create(new ProductCart()).subscribe(resp => (expectedResult = resp.body));
 
@@ -58,11 +74,17 @@ describe('ProductCart Service', () => {
         {
           id: 1,
           quantity: 1,
+          creationDatetime: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
 
-      const expected = Object.assign({}, returnedFromService);
+      const expected = Object.assign(
+        {
+          creationDatetime: currentDate,
+        },
+        returnedFromService
+      );
 
       service.update(expected).subscribe(resp => (expectedResult = resp.body));
 
@@ -76,7 +98,12 @@ describe('ProductCart Service', () => {
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
-      const expected = Object.assign({}, returnedFromService);
+      const expected = Object.assign(
+        {
+          creationDatetime: currentDate,
+        },
+        returnedFromService
+      );
 
       service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
@@ -90,11 +117,17 @@ describe('ProductCart Service', () => {
         {
           id: 1,
           quantity: 1,
+          creationDatetime: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
 
-      const expected = Object.assign({}, returnedFromService);
+      const expected = Object.assign(
+        {
+          creationDatetime: currentDate,
+        },
+        returnedFromService
+      );
 
       service.query().subscribe(resp => (expectedResult = resp.body));
 
@@ -141,7 +174,7 @@ describe('ProductCart Service', () => {
       });
 
       it('should add only unique ProductCart to an array', () => {
-        const productCartArray: IProductCart[] = [{ id: 123 }, { id: 456 }, { id: 17244 }];
+        const productCartArray: IProductCart[] = [{ id: 123 }, { id: 456 }, { id: 91648 }];
         const productCartCollection: IProductCart[] = [{ id: 123 }];
         expectedResult = service.addProductCartToCollectionIfMissing(productCartCollection, ...productCartArray);
         expect(expectedResult).toHaveLength(3);

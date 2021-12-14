@@ -47,6 +47,9 @@ public class ProductCartServiceImpl implements ProductCartService {
                 if (productCart.getQuantity() != null) {
                     existingProductCart.setQuantity(productCart.getQuantity());
                 }
+                if (productCart.getCreationDatetime() != null) {
+                    existingProductCart.setCreationDatetime(productCart.getCreationDatetime());
+                }
 
                 return existingProductCart;
             })

@@ -43,6 +43,44 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="ecomApp.productCart.creationDatetime" for="field_creationDatetime"
+            >Creation Datetime</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_creationDatetime"
+              data-cy="creationDatetime"
+              type="datetime-local"
+              class="form-control"
+              name="creationDatetime"
+              formControlName="creationDatetime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="
+              editForm.get('creationDatetime')!.invalid &&
+              (editForm.get('creationDatetime')!.dirty || editForm.get('creationDatetime')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('creationDatetime')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('creationDatetime')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="ecomApp.productCart.product" for="field_product">Product</label>
           <select class="form-control" id="field_product" data-cy="product" name="product" formControlName="product">
             <option [ngValue]="null"></option>
