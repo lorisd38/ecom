@@ -23,7 +23,6 @@ export class PromotionService {
     this.promotionsObs.subscribe();
     this.query().subscribe(res => {
       this.promotions = res.body ?? [];
-      console.log('Promotions', this.promotions);
       this.promotionsSubscriber?.next(this.promotions);
     });
   }
