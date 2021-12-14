@@ -184,7 +184,7 @@ public class OrderResource {
     public List<Order> getOrdersForUser() {
         final String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
         log.debug("REST request to get Order for User : {}", login);
-        return orderService.findAll();
+        return orderService.findAllByUserLogin(login);
     }
 
     /**
@@ -266,7 +266,7 @@ public class OrderResource {
             orderLinesFromCart.stream().map(ProductOrder::getProduct).collect(Collectors.toList())
         );
 
-        order.paymentDate(Instant.now()).lines(orderLinesFromCart);
+        order.user(cart.getUser()).paymentDate(Instant.now()).lines(orderLinesFromCart);
 
         if (
             calculateOrderPrice(order, promoCode, promotions).doubleValue() !=

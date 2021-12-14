@@ -19,7 +19,6 @@ export class CategoriesComponent implements OnInit {
   loadAll(): void {
     this.categoriesService.query().subscribe((res: HttpResponse<ICategory[]>) => {
       this.categoriesService.listCategory = res.body ?? [];
-      console.log('1', this.categoriesService.listCategory);
     });
   }
 

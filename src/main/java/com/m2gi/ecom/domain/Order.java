@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 /**
  * A Order.
  */
-@Entity
+@Entity(name = "Jhi_Order")
 @Table(name = "jhi_order")
 public class Order implements Serializable {
 
@@ -37,7 +37,7 @@ public class Order implements Serializable {
     private BigDecimal totalPrice;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "product", "order" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
     private Set<ProductOrder> lines = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

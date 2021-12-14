@@ -120,14 +120,9 @@ export class ProductUpdateComponent implements OnInit {
       if (file) {
         this.currentFileUpload = new FileUpload(file, 'products', this.editForm.get('id')?.value);
         const observables = this.uploadService.pushFileToStorage(this.currentFileUpload);
-        observables[0].subscribe(
-          percentage => {
-            this.percentage = Math.round(percentage ? percentage : 0);
-          },
-          error => {
-            console.log(error);
-          }
-        );
+        observables[0].subscribe(percentage => {
+          this.percentage = Math.round(percentage ? percentage : 0);
+        });
         observables[1].subscribe(filePath =>
           this.editForm.patchValue({
             imagePath: filePath,

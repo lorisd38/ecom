@@ -13,6 +13,10 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("select jhi_order from Order jhi_order left join fetch jhi_order.lines ")
+    @Query(
+        "select distinct jhi_order from Jhi_Order jhi_order left join fetch jhi_order.lines where " +
+        " jhi_order.user.user.login =:login " +
+        " order by jhi_order.paymentDate desc"
+    )
     List<Order> findAllWithEagerRelationshipsByLogin(@Param("login") String login);
 }
