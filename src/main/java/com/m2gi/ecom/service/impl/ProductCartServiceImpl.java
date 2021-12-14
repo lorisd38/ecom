@@ -3,12 +3,15 @@ package com.m2gi.ecom.service.impl;
 import com.m2gi.ecom.domain.ProductCart;
 import com.m2gi.ecom.repository.ProductCartRepository;
 import com.m2gi.ecom.service.ProductCartService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,5 +87,20 @@ public class ProductCartServiceImpl implements ProductCartService {
         final ProductCart result = productCartRepository.findById(id).get();
         result.setQuantity(quantity);
         return productCartRepository.save(result);
+    }
+
+    /**
+     * Not bought products should be automatically deleted after 3 days.
+     * <p>
+     * This is scheduled to get fired everyday, at 01:00 (am).
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void removeNotBoughtProducts() {
+        productCartRepository
+            .findAllByCreationDatetimeBefore(Instant.now().minus(3, ChronoUnit.DAYS))
+            .forEach(productCart -> {
+                log.debug("Deleting ProductCart after 3 days: {}", productCart);
+                productCartRepository.deleteWithId(productCart.getId());
+            });
     }
 }
