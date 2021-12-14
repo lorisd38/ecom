@@ -118,7 +118,6 @@ export class CartService {
           this.cart.lines.splice(indexProductCart, 1);
           this.buildCartContentMap();
           this.calcTotal();
-          console.log(this.cart.lines);
         }
       });
     }

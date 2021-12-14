@@ -25,7 +25,8 @@
       "user": "Utilisateur",
       "cart": "Panier",
       "favorites": "Favories",
-      "preferences": "Préférences"
+      "preferences": "Préférences",
+      "orders": "Commandes"
     }
   }
 }

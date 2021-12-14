@@ -69,9 +69,7 @@ export class ProductsComponent implements OnInit {
 
     while (toExplore.length > 0) {
       exploredCategory = toExplore.pop();
-      console.log('====================================', exploredCategory?.id?.toString(), id);
       if (exploredCategory?.id?.toString() === id) {
-        console.log('=========================ICI');
         return exploredCategory.name ?? 'Produits';
       }
       if (exploredCategory?.children && exploredCategory.children.length > 0) {

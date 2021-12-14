@@ -13,6 +13,7 @@ import { IPromotionalCode } from '../../../entities/promotional-code/promotional
 import { ReductionType } from '../../../entities/enumerations/reduction-type.model';
 import { IProductOrder, ProductOrder } from '../../../entities/product-order/product-order.model';
 import { PromotionService } from '../../services/promotion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-payment',
@@ -44,6 +45,7 @@ export class PaymentComponent implements OnInit {
     protected cartService: CartService,
     protected modalService: NgbModal,
     public promotionService: PromotionService,
+    public router: Router,
     private fb: FormBuilder
   ) {}
 
@@ -109,17 +111,13 @@ export class PaymentComponent implements OnInit {
   generateOrder(): void {
     this.isSaving = true;
     const order = this.createFromForm();
-    console.log('Generated order', order);
     this.paymentService.create(order).subscribe(
       res => {
         this.isSaving = false;
-        const savedOrder: IOrder | null = res.body ?? null;
-        console.log('Received order', savedOrder);
-        // TODO Rediriger vers la page "Historique des commandes".
-        window.history.go(-2);
+        this.cartService.calcTotal();
+        this.router.navigate(['/orders']);
       },
       err => {
-        console.log('Error :', err);
         this.isSaving = false;
       }
     );
@@ -134,11 +132,9 @@ export class PaymentComponent implements OnInit {
       (res: HttpResponse<IPromotionalCode>) => {
         this.isLoadingPromoCode = false;
         this.promoCode = res.body ?? null;
-        console.log(this.promoCode);
         this.calcTotalSaved();
       },
       err => {
-        console.log('Error :', err);
         this.isLoadingPromoCode = false;
         // TODO Afficher une alerte indiquant que le tag est invalide.
       }

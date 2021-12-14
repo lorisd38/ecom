@@ -29,6 +29,12 @@
       "otherEntityName": "promotionalCode",
       "otherEntityRelationshipName": "order",
       "relationshipName": "promotionalCode"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "user"
     }
   ],
   "entityTableName": "jhi_order",

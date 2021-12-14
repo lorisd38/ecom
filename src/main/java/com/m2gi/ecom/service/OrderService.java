@@ -40,6 +40,13 @@ public interface OrderService {
     List<Order> findAll();
 
     /**
+     * Get all the orders.
+     * @param login the user's login
+     * @return the list of entities.
+     */
+    List<Order> findAllByUserLogin(String login);
+
+    /**
      * Get the "id" order.
      *
      * @param id the id of the entity.

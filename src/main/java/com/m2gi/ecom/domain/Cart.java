@@ -25,7 +25,7 @@ public class Cart implements Serializable {
     @JsonIgnoreProperties(value = { "cart" }, allowSetters = true)
     private Set<ProductCart> lines = new HashSet<>();
 
-    @JsonIgnoreProperties(value = { "address", "user", "cart", "favorites", "preferences" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "address", "user", "cart", "orders", "favorites", "preferences" }, allowSetters = true)
     @OneToOne(mappedBy = "cart")
     private UserDetails user;
 

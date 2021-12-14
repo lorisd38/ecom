@@ -50,7 +50,7 @@ public class Category implements Serializable {
         if (category != null) {
             relatedCategories.add(category);
             final List<Category> toExplore = new LinkedList<>();
-            toExplore.add(category.getParent());
+            if (category.getParent() != null) toExplore.add(category.getParent());
             while (!toExplore.isEmpty()) {
                 final Category exploredCategory = toExplore.remove(0);
                 relatedCategories.add(exploredCategory);

@@ -1,0 +1,60 @@
+<div *ngIf="this.productOrder" class="ecom-cart">
+  <div class="ecom-cart-img">
+    <div>
+      <img
+        srcset="{{ this.productOrder.product?.imagePath }} ../../../../content/images/default-products.png"
+        alt="Image produit"
+        src="{{ this.productOrder.product?.imagePath }}"
+        onerror="this.onerror=null; this.src='../../../../content/images/default-products.png'"
+      />
+    </div>
+    <div class="ecom-productCart-promo-band" *ngIf="this.promotionService.inPromotion(this.productOrder.product!)">
+      {{ this.promotionService.getPromotion(this.productOrder.product!) }}
+    </div>
+  </div>
+  <div>
+    <div class="ecom-productCart-info">
+      <span>
+        <a [routerLink]="['/product', this.productOrder.product?.id, 'view']">{{ this.productOrder.product?.name }}</a> -
+        {{ this.productOrder.product?.origin }}
+      </span>
+      <span
+        >{{ this.productOrder.product?.brand }} {{ this.productOrder.product?.weight }} {{ this.productOrder.product?.weightUnit }}</span
+      >
+    </div>
+    <div
+      class="ecom-productCart-prices"
+      [ngClass]="{ 'ecom-productCart-oldprice': this.promotionService.inPromotion(this.productOrder.product!) }"
+    >
+      <div>
+        <span>Prix unitaire : </span>
+        <span>{{ this.productOrder.product?.price | number: '0.2' }} €</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productOrder.product!)"
+          >{{ this.getPrice(this.productOrder).toFixed(2) }} €</span
+        >
+      </div>
+      <div *ngIf="this.productOrder.product!.weightUnit !== 'U'">
+        <span>Prix au {{ this.unitOfPrice(this.productOrder.product!.weightUnit!) }} :</span>
+        <span>{{ getPriceWeightStrLine(this.productOrder.product!) }} €/{{ this.getStringWeight(this.productOrder.product!) }}</span>
+        <span *ngIf="this.promotionService.inPromotion(this.productOrder.product!)"
+          >{{ getPriceWeightStrCardPromo(this.promotionService.getPromotion(this.productOrder.product!), this.productOrder.product!) }} €/{{
+            this.getStringWeight(this.productOrder.product!)
+          }}</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="ecom-productCart-tags">
+    <p *ngIf="this.productOrder.product?.tags?.length != 0">
+      Tags :
+      <span [ngStyle]="{ 'background-color': '#' + tags.color }" *ngFor="let tags of this.productOrder.product!.tags">
+        <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
+      </span>
+    </p>
+  </div>
+  <div class="ecom-productcart-price">
+    <span>Quantité : {{ this.productOrder.quantity }}</span>
+    <br />
+    <span>Prix total : {{ this.productOrder.price!.toFixed(2) }} €</span>
+  </div>
+</div>

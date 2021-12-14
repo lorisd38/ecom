@@ -176,6 +176,18 @@ public class OrderResource {
     }
 
     /**
+     * {@code GET  /orders/user} : get the "id" order.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the order, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/orders/user")
+    public List<Order> getOrdersForUser() {
+        final String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        log.debug("REST request to get Order for User : {}", login);
+        return orderService.findAllByUserLogin(login);
+    }
+
+    /**
      * {@code DELETE  /orders/:id} : delete the "id" order.
      *
      * @param id the id of the order to delete.
@@ -254,7 +266,7 @@ public class OrderResource {
             orderLinesFromCart.stream().map(ProductOrder::getProduct).collect(Collectors.toList())
         );
 
-        order.paymentDate(Instant.now()).lines(orderLinesFromCart);
+        order.user(cart.getUser()).paymentDate(Instant.now()).lines(orderLinesFromCart);
 
         if (
             calculateOrderPrice(order, promoCode, promotions).doubleValue() !=

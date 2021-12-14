@@ -13,5 +13,11 @@
                                  constraintName="fk_jhi_order__promotional_code_id"
                                  referencedColumnNames="id"
                                  referencedTableName="promotional_code"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="jhi_order"
+                                 constraintName="fk_jhi_order__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_details"/>
     </changeSet>
 </databaseChangeLog>

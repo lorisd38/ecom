@@ -10,6 +10,9 @@
     },
     "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",
     "validation": "Erreur de validation côté serveur.",
-    "insufficientquantity": "Quantitée du produit insufisante"
+    "insufficientquantity": "Quantitée du produit insufisante.",
+    "wrongprice": "Erreur: Montant de la commande erroné.",
+    "cartmodified": "Le panier a été modifié, veuillez réessayer.",
+    "wrongpromocode": "Code promo invalide."
   }
 }

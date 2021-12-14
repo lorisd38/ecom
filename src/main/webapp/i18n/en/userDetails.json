@@ -24,6 +24,7 @@
       "address": "Address",
       "user": "User",
       "cart": "Cart",
+      "orders": "Orders",
       "favorites": "Favorites",
       "preferences": "Preferences"
     }

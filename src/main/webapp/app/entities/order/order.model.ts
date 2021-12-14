@@ -1,6 +1,7 @@
 import * as dayjs from 'dayjs';
 import { IProductOrder } from 'app/entities/product-order/product-order.model';
 import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
 
 export interface IOrder {
   id?: number;
@@ -9,6 +10,7 @@ export interface IOrder {
   totalPrice?: number;
   lines?: IProductOrder[] | null;
   promotionalCode?: IPromotionalCode | null;
+  user?: IUserDetails | null;
 }
 
 export class Order implements IOrder {
@@ -18,7 +20,8 @@ export class Order implements IOrder {
     public receptionDate?: dayjs.Dayjs,
     public totalPrice?: number,
     public lines?: IProductOrder[] | null,
-    public promotionalCode?: IPromotionalCode | null
+    public promotionalCode?: IPromotionalCode | null,
+    public user?: IUserDetails | null
   ) {}
 }
 
