@@ -10,6 +10,9 @@
     },
     "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
     "validation": "Validation error on the server.",
-    "insufficientquantity": "Quantitée du produit insufisante"
+    "insufficientquantity": "Insufficient product quantity.",
+    "wrongprice": "Error: Order price does not match.",
+    "cartmodified": "The cart was not up to date, please try again.",
+    "wrongpromocode": "Invalid promo code."
   }
 }
