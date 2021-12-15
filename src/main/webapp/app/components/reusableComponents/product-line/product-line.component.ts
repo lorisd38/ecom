@@ -5,6 +5,8 @@ import { getPriceWeightStr } from '../../products/products.module';
 import { IProduct } from '../../../entities/product/product.model';
 import { CartService } from '../../services/cart.service';
 import { PromotionService } from '../../services/promotion.service';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-product-line',
@@ -13,9 +15,7 @@ import { PromotionService } from '../../services/promotion.service';
 export class ProductLineComponent {
   @Input() productCart: IProductCart | null = null;
 
-  constructor(public cartService: CartService, public promotionService: PromotionService) {
-    // do nothing.
-  }
+  constructor(public cartService: CartService, public promotionService: PromotionService, protected modalService: NgbModal) {}
 
   updateQuantityProductCartByText(item: IProductCart, event: any): void {
     if (event.target.value != null && event.target.value !== '') {
@@ -31,9 +31,14 @@ export class ProductLineComponent {
   }
 
   deleteLine(productCart: IProductCart): void {
-    if (confirm("Voulez-vous supprimer l'article '".concat(productCart.product!.name!, "' de votre panier ?"))) {
-      this.updateQuantityProductCart(productCart, 0);
-    }
+    const modalRef = this.modalService.open(ConfirmDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.message = "Voulez-vous supprimer l'article '".concat(productCart.product!.name!, "' de votre panier ?");
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'confirmed') {
+        this.updateQuantityProductCart(productCart, 0);
+      }
+    });
   }
 
   unitOfPrice(weightUnit: WeightUnit): string {

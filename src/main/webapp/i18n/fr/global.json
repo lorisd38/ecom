@@ -21,12 +21,6 @@
         "recipe": "Recette",
         "tag": "Tag",
         "userDetails": "Details utilisateurs",
-        "product": "Produit",
-        "cart": "Panier",
-        "productOrder": "Ligne de commande",
-        "productCart": "Ligne de panier",
-        "category": "Catégorie",
-        "userDetails": "Détails de l'utilisateur",
         "promotionalCode": "Code promotionnel",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
@@ -144,6 +138,11 @@
       "datetimelocal": "Ce champ doit être une date et une heure.",
       "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail."
     }
+  },
+  "confirmDialog": {
+    "title": "Voulez-vous continuer ?",
+    "cancel": "Annuler",
+    "continue": "Continuer"
   },
   "error": {
     "internalServerError": "Erreur interne du serveur",

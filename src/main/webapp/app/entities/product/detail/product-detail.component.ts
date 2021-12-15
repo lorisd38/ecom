@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { IProduct } from '../product.model';
 import { WeightUnit } from '../../enumerations/weight-unit.model';
 import { PromotionService } from '../../../components/services/promotion.service';
 import { getPriceWeightStr } from '../../../components/products/products.module';
+import { AccountService } from '../../../core/auth/account.service';
+import { CartService } from '../../../components/services/cart.service';
 
 @Component({
   selector: 'jhi-product-detail',
@@ -13,7 +15,13 @@ import { getPriceWeightStr } from '../../../components/products/products.module'
 export class ProductDetailComponent implements OnInit {
   product: IProduct | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute, public promotionService: PromotionService) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    public promotionService: PromotionService,
+    public accountService: AccountService,
+    public cartService: CartService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ product }) => {
@@ -80,5 +88,36 @@ export class ProductDetailComponent implements OnInit {
     }
 
     return res.toFixed(2).toString().replace('.', ',');
+  }
+
+  isPresent(productId?: number): boolean {
+    return this.cartService.productsMap.has(<number>productId);
+  }
+
+  addToCart(product: IProduct): void {
+    // If no connected redirection to login page.
+    if (!this.accountService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.cartService.addToCart(product);
+  }
+
+  quantityProduct(item: IProduct): number {
+    const lineProduct = this.cartService.getProductCart(item);
+    return lineProduct?.quantity ?? 0;
+  }
+
+  updateQuantityProduct(item: IProduct, quantity: number): void {
+    this.cartService.updateQuantityProduct(item, quantity);
+  }
+
+  updateQuantityProductByText(item: IProduct, event: any): void {
+    if (event.target.value != null && event.target.value !== '') {
+      if (!isNaN(Number(event.target.value))) {
+        const quantity: number = +event.target.value;
+        this.updateQuantityProduct(item, quantity);
+      }
+    }
   }
 }

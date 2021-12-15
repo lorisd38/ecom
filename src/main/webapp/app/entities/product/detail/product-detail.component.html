@@ -34,6 +34,61 @@
               >{{ getPricePromo(this.promotionService.getPromotion(product), product.price) }} €</span
             >
           </div>
+          <div class="ecom-detail-product-addcart">
+            <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
+              <button
+                class="ecom-product-button-add ecom-button"
+                type="submit"
+                (click)="addToCart(product)"
+                data-cy="entityAddTodCartButton"
+                title="Ajouter au panier"
+              >
+                <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
+                <fa-icon icon="plus"></fa-icon>
+              </button>
+            </div>
+            <ng-template #elseBlock>
+              <div>
+                <button
+                  class="ecom-product-button-minus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+                  data-cy="entityDecreaseProductCartButton"
+                  title="Diminuer la quantite"
+                >
+                  <fa-icon icon="minus"></fa-icon>
+                </button>
+                <input
+                  class="ecom-product-button-text"
+                  type="number"
+                  pattern="[0-9]*"
+                  (change)="updateQuantityProductByText(product, $event)"
+                  [value]="quantityProduct(product)"
+                  title="Définir la quantite"
+                />
+                <button
+                  class="ecom-product-button-plus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+                  data-cy="entityIncreaseProductCartButton"
+                  title="Augmenter la quantite"
+                  [disabled]="this.product.quantity! <= 0"
+                >
+                  <fa-icon icon="plus"></fa-icon>
+                </button>
+              </div>
+            </ng-template>
+          </div>
+          <div>
+            <button
+              class="ecom-button ecom-button-next ecom-shadow-button"
+              *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              type="button"
+              [routerLink]="['/product', product.id, 'edit']"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+          </div>
         </div>
         <div>
           <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
@@ -80,20 +135,20 @@
             <span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span>
             <span jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</span>
           </div>
-          <div>
+          <div *ngIf="product.category">
             <span jhiTranslate="ecomApp.product.category">Category</span>
-            <div *ngIf="product.category">
+            <div>
               <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.name }}</a>
             </div>
           </div>
-          <div>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span>
             <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
               <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.name }}</a
               >{{ last ? '' : ', ' }}
             </span>
           </div>
-          <div>
+          <div *ngIf="product.tags?.length != 0">
             <span jhiTranslate="ecomApp.product.tags">Tags</span>
             <span *ngFor="let tags of product.tags; let last = last">
               <a [routerLink]="['/tag', tags?.id, 'view']">{{ tags.name }}</a
@@ -101,16 +156,6 @@
             </span>
           </div>
         </div>
-      </div>
-      <div>
-        <button
-          class="ecom-button ecom-button-next ecom-shadow-button"
-          *jhiHasAnyAuthority="'ROLE_ADMIN'"
-          type="button"
-          [routerLink]="['/product', product.id, 'edit']"
-        >
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-        </button>
       </div>
     </div>
   </div>
