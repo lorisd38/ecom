@@ -39,6 +39,7 @@ spring:
     livereload:
       enabled: false
   cloud:
+    enabled: false
     config:
       retry:
         initial-interval: 1000
