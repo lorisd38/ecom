@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Promotion.
@@ -26,7 +26,7 @@ public class Promotion implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date", nullable = false, updatable = false)
     private Instant startDate;
 
     @NotNull
@@ -34,29 +34,33 @@ public class Promotion implements Serializable {
     private Instant endDate;
 
     @NotNull
-    @Column(name = "value", precision = 21, scale = 2, nullable = false)
+    @Column(name = "value", precision = 21, scale = 2, nullable = false, updatable = false)
     private BigDecimal value;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "unit", nullable = false)
+    @Column(name = "unit", nullable = false, updatable = false)
     private ReductionType unit;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_promotion__products",
         joinColumns = @JoinColumn(name = "promotion_id"),
         inverseJoinColumns = @JoinColumn(name = "products_id")
     )
     @JsonIgnoreProperties(
-        value = {
-            "category", "relatedCategories", "tags", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs",
-        },
+        value = { "category", "relatedCategories", "recipes", "associatedPromotions", "associatedPromotionalCodes", "favoritesOfs" },
         allowSetters = true
     )
     private Set<Product> products = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public BigDecimal applyTo(BigDecimal amount) {
+        if (this.unit == ReductionType.FIX) return amount.subtract(this.value); else return amount.subtract(
+            amount.multiply(this.value.scaleByPowerOfTen(-2))
+        );
+    }
 
     public Long getId() {
         return this.id;

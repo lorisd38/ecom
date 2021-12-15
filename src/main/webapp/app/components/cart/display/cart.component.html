@@ -1,5 +1,5 @@
 <div>
-  <h2 data-cy="ProductsHeading" class="ecom-title-header">Cart</h2>
+  <h2 data-cy="ProductsHeading" class="ecom-title-header">Panier</h2>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -11,6 +11,16 @@
 
   <div *ngIf="this.cartService.cart && this.cartService.cart?.lines?.length !== 0">
     <div>
+      <div class="ecom-button-back">
+        <button
+          class="ecom-button ecom-button-next ecom-shadow-button"
+          type="submit"
+          (click)="previousState()"
+          data-cy="entityDetailsBackButton"
+        >
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+      </div>
       <div id="ecom-cart-products">
         <jhi-product-line
           *ngFor="let lineProduct of this.cartService.cart?.lines; trackBy: trackId"

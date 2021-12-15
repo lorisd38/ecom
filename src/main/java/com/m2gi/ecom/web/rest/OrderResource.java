@@ -1,9 +1,6 @@
 package com.m2gi.ecom.web.rest;
 
-import com.m2gi.ecom.domain.Cart;
-import com.m2gi.ecom.domain.Order;
-import com.m2gi.ecom.domain.ProductOrder;
-import com.m2gi.ecom.domain.PromotionalCode;
+import com.m2gi.ecom.domain.*;
 import com.m2gi.ecom.repository.OrderRepository;
 import com.m2gi.ecom.security.SecurityUtils;
 import com.m2gi.ecom.service.CartService;
@@ -12,6 +9,7 @@ import com.m2gi.ecom.service.PromotionService;
 import com.m2gi.ecom.service.PromotionalCodeService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -178,6 +176,18 @@ public class OrderResource {
     }
 
     /**
+     * {@code GET  /orders/user} : get the "id" order.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the order, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/orders/user")
+    public List<Order> getOrdersForUser() {
+        final String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        log.debug("REST request to get Order for User : {}", login);
+        return orderService.findAllByUserLogin(login);
+    }
+
+    /**
      * {@code DELETE  /orders/:id} : delete the "id" order.
      *
      * @param id the id of the order to delete.
@@ -251,13 +261,19 @@ public class OrderResource {
             throw new BadRequestAlertException("Cart has been modified.", ENTITY_NAME, "cartmodified");
         }
 
-        if (calculateOrderPrice(order, promoCode).doubleValue() != order.getTotalPrice().doubleValue()) {
+        final List<Promotion> promotions = promotionService.findActiveForProducts(
+            Instant.now(),
+            orderLinesFromCart.stream().map(ProductOrder::getProduct).collect(Collectors.toList())
+        );
+
+        order.user(cart.getUser()).paymentDate(Instant.now()).lines(orderLinesFromCart);
+
+        if (
+            calculateOrderPrice(order, promoCode, promotions).doubleValue() !=
+            order.getTotalPrice().setScale(2, RoundingMode.HALF_UP).doubleValue()
+        ) {
             throw new BadRequestAlertException("Incorrect order total price.", ENTITY_NAME, "wrongprice");
         }
-
-        // TODO Check if there are active promotions on the cart's products.
-
-        order.paymentDate(Instant.now()).lines(orderLinesFromCart);
 
         Order result = orderService.createOrder(order, cart);
         return ResponseEntity
@@ -282,48 +298,36 @@ public class OrderResource {
         return true;
     }
 
-    // TODO Utiliser aussi les promotions
-    private BigDecimal calculateOrderPrice(Order order, PromotionalCode promoCode) {
+    private BigDecimal calculateOrderPrice(Order order, PromotionalCode promoCode, List<Promotion> promotions) {
         BigDecimal total = BigDecimal.ZERO;
-        if (promoCode == null) {
-            total =
+        total =
+            total.add(
                 order
                     .getLines()
                     .stream()
                     .map(po -> {
-                        final BigDecimal finalUnitPrice = po.getProduct().getPrice();
-                        po.setPrice(finalUnitPrice);
-                        return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
+                        final Optional<Promotion> promotion = promotions
+                            .stream()
+                            .filter(p -> p.getProducts().contains(po.getProduct()))
+                            .findFirst();
+                        BigDecimal productBasePrice = po.getProduct().getPrice();
+                        if (promotion.isPresent()) {
+                            final Promotion promo = promotion.get();
+                            productBasePrice = promo.applyTo(productBasePrice);
+                            po.promotionType(promo.getUnit()).promotionValue(promo.getValue());
+                        }
+
+                        BigDecimal finalUnitPrice = productBasePrice;
+                        if (promoCode != null && promoCode.getProducts().contains(po.getProduct())) {
+                            finalUnitPrice = promoCode.applyTo(productBasePrice);
+                            po.promoCodeType(promoCode.getUnit()).promoCodeValue(promoCode.getValue());
+                        }
+                        po.setPrice(finalUnitPrice.multiply(new BigDecimal(po.getQuantity())));
+                        return po.getPrice();
                     })
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        } else {
-            total =
-                total
-                    .add(
-                        order
-                            .getLines()
-                            .stream()
-                            .filter(po -> promoCode.getProducts().contains(po.getProduct()))
-                            .map(po -> {
-                                final BigDecimal finalUnitPrice = promoCode.applyTo(po.getProduct().getPrice());
-                                po.setPrice(finalUnitPrice);
-                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
-                            })
-                            .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    )
-                    .add(
-                        order
-                            .getLines()
-                            .stream()
-                            .filter(po -> !promoCode.getProducts().contains(po.getProduct()))
-                            .map(po -> {
-                                final BigDecimal finalUnitPrice = po.getProduct().getPrice();
-                                po.setPrice(finalUnitPrice);
-                                return finalUnitPrice.multiply(new BigDecimal(po.getQuantity()));
-                            })
-                            .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    );
-        }
-        return total;
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+            );
+
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 }

@@ -3,7 +3,6 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IProductCart } from 'app/entities/product-cart/product-cart.model';
-import { createRequestOption } from '../../core/request/request-util';
 import { getTotalCartItems, getTotalCartPrice, ICart } from '../../entities/cart/cart.model';
 import { IProduct } from '../../entities/product/product.model';
 import { PromotionService } from './promotion.service';
@@ -27,13 +26,18 @@ export class CartService {
   ) {}
 
   calcTotal(): void {
-    this.total = getTotalCartPrice(this.cart, this.promotionService);
+    if (this.promotionService.getPromotions() != null) {
+      this.total = getTotalCartPrice(this.cart, this.promotionService)[0];
+    } else {
+      this.promotionService.promotionsObs.subscribe(() => {
+        this.total = getTotalCartPrice(this.cart, this.promotionService)[0];
+      });
+    }
     this.nbItems = getTotalCartItems(this.cart);
   }
 
-  queryOneCart(req?: any): Observable<EntityResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<ICart>(this.resourceUrl, { params: options, observe: 'response' });
+  queryOneCart(): Observable<EntityResponseType> {
+    return this.http.get<ICart>(this.resourceUrl, { observe: 'response' });
   }
 
   queryAddToCart(idProduct: number): Observable<EntityResponseType> {
@@ -65,6 +69,7 @@ export class CartService {
       if (productCartToUpdate != null) {
         this.cart!.lines?.push(productCartToUpdate);
       }
+      product.quantity! -= 1;
       this.buildCartContentMap();
       this.calcTotal();
     });
@@ -92,7 +97,9 @@ export class CartService {
         // Reload component
         if (this.cart?.lines != null) {
           const indexProductCart = this.cart.lines.indexOf(lineProduct);
+          const oldQuantity: number = this.cart.lines[indexProductCart].quantity!;
           this.cart.lines[indexProductCart].quantity = quantity;
+          product.quantity! -= quantity - oldQuantity;
           this.calcTotal();
         }
       });
@@ -107,6 +114,7 @@ export class CartService {
         if (this.cart?.lines != null) {
           const indexProductCart = this.cart.lines.indexOf(lineProduct);
           // Splice is a method to delete starting from <index> a given <number of elements>.
+          product.quantity! += this.cart.lines[indexProductCart].quantity!;
           this.cart.lines.splice(indexProductCart, 1);
           this.buildCartContentMap();
           this.calcTotal();

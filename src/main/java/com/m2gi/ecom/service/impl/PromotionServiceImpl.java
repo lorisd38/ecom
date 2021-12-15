@@ -7,6 +7,7 @@ import com.m2gi.ecom.service.PromotionService;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -88,7 +89,10 @@ public class PromotionServiceImpl implements PromotionService {
     @Transactional(readOnly = true)
     public List<Promotion> findActiveWithEagerRelationships(Instant instant) {
         log.debug("Request to get Promotions active at : {}", instant);
-        return promotionRepository.findActiveWithEagerRelationships(instant);
+        final List<Promotion> promotions = promotionRepository.findActiveWithEagerRelationships(instant);
+        // To force the loading of the lazily fetched product tags
+        promotions.forEach(promotion -> promotion.getProducts().forEach(product -> product.getTags().isEmpty()));
+        return promotions;
     }
 
     @Override
@@ -96,5 +100,16 @@ public class PromotionServiceImpl implements PromotionService {
     public List<Promotion> findActiveForProduct(Instant instant, Product product) {
         log.debug("Request to get Promotions active at : {}, for Product : {}", instant, product.getId());
         return promotionRepository.findActiveForProduct(instant, product);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Promotion> findActiveForProducts(Instant instant, List<Product> products) {
+        log.debug(
+            "Request to get Promotions active at : {}, for Products : {}",
+            instant,
+            products.stream().map(Product::getId).collect(Collectors.toSet())
+        );
+        return promotionRepository.findActiveForProducts(instant, products);
     }
 }

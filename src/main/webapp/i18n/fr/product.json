@@ -22,21 +22,21 @@
       "description": "Description",
       "quantity": "Quantité",
       "version": "Version",
-      "origin": "Origin",
-      "brand": "Brand",
+      "origin": "Origine",
+      "brand": "Marque",
       "imagePath": "Image Path",
-      "price": "Price",
-      "weight": "Weight",
+      "price": "Prix",
+      "weight": "Poids",
       "weightUnit": "Unité de poids",
-      "category": "Category",
+      "category": "Categorie",
       "relatedCategories": "Catégories associées",
       "tags": "Tags",
-      "recipes": "Recipes",
+      "recipes": "Recettes",
       "associatedPromotions": "Promotions associées",
       "favoritesOf": "Favoris de",
       "favorites": "Favoris",
       "addToCart": "Ajouter",
-      "research_result": "Resultat de la recherche :"
+      "research_result": "Nombre d'éléments correspondant à votre recherche :"
     }
   }
 }

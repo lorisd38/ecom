@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.m2gi.ecom.IntegrationTest;
 import com.m2gi.ecom.domain.ProductOrder;
+import com.m2gi.ecom.domain.enumeration.ReductionType;
+import com.m2gi.ecom.domain.enumeration.ReductionType;
 import com.m2gi.ecom.repository.ProductOrderRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,6 +39,18 @@ class ProductOrderResourceIT {
     private static final BigDecimal DEFAULT_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(2);
 
+    private static final BigDecimal DEFAULT_PROMOTION_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PROMOTION_VALUE = new BigDecimal(2);
+
+    private static final ReductionType DEFAULT_PROMOTION_TYPE = ReductionType.FIX;
+    private static final ReductionType UPDATED_PROMOTION_TYPE = ReductionType.PERCENTAGE;
+
+    private static final BigDecimal DEFAULT_PROMO_CODE_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PROMO_CODE_VALUE = new BigDecimal(2);
+
+    private static final ReductionType DEFAULT_PROMO_CODE_TYPE = ReductionType.FIX;
+    private static final ReductionType UPDATED_PROMO_CODE_TYPE = ReductionType.PERCENTAGE;
+
     private static final String ENTITY_API_URL = "/api/product-orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +75,13 @@ class ProductOrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductOrder createEntity(EntityManager em) {
-        ProductOrder productOrder = new ProductOrder().quantity(DEFAULT_QUANTITY).price(DEFAULT_PRICE);
+        ProductOrder productOrder = new ProductOrder()
+            .quantity(DEFAULT_QUANTITY)
+            .price(DEFAULT_PRICE)
+            .promotionValue(DEFAULT_PROMOTION_VALUE)
+            .promotionType(DEFAULT_PROMOTION_TYPE)
+            .promoCodeValue(DEFAULT_PROMO_CODE_VALUE)
+            .promoCodeType(DEFAULT_PROMO_CODE_TYPE);
         return productOrder;
     }
 
@@ -72,7 +92,13 @@ class ProductOrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductOrder createUpdatedEntity(EntityManager em) {
-        ProductOrder productOrder = new ProductOrder().quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
+        ProductOrder productOrder = new ProductOrder()
+            .quantity(UPDATED_QUANTITY)
+            .price(UPDATED_PRICE)
+            .promotionValue(UPDATED_PROMOTION_VALUE)
+            .promotionType(UPDATED_PROMOTION_TYPE)
+            .promoCodeValue(UPDATED_PROMO_CODE_VALUE)
+            .promoCodeType(UPDATED_PROMO_CODE_TYPE);
         return productOrder;
     }
 
@@ -96,6 +122,10 @@ class ProductOrderResourceIT {
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testProductOrder.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
+        assertThat(testProductOrder.getPromotionValue()).isEqualByComparingTo(DEFAULT_PROMOTION_VALUE);
+        assertThat(testProductOrder.getPromotionType()).isEqualTo(DEFAULT_PROMOTION_TYPE);
+        assertThat(testProductOrder.getPromoCodeValue()).isEqualByComparingTo(DEFAULT_PROMO_CODE_VALUE);
+        assertThat(testProductOrder.getPromoCodeType()).isEqualTo(DEFAULT_PROMO_CODE_TYPE);
     }
 
     @Test
@@ -163,7 +193,11 @@ class ProductOrderResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productOrder.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))));
+            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
+            .andExpect(jsonPath("$.[*].promotionValue").value(hasItem(sameNumber(DEFAULT_PROMOTION_VALUE))))
+            .andExpect(jsonPath("$.[*].promotionType").value(hasItem(DEFAULT_PROMOTION_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].promoCodeValue").value(hasItem(sameNumber(DEFAULT_PROMO_CODE_VALUE))))
+            .andExpect(jsonPath("$.[*].promoCodeType").value(hasItem(DEFAULT_PROMO_CODE_TYPE.toString())));
     }
 
     @Test
@@ -179,7 +213,11 @@ class ProductOrderResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productOrder.getId().intValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
-            .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)));
+            .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.promotionValue").value(sameNumber(DEFAULT_PROMOTION_VALUE)))
+            .andExpect(jsonPath("$.promotionType").value(DEFAULT_PROMOTION_TYPE.toString()))
+            .andExpect(jsonPath("$.promoCodeValue").value(sameNumber(DEFAULT_PROMO_CODE_VALUE)))
+            .andExpect(jsonPath("$.promoCodeType").value(DEFAULT_PROMO_CODE_TYPE.toString()));
     }
 
     @Test
@@ -201,7 +239,13 @@ class ProductOrderResourceIT {
         ProductOrder updatedProductOrder = productOrderRepository.findById(productOrder.getId()).get();
         // Disconnect from session so that the updates on updatedProductOrder are not directly saved in db
         em.detach(updatedProductOrder);
-        updatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
+        updatedProductOrder
+            .quantity(UPDATED_QUANTITY)
+            .price(UPDATED_PRICE)
+            .promotionValue(UPDATED_PROMOTION_VALUE)
+            .promotionType(UPDATED_PROMOTION_TYPE)
+            .promoCodeValue(UPDATED_PROMO_CODE_VALUE)
+            .promoCodeType(UPDATED_PROMO_CODE_TYPE);
 
         restProductOrderMockMvc
             .perform(
@@ -217,6 +261,10 @@ class ProductOrderResourceIT {
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testProductOrder.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testProductOrder.getPromotionValue()).isEqualTo(UPDATED_PROMOTION_VALUE);
+        assertThat(testProductOrder.getPromotionType()).isEqualTo(UPDATED_PROMOTION_TYPE);
+        assertThat(testProductOrder.getPromoCodeValue()).isEqualTo(UPDATED_PROMO_CODE_VALUE);
+        assertThat(testProductOrder.getPromoCodeType()).isEqualTo(UPDATED_PROMO_CODE_TYPE);
     }
 
     @Test
@@ -287,7 +335,11 @@ class ProductOrderResourceIT {
         ProductOrder partialUpdatedProductOrder = new ProductOrder();
         partialUpdatedProductOrder.setId(productOrder.getId());
 
-        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
+        partialUpdatedProductOrder
+            .quantity(UPDATED_QUANTITY)
+            .price(UPDATED_PRICE)
+            .promotionValue(UPDATED_PROMOTION_VALUE)
+            .promotionType(UPDATED_PROMOTION_TYPE);
 
         restProductOrderMockMvc
             .perform(
@@ -303,6 +355,10 @@ class ProductOrderResourceIT {
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testProductOrder.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
+        assertThat(testProductOrder.getPromotionValue()).isEqualByComparingTo(UPDATED_PROMOTION_VALUE);
+        assertThat(testProductOrder.getPromotionType()).isEqualTo(UPDATED_PROMOTION_TYPE);
+        assertThat(testProductOrder.getPromoCodeValue()).isEqualByComparingTo(DEFAULT_PROMO_CODE_VALUE);
+        assertThat(testProductOrder.getPromoCodeType()).isEqualTo(DEFAULT_PROMO_CODE_TYPE);
     }
 
     @Test
@@ -317,7 +373,13 @@ class ProductOrderResourceIT {
         ProductOrder partialUpdatedProductOrder = new ProductOrder();
         partialUpdatedProductOrder.setId(productOrder.getId());
 
-        partialUpdatedProductOrder.quantity(UPDATED_QUANTITY).price(UPDATED_PRICE);
+        partialUpdatedProductOrder
+            .quantity(UPDATED_QUANTITY)
+            .price(UPDATED_PRICE)
+            .promotionValue(UPDATED_PROMOTION_VALUE)
+            .promotionType(UPDATED_PROMOTION_TYPE)
+            .promoCodeValue(UPDATED_PROMO_CODE_VALUE)
+            .promoCodeType(UPDATED_PROMO_CODE_TYPE);
 
         restProductOrderMockMvc
             .perform(
@@ -333,6 +395,10 @@ class ProductOrderResourceIT {
         ProductOrder testProductOrder = productOrderList.get(productOrderList.size() - 1);
         assertThat(testProductOrder.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testProductOrder.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
+        assertThat(testProductOrder.getPromotionValue()).isEqualByComparingTo(UPDATED_PROMOTION_VALUE);
+        assertThat(testProductOrder.getPromotionType()).isEqualTo(UPDATED_PROMOTION_TYPE);
+        assertThat(testProductOrder.getPromoCodeValue()).isEqualByComparingTo(UPDATED_PROMO_CODE_VALUE);
+        assertThat(testProductOrder.getPromoCodeType()).isEqualTo(UPDATED_PROMO_CODE_TYPE);
     }
 
     @Test

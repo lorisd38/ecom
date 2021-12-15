@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../core/request/request-util';
-import { ICategory } from '../../entities/category/category.model';
+import {Category, ICategory} from '../../entities/category/category.model';
 import { EntityArrayResponseType } from '../../entities/category/service/category.service';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
+  public listCategory: Category[] = [];
+
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/categories');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}

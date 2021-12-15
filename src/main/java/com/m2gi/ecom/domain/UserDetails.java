@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A UserDetails.
@@ -43,9 +43,13 @@ public class UserDetails implements Serializable {
     private User user;
 
     @JsonIgnoreProperties(value = { "lines", "user" }, allowSetters = true)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(unique = true)
     private Cart cart;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = { "lines", "promotionalCode", "user" }, allowSetters = true)
+    private Set<Order> orders = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -160,6 +164,37 @@ public class UserDetails implements Serializable {
 
     public UserDetails cart(Cart cart) {
         this.setCart(cart);
+        return this;
+    }
+
+    public Set<Order> getOrders() {
+        return this.orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        if (this.orders != null) {
+            this.orders.forEach(i -> i.setUser(null));
+        }
+        if (orders != null) {
+            orders.forEach(i -> i.setUser(this));
+        }
+        this.orders = orders;
+    }
+
+    public UserDetails orders(Set<Order> orders) {
+        this.setOrders(orders);
+        return this;
+    }
+
+    public UserDetails addOrders(Order order) {
+        this.orders.add(order);
+        order.setUser(this);
+        return this;
+    }
+
+    public UserDetails removeOrders(Order order) {
+        this.orders.remove(order);
+        order.setUser(null);
         return this;
     }
 

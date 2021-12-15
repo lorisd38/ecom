@@ -10,6 +10,8 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { CartService } from '../../components/services/cart.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'jhi-navbar',
@@ -31,6 +33,7 @@ export class NavbarComponent implements OnInit {
     private sessionStorageService: SessionStorageService,
     private accountService: AccountService,
     private profileService: ProfileService,
+    protected modalService: NgbModal,
     public router: Router,
     public cartService: CartService
   ) {
@@ -61,9 +64,16 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.collapseNavbar();
-    this.loginService.logout();
-    this.router.navigate(['']);
+    const modalRef = this.modalService.open(ConfirmDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.message = 'Etes-vous sur de vouloir vous deconnecter ?';
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'confirmed') {
+        this.collapseNavbar();
+        this.loginService.logout();
+        this.router.navigate(['']);
+      }
+    });
   }
 
   toggleNavbar(): void {

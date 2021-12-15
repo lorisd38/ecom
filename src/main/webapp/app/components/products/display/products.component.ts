@@ -7,15 +7,21 @@ import { CartService } from '../../services/cart.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import {PromotionService} from "../../services/promotion.service";
+import { PromotionService } from '../../services/promotion.service';
+import { CategoriesService } from '../../services/categories.service';
+import { ICategory } from '../../../entities/category/category.model';
 
 @Component({
   selector: 'jhi-products',
   templateUrl: './products.component.html',
 })
 export class ProductsComponent implements OnInit {
+  public title: string | undefined = 'Products';
   products?: IProduct[];
   public query: string | null = '';
+  public nbQuery: number | undefined = 0;
+  public sortBy: string | null = 'name';
+  public sortOrder: string | null = 'ASC';
   private category: string | null = '';
 
   constructor(
@@ -25,6 +31,7 @@ export class ProductsComponent implements OnInit {
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private promotionService: PromotionService,
+    public categoriesService: CategoriesService
   ) {}
 
   ngOnInit(): void {
@@ -34,8 +41,10 @@ export class ProductsComponent implements OnInit {
         this.loadProductSearch();
       } else if (params.category !== undefined && params.category !== '') {
         this.category = params.category;
+        this.title = this.getCategoryName(params.category);
         this.loadProductCategories();
       } else {
+        this.title = 'Promotions';
         this.query = '';
         this.loadProduct();
       }
@@ -53,29 +62,61 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  getCategoryName(id: string): string {
+    const toExplore: ICategory[] = [];
+    let exploredCategory: ICategory | undefined;
+    this.categoriesService.listCategory.forEach(cate => toExplore.push(cate));
+
+    while (toExplore.length > 0) {
+      exploredCategory = toExplore.pop();
+      if (exploredCategory?.id?.toString() === id) {
+        return exploredCategory.name ?? 'Produits';
+      }
+      if (exploredCategory?.children && exploredCategory.children.length > 0) {
+        exploredCategory.children.forEach(cate => toExplore.push(cate));
+      }
+    }
+    return 'Produits';
+  }
+
   loadProductSearch(): void {
     this.query
-      ? this.productService.querySearch(this.query).subscribe((res: HttpResponse<IProduct[]>) => {
+      ? this.productService.querySearch(this.query, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
           this.products = res.body ?? [];
+          this.nbQuery = res.body?.length;
         })
       : '';
   }
 
   loadProductCategories(): void {
     if (this.category) {
-      this.productService.queryByCategory(this.category).subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productService.queryByCategory(this.category, this.sortBy, this.sortOrder).subscribe((res: HttpResponse<IProduct[]>) => {
         this.products = res.body ?? [];
       });
     }
   }
 
   loadProduct(): void {
-    this.promotionService.query().subscribe((res) => {
-      this.promotionService.promotions = res.body;
-      if(this.promotionService.promotions){
-        this.products = this.promotionService.getProductsPromotion();
-      }
-    })
+    if (this.promotionService.getPromotions() != null) {
+      this.actOnPromotions();
+    } else {
+      this.promotionService.promotionsObs.subscribe(() => {
+        this.actOnPromotions();
+      });
+    }
+  }
+
+  getPricePromo(promo: any, price?: number): number {
+    let res = 0;
+    const subPromo = Number(promo.substr(1, promo.length - 2));
+
+    if (promo.substr(promo.length - 1) === '%') {
+      res = price! - (price! * subPromo) / 100;
+    } else {
+      res = price! - subPromo;
+    }
+
+    return res;
   }
 
   loadCart(): void {
@@ -84,5 +125,46 @@ export class ProductsComponent implements OnInit {
       this.cartService.buildCartContentMap();
       this.cartService.calcTotal();
     });
+  }
+
+  changeSort(sortBy: string, sortOrder: string): void {
+    this.sortBy = sortBy;
+    this.sortOrder = sortOrder;
+    this.ngOnInit();
+  }
+
+  private actOnPromotions(): void {
+    this.products = this.promotionService.getProductsPromotion();
+    if (this.sortBy === 'name') {
+      this.products.sort((a, b) => {
+        if (a.name! > b.name!) {
+          if (this.sortOrder === 'DESC') {
+            return -1;
+          }
+          return 1;
+        }
+        if (a.name! < b.name!) {
+          if (this.sortOrder === 'DESC') {
+            return 1;
+          }
+          return -1;
+        }
+        return 0;
+      });
+    } else if (this.sortBy === 'price') {
+      if (this.sortOrder === 'ASC') {
+        this.products.sort(
+          (a, b) =>
+            this.getPricePromo(this.promotionService.getPromotion(a), a.price) -
+            this.getPricePromo(this.promotionService.getPromotion(b), b.price)
+        );
+      } else {
+        this.products.sort(
+          (a, b) =>
+            this.getPricePromo(this.promotionService.getPromotion(b), b.price) -
+            this.getPricePromo(this.promotionService.getPromotion(a), a.price)
+        );
+      }
+    }
   }
 }

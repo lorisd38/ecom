@@ -26,6 +26,9 @@
             <column name="promotional_code_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="jhi_order" columnName="payment_date" columnDataType="${datetimeType}"/>

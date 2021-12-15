@@ -45,11 +45,16 @@ entity Cart {
 
 entity ProductOrder {
   quantity Integer min(1) required,
-  price BigDecimal required
+  price BigDecimal required,
+  promotionValue BigDecimal,
+  promotionType ReductionType
+  promoCodeValue BigDecimal,
+  promoCodeType ReductionType
 }
 
 entity ProductCart {
-  quantity Integer min(1) required
+  quantity Integer min(1) required,
+  creationDatetime Instant required
 }
 
 entity Category {
@@ -88,7 +93,8 @@ enum WeightUnit {
 
 relationship OneToMany {
   Order{lines} to ProductOrder{order},
-  Cart{lines} to ProductCart{cart}
+  Cart{lines} to ProductCart{cart},
+  UserDetails{orders} to Order{user}
 }
 
 relationship ManyToOne {

@@ -2,25 +2,26 @@
   "ecomApp": {
     "productCart": {
       "home": {
-        "title": "ProductCarts",
+        "title": "Lignes de panier",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Product Cart",
-        "createOrEditLabel": "Créer ou éditer un Product Cart",
-        "notFound": "Aucun Product Cart trouvé"
+        "createLabel": "Créer une nouvelle Ligne de panier",
+        "createOrEditLabel": "Créer ou éditer une Ligne de panier",
+        "notFound": "Aucune Ligne de panier trouvé"
       },
-      "created": "Un nouveau Product Cart a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Product Cart avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Product Cart avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Ligne de panier a été créée avec l'identifiant {{ param }}",
+      "updated": "La Ligne de panier avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Ligne de panier avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Product Cart {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Ligne de panier {{ id }} ?"
       },
       "detail": {
-        "title": "Product Cart"
+        "title": "Ligne de panier"
       },
       "id": "ID",
-      "quantity": "Quantity",
-      "product": "Product",
-      "cart": "Cart"
+      "quantity": "Quantité",
+      "product": "Produit",
+      "cart": "Panier",
+      "creationDatetime": "Date de création"
     }
   }
 }

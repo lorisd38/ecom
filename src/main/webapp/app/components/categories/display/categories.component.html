@@ -54,27 +54,38 @@
     <div>
       <h2 class="ecom-title-header">Categories :</h2>
     </div>
-    <div *ngFor="let cat of listCategory">
-      <li
-        [ngClass]="{ 'ecom-categorie-first': cat.parent == null }"
-        class="ecom-categorie-withoutChild"
-        *ngIf="cat.children == null || cat.children.length! == 0; else elseBlock"
-      >
-        <div class="ecom-category">
-          <ul>
-            <a
-              [ngClass]="{ 'ecom-category-opened': this.router.url === '/?category=' + cat.id }"
-              [routerLink]="['/']"
-              [queryParams]="{ category: cat.id }"
-            >
-              {{ cat.name }}
-            </a>
-          </ul>
-        </div>
-      </li>
-      <ng-template #elseBlock>
-        <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
-      </ng-template>
+    <div>
+      <div>
+        <li class="ecom-categorie-withoutChild ecom-categorie-first">
+          <div class="ecom-category">
+            <ul>
+              <a [ngClass]="{ 'ecom-category-opened': this.router.url === '/' }" [routerLink]="['/']"> Promotions </a>
+            </ul>
+          </div>
+        </li>
+      </div>
+      <div *ngFor="let cat of this.categoriesService.listCategory">
+        <li
+          [ngClass]="{ 'ecom-categorie-first': cat.parent == null }"
+          class="ecom-categorie-withoutChild"
+          *ngIf="cat.children == null || cat.children.length! == 0; else elseBlock"
+        >
+          <div class="ecom-category">
+            <ul>
+              <a
+                [ngClass]="{ 'ecom-category-opened': this.router.url === '/?category=' + cat.id }"
+                [routerLink]="['/']"
+                [queryParams]="{ category: cat.id }"
+              >
+                {{ cat.name }}
+              </a>
+            </ul>
+          </div>
+        </li>
+        <ng-template #elseBlock>
+          <ng-template [ngTemplateOutlet]="categoryTemplateRef" [ngTemplateOutletContext]="{ $implicit: cat }"> </ng-template>
+        </ng-template>
+      </div>
     </div>
   </ul>
 </nav>

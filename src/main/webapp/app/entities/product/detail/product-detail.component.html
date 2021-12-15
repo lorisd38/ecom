@@ -1,91 +1,162 @@
 <div>
   <div>
-    <div *ngIf="product">
-      <h2 data-cy="productDetailsHeading"><span jhiTranslate="ecomApp.product.detail.title">Product</span></h2>
-
-      <hr />
+    <div class="ecom-detail-product" *ngIf="product">
+      <h2 data-cy="productDetailsHeading" class="ecom-title-header">Détails produit</h2>
 
       <jhi-alert-error></jhi-alert-error>
 
       <jhi-alert></jhi-alert>
-
-      <dl>
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ product.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.name">Name</span></dt>
-        <dd>
-          <span>{{ product.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.description">Description</span></dt>
-        <dd>
-          <span>{{ product.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.quantity">Quantity</span></dt>
-        <dd>
-          <span>{{ product.quantity }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.version">Version</span></dt>
-        <dd>
-          <span>{{ product.version }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.origin">Origin</span></dt>
-        <dd>
-          <span>{{ product.origin }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.brand">Brand</span></dt>
-        <dd>
-          <span>{{ product.brand }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.imagePath">Image Path</span></dt>
-        <dd>
-          <span>{{ product.imagePath }}</span>
-          <div *ngIf="product.imagePath != null">
-            <img [src]="product.imagePath" alt="Image produit" width="128" height="128" />
+      <div>
+        <button
+          class="ecom-button ecom-button-next ecom-shadow-button"
+          type="submit"
+          (click)="previousState()"
+          data-cy="entityDetailsBackButton"
+        >
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+      </div>
+      <div class="ecom-detail-product-info">
+        <div>
+          <div>
+            <img
+              [src]="product.imagePath"
+              srcset="../../../../content/images/default-products.png"
+              alt="Image produit"
+              width="128"
+              height="128"
+            />
           </div>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.price">Price</span></dt>
-        <dd>
-          <span>{{ product.price }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.weight">Weight</span></dt>
-        <dd>
-          <span>{{ product.weight }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.category">Category</span></dt>
-        <dd>
+          <div [ngClass]="{ 'ecom-detail-product-oldprice': this.promotionService.inPromotion(product) }">
+            <span>Prix payé par article</span>
+            <span>{{ product.price!.toString().replace('.', ',') }} €</span>
+            <span *ngIf="this.promotionService.inPromotion(product)"
+              >{{ getPricePromo(this.promotionService.getPromotion(product), product.price) }} €</span
+            >
+          </div>
+          <div class="ecom-detail-product-addcart">
+            <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
+              <button
+                class="ecom-product-button-add ecom-button"
+                type="submit"
+                (click)="addToCart(product)"
+                data-cy="entityAddTodCartButton"
+                title="Ajouter au panier"
+              >
+                <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
+                <fa-icon icon="plus"></fa-icon>
+              </button>
+            </div>
+            <ng-template #elseBlock>
+              <div>
+                <button
+                  class="ecom-product-button-minus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+                  data-cy="entityDecreaseProductCartButton"
+                  title="Diminuer la quantite"
+                >
+                  <fa-icon icon="minus"></fa-icon>
+                </button>
+                <input
+                  class="ecom-product-button-text"
+                  type="number"
+                  pattern="[0-9]*"
+                  (change)="updateQuantityProductByText(product, $event)"
+                  [value]="quantityProduct(product)"
+                  title="Définir la quantite"
+                />
+                <button
+                  class="ecom-product-button-plus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+                  data-cy="entityIncreaseProductCartButton"
+                  title="Augmenter la quantite"
+                  [disabled]="this.product.quantity! <= 0"
+                >
+                  <fa-icon icon="plus"></fa-icon>
+                </button>
+              </div>
+            </ng-template>
+          </div>
+          <div>
+            <button
+              class="ecom-button ecom-button-next ecom-shadow-button"
+              *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              type="button"
+              [routerLink]="['/product', product.id, 'edit']"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+          </div>
+        </div>
+        <div>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="global.field.id">ID</span>
+            <span>{{ product.id }}</span>
+          </div>
+          <div>
+            <span>{{ product.name }}</span>
+          </div>
+          <div>
+            <span jhiTranslate="ecomApp.product.origin">Origin</span>
+            <span>{{ product.origin }}</span>
+          </div>
+          <div>
+            <span jhiTranslate="ecomApp.product.brand">Brand</span>
+            <span>{{ product.brand }}</span>
+          </div>
+          <div>
+            <span jhiTranslate="ecomApp.product.weight">Weight</span>
+            <span>{{ product.weight }} {{ product.weightUnit }}</span>
+          </div>
+          <div [ngClass]="{ 'ecom-detail-product-oldprice': this.promotionService.inPromotion(product) }">
+            <span>Prix au {{ unitOfPrice(product.weightUnit!) }}</span>
+            <span>{{ getPriceWeightStr(product.price!, product.weight!, product.weightUnit!) }}€/{{ getStringWeight(product) }}</span>
+            <span *ngIf="this.promotionService.inPromotion(product)"
+              >{{ getPriceWeightStrCardPromo(product, this.promotionService.getPromotion(product)) }} €/{{ getStringWeight(product) }}</span
+            >
+          </div>
+          <div>
+            <span jhiTranslate="ecomApp.product.description">Description</span>
+            <span>{{ product.description }}</span>
+          </div>
+        </div>
+        <div>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="ecomApp.product.quantity">Quantity</span>
+            <span>{{ product.quantity }}</span>
+          </div>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="ecomApp.product.version">Version</span>
+            <span>{{ product.version }}</span>
+          </div>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="ecomApp.product.weightUnit">Weight Unit</span>
+            <span jhiTranslate="{{ 'ecomApp.WeightUnit.' + product.weightUnit }}">{{ product.weightUnit }}</span>
+          </div>
           <div *ngIf="product.category">
-            <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.name }}</a>
+            <span jhiTranslate="ecomApp.product.category">Category</span>
+            <div>
+              <a [routerLink]="['/category', product.category?.id, 'view']">{{ product.category?.name }}</a>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span></dt>
-        <dd>
-          <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
-            <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.name }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-        <dt><span jhiTranslate="ecomApp.product.tags">Tags</span></dt>
-        <dd>
-          <span *ngFor="let tags of product.tags; let last = last">
-            <a [routerLink]="['/tag', tags?.id, 'view']">{{ tags.name }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-      </dl>
-
-      <button type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
-
-      <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="ecomApp.product.relatedCategories">Related Categories</span>
+            <span *ngFor="let relatedCategories of product.relatedCategories; let last = last">
+              <a [routerLink]="['/category', relatedCategories?.id, 'view']">{{ relatedCategories.name }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </div>
+          <div *ngIf="product.tags?.length != 0">
+            <span jhiTranslate="ecomApp.product.tags">Tags</span>
+            <span *ngFor="let tags of product.tags; let last = last">
+              <a [routerLink]="['/tag', tags?.id, 'view']">{{ tags.name }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

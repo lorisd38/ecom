@@ -2,8 +2,7 @@ package com.m2gi.ecom.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -44,6 +43,25 @@ public class Category implements Serializable {
     private Set<Product> associatedProducts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public static Set<Category> buildRelatedCategories(final Category category) {
+        final Set<Category> relatedCategories = new HashSet<>();
+
+        if (category != null) {
+            relatedCategories.add(category);
+            final List<Category> toExplore = new LinkedList<>();
+            if (category.getParent() != null) toExplore.add(category.getParent());
+            while (!toExplore.isEmpty()) {
+                final Category exploredCategory = toExplore.remove(0);
+                relatedCategories.add(exploredCategory);
+                if (exploredCategory.getParent() != null) {
+                    toExplore.add(exploredCategory.getParent());
+                }
+            }
+        }
+
+        return relatedCategories;
+    }
 
     public Long getId() {
         return this.id;

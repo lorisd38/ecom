@@ -22,6 +22,22 @@
         <dd>
           <span>{{ productOrder.price }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomApp.productOrder.promotionValue">Promotion Value</span></dt>
+        <dd>
+          <span>{{ productOrder.promotionValue }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.productOrder.promotionType">Promotion Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.ReductionType.' + productOrder.promotionType }}">{{ productOrder.promotionType }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.productOrder.promoCodeValue">Promo Code Value</span></dt>
+        <dd>
+          <span>{{ productOrder.promoCodeValue }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomApp.productOrder.promoCodeType">Promo Code Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'ecomApp.ReductionType.' + productOrder.promoCodeType }}">{{ productOrder.promoCodeType }}</span>
+        </dd>
         <dt><span jhiTranslate="ecomApp.productOrder.product">Product</span></dt>
         <dd>
           <div *ngIf="productOrder.product">

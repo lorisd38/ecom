@@ -12,6 +12,7 @@ import com.m2gi.ecom.service.ProductService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -241,9 +242,11 @@ public class CartResource {
 
         final User user = userRepo.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         final ProductCart productCart = new ProductCart();
-        productCart.setCart(user.getDetails().getCart());
-        productCart.setProduct(productService.findOne(idProduct).orElseThrow());
-        productCart.setQuantity(1);
+        productCart
+            .cart(user.getDetails().getCart())
+            .product(productService.findOne(idProduct).orElseThrow())
+            .quantity(1)
+            .creationDatetime(Instant.now());
 
         final ProductCart result = cartService.addLine(productCart);
 

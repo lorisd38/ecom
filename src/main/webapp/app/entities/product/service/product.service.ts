@@ -39,8 +39,7 @@ export class ProductService {
 
   querySearch(req: string): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
-
+    // console.log(`------> ${this.resourceUrl}?query=${req.toLowerCase()}`);
     return this.http.get<IProduct[]>(`${this.resourceUrl}?query=${req.toLowerCase()}`, { params: options, observe: 'response' });
   }
 

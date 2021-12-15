@@ -20,6 +20,10 @@
       "id": "ID",
       "quantity": "Quantity",
       "price": "Price",
+      "promotionValue": "Promotion Value",
+      "promotionType": "Promotion Type",
+      "promoCodeValue": "Promo Code Value",
+      "promoCodeType": "Promo Code Type",
       "product": "Product",
       "order": "Order"
     }

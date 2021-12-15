@@ -1,0 +1,22 @@
+<a [routerLink]="['/orders']" [queryParams]="{ orderId: order!.id! }">
+  <div class="row justify-content-center">
+    <div class="col-3">
+      <div *ngIf="order">
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="ecomApp.order.paymentDate">Payment Date</span></dt>
+          <dd>
+            <span>{{ order.paymentDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="ecomApp.order.receptionDate">Reception Date</span></dt>
+          <dd>
+            <span>{{ order.receptionDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="ecomApp.order.totalPrice">Total Price</span></dt>
+          <dd>
+            <span>{{ order.totalPrice!.toFixed(2) }} €</span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</a>

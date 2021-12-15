@@ -11,6 +11,24 @@
       "fieldName": "price",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "promotionValue",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "promotionType",
+      "fieldType": "ReductionType",
+      "fieldValues": "FIX,PERCENTAGE"
+    },
+    {
+      "fieldName": "promoCodeValue",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "promoCodeType",
+      "fieldType": "ReductionType",
+      "fieldValues": "FIX,PERCENTAGE"
     }
   ],
   "relationships": [

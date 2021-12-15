@@ -2,14 +2,49 @@
   <div>
     <div data-cy="ProductsHeading">
       <div *ngIf="this.query === undefined || this.query === ''; else elseBlock">
-        <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.home.title">Products</h2>
+        <h2 class="ecom-title-header">{{ this.title }}</h2>
       </div>
       <ng-template #elseBlock>
         <div class="ecom-query-header">
-          <h2 class="ecom-title-header" jhiTranslate="ecomApp.product.research_result">Products results for :</h2>
-          <span>"{{ this.query }}"</span>
+          <h2 class="ecom-title-header">{{ this.nbQuery }} élément(s) correspondant à votre recherche :</h2>
         </div>
       </ng-template>
+    </div>
+
+    <div ngbDropdown class="ecom-button-sort">
+      <button ngbDropdownToggle type="submit" class="ecom-button ecom-button-next ecom-shadow-button">
+        <fa-icon icon="sort" [fixedWidth]="true"></fa-icon>Trier
+      </button>
+      <ul class="ecom-sort-option" ngbDropdownMenu>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'ASC')"
+        >
+          Nom croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'name' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('name', 'DESC')"
+        >
+          Nom décroissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'ASC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'ASC')"
+        >
+          Prix croissant
+        </li>
+        <li
+          [ngClass]="{ 'ecom-sort-option-active': this.sortBy === 'price' && this.sortOrder === 'DESC' }"
+          ngbDropdownItem
+          (click)="changeSort('price', 'DESC')"
+        >
+          Prix décroissant
+        </li>
+      </ul>
     </div>
 
     <jhi-alert-error></jhi-alert-error>
@@ -17,7 +52,7 @@
 
     <jhi-list-product [products]="this.products"></jhi-list-product>
     <div class="ecom-button-see-cart">
-      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/panier">Voir panier</button>
+      <button type="submit" class="ecom-button ecom-button-next ecom-shadow-button" routerLink="/cart">Voir panier</button>
     </div>
   </div>
 </div>

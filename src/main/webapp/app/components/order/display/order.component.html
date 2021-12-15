@@ -1,0 +1,34 @@
+<div>
+  <div class="ecom-payement">
+    <div *ngIf="this.router.url === '/orders'; else elseBlock">
+      <h2 class="ecom-title-header" data-cy="OrderCreateUpdateHeading" jhiTranslate="ecomApp.order.home.title">Orders</h2>
+    </div>
+    <ng-template #elseBlock>
+      <div>
+        <h2 class="ecom-title-header" data-cy="OrderCreateUpdateHeading" jhiTranslate="ecomApp.order.detail.title">Order</h2>
+      </div>
+    </ng-template>
+    <div class="ecom-button-back">
+      <button
+        class="ecom-button ecom-button-next ecom-shadow-button"
+        type="submit"
+        (click)="previousState()"
+        data-cy="entityDetailsBackButton"
+      >
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+    </div>
+    <div *ngIf="this.router.url === '/orders'; else elseBlockRouter">
+      <div *ngFor="let order of orders; trackBy: trackId">
+        <jhi-order-card data-cy="entityTable" [order]="order"></jhi-order-card>
+      </div>
+    </div>
+    <ng-template #elseBlockRouter>
+      <jhi-product-order-line
+        *ngFor="let orderLine of getOrder()!.lines; trackBy: trackIdLine"
+        data-cy="entityTable"
+        [productOrder]="orderLine"
+      ></jhi-product-order-line>
+    </ng-template>
+  </div>
+</div>

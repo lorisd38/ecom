@@ -2,27 +2,27 @@
   "ecomApp": {
     "recipe": {
       "home": {
-        "title": "Recipes",
+        "title": "Recettes",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Recipe",
-        "createOrEditLabel": "Créer ou éditer un Recipe",
-        "notFound": "Aucun Recipe trouvé"
+        "createLabel": "Créer une nouvelle Recette",
+        "createOrEditLabel": "Créer ou éditer une Recette",
+        "notFound": "Aucune Recette trouvé"
       },
-      "created": "Un nouveau Recipe a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Recipe avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Recipe avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Recette a été créée avec l'identifiant {{ param }}",
+      "updated": "La Recette avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Recette avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Recipe {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Recette {{ id }} ?"
       },
       "detail": {
-        "title": "Recipe"
+        "title": "Recette"
       },
       "id": "ID",
-      "name": "Name",
+      "name": "Nom",
       "description": "Description",
-      "steps": "Steps",
-      "imagePath": "Image Path",
-      "products": "Products"
+      "steps": "Etapes",
+      "imagePath": "Chemin de l'image",
+      "products": "Produits"
     }
   }
 }

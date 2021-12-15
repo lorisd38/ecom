@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "ECOM",
+    "title": "BigFood",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
@@ -11,23 +11,17 @@
       "entities": {
         "main": "Entités",
         "address": "Address",
-        "order": "Order",
+        "order": "Commande",
         "product": "Produit",
         "promotion": "Promotion",
         "cart": "Panier",
-        "productOrder": "Commande de produits",
-        "productCart": "Panier de produits",
+        "productOrder": "Ligne de commande",
+        "productCart": "Ligne de panier",
         "category": "Catégorie",
-        "recipe": "Recipe",
+        "recipe": "Recette",
         "tag": "Tag",
         "userDetails": "Details utilisateurs",
-        "product": "Product",
-        "cart": "Cart",
-        "productOrder": "Product Order",
-        "productCart": "Product Cart",
-        "category": "Category",
-        "userDetails": "User Details",
-        "promotionalCode": "Promotional Code",
+        "promotionalCode": "Code promotionnel",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -144,6 +138,11 @@
       "datetimelocal": "Ce champ doit être une date et une heure.",
       "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail."
     }
+  },
+  "confirmDialog": {
+    "title": "Voulez-vous continuer ?",
+    "cancel": "Annuler",
+    "continue": "Continuer"
   },
   "error": {
     "internalServerError": "Erreur interne du serveur",

@@ -11,6 +11,7 @@ import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { IOrder } from 'app/entities/order/order.model';
 import { OrderService } from 'app/entities/order/service/order.service';
+import { ReductionType } from 'app/entities/enumerations/reduction-type.model';
 
 @Component({
   selector: 'jhi-product-order-update',
@@ -18,6 +19,7 @@ import { OrderService } from 'app/entities/order/service/order.service';
 })
 export class ProductOrderUpdateComponent implements OnInit {
   isSaving = false;
+  reductionTypeValues = Object.keys(ReductionType);
 
   productsSharedCollection: IProduct[] = [];
   ordersSharedCollection: IOrder[] = [];
@@ -26,6 +28,10 @@ export class ProductOrderUpdateComponent implements OnInit {
     id: [],
     quantity: [null, [Validators.required, Validators.min(1)]],
     price: [null, [Validators.required]],
+    promotionValue: [],
+    promotionType: [],
+    promoCodeValue: [],
+    promoCodeType: [],
     product: [],
     order: [],
   });
@@ -92,6 +98,10 @@ export class ProductOrderUpdateComponent implements OnInit {
       id: productOrder.id,
       quantity: productOrder.quantity,
       price: productOrder.price,
+      promotionValue: productOrder.promotionValue,
+      promotionType: productOrder.promotionType,
+      promoCodeValue: productOrder.promoCodeValue,
+      promoCodeType: productOrder.promoCodeType,
       product: productOrder.product,
       order: productOrder.order,
     });
@@ -125,6 +135,10 @@ export class ProductOrderUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       quantity: this.editForm.get(['quantity'])!.value,
       price: this.editForm.get(['price'])!.value,
+      promotionValue: this.editForm.get(['promotionValue'])!.value,
+      promotionType: this.editForm.get(['promotionType'])!.value,
+      promoCodeValue: this.editForm.get(['promoCodeValue'])!.value,
+      promoCodeType: this.editForm.get(['promoCodeType'])!.value,
       product: this.editForm.get(['product'])!.value,
       order: this.editForm.get(['order'])!.value,
     };

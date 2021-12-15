@@ -19,13 +19,14 @@
       },
       "id": "ID",
       "role": "Role",
-      "birthDate": "Birth Date",
-      "phoneNumber": "Phone Number",
-      "address": "Address",
-      "user": "User",
-      "cart": "Cart",
-      "favorites": "Favorites",
-      "preferences": "Preferences"
+      "birthDate": "Date de naissance",
+      "phoneNumber": "Numéro de téléphone",
+      "address": "Addesse",
+      "user": "Utilisateur",
+      "cart": "Panier",
+      "favorites": "Favories",
+      "preferences": "Préférences",
+      "orders": "Commandes"
     }
   }
 }

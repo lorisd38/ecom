@@ -31,12 +31,22 @@
   background-color: var(--couleur-primaire-hover);
 }
 
-.ecom-button:active {
+.ecom-button:active:not(:disabled) {
   transform: translate(2px, 1px);
 }
 
 .ecom-button:disabled {
   opacity: 0.33;
+}
+
+.ecom-button-back,
+.ecom-button-sort {
+  margin-bottom: 20px;
+}
+
+.ecom-button-sort {
+  text-align: right;
+  right: 15px;
 }
 
 .ecom-shadow-button {
@@ -56,15 +66,20 @@
 }
 
 /* ==============================================================
-Product card
-===============================================================*/
+   Product card
+   ===============================================================*/
+#ecom-list-products {
+  display: grid;
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+}
+
 @media (min-width: 2070px) {
   .ecom-favoris-grid #ecom-list-products {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(8, 1fr);
   }
 }
@@ -75,7 +90,6 @@ Product card
     grid-template-columns: repeat(8, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(7, 1fr);
   }
 }
@@ -86,7 +100,6 @@ Product card
     grid-template-columns: repeat(7, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(6, 1fr);
   }
 }
@@ -97,7 +110,6 @@ Product card
     grid-template-columns: repeat(6, 1fr);
   }
   #ecom-list-products {
-    display: grid;
     grid-template-columns: repeat(5, 1fr);
   }
 }
@@ -266,6 +278,10 @@ Product card
   width: 25px;
 }
 
+.ecom-product-button-text::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 .ecom-product-button > div {
   font-size: 12px;
   position: absolute;
@@ -281,6 +297,7 @@ Product card
 
 .ecom-button-see-cart {
   margin-top: 25px;
+  text-align: right;
 }
 
 .ecom-button-next {
@@ -357,6 +374,22 @@ Product card
   border-radius: 50px;
   z-index: 1;
   font-weight: bold;
+}
+
+.ecom-sort-option > li {
+  cursor: pointer;
+  color: #444444;
+}
+
+.ecom-sort-option > li:hover {
+  background-color: var(--couleur-primaire);
+  color: white;
+}
+
+.ecom-sort-option-active {
+  background-color: var(--couleur-primaire) !important;
+  color: white !important;
+  cursor: default !important;
 }
 
 /* ==============================================================
@@ -488,6 +521,7 @@ Product card in Cart
 
 .ecom-cart-button {
   margin: 10px 0 0 30px;
+  text-align: right;
 }
 
 .ecom-cart-button > div {
@@ -505,6 +539,10 @@ Product card in Cart
 /* ==============================================================
   Navbar
   ===============================================================*/
+.navbar-title {
+  font-size: 24px;
+}
+
 .ecom-nav-input {
   width: 100%;
   height: 38px;
@@ -829,18 +867,6 @@ Payment
   width: 80px;
 }
 
-.ecom-payement-button-clear {
-  position: absolute;
-  top: 15px;
-  right: 0;
-  background-color: #ff4747;
-  border: 1px solid #c72b2b;
-}
-
-.ecom-payement-button-clear:hover {
-  background-color: #c72b2b !important;
-}
-
 /* ==============================================================
   Categories
   ===============================================================*/
@@ -895,8 +921,13 @@ Payment
   padding: 30px 5px 0 10px;
 }
 
-.ecom-categories-list > div {
+.ecom-categories-list > div > div {
   padding-bottom: 10px;
+}
+
+.ecom-categories-list > div {
+  max-height: calc(100vh - 146px);
+  overflow-y: auto;
 }
 
 .ecom-categories-children {
@@ -947,4 +978,69 @@ Payment
   height: 5px;
   background-color: black;
   border-radius: 50%;
+}
+
+/* ==============================================================
+  Détail produit
+  ===============================================================*/
+.ecom-detail-product-info {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.ecom-detail-product-info > div {
+}
+
+.ecom-detail-product-info > div > div {
+  margin: 20px 0;
+}
+
+.ecom-detail-product-info > div > div > span {
+  font-size: 18px;
+}
+
+.ecom-detail-product-info > div > div > span:nth-child(1) {
+  font-weight: bold;
+}
+
+.ecom-detail-product-info > div > div > span:nth-child(1):after {
+  content: ' : ';
+}
+
+.ecom-detail-product-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(1):after {
+  content: unset;
+}
+
+.ecom-detail-product-info > div:nth-child(1) {
+  margin-right: 50px;
+  color: red;
+}
+
+.ecom-detail-product-info > div:nth-child(1) > div:first-child {
+  border: solid 1px #c4c4c4;
+  border-radius: 5px;
+  width: 275px;
+  height: 195px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.ecom-detail-product-info > div:nth-child(1) > div:first-child > img {
+  max-width: 275px;
+  max-height: 195px;
+}
+
+.ecom-detail-product-oldprice > span:nth-child(2) {
+  text-decoration: line-through;
+}
+
+.ecom-detail-product-oldprice > span:nth-child(3) {
+  color: red;
+}
+
+.ecom-detail-product-addcart {
+  text-align: right;
 }

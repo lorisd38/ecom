@@ -28,7 +28,10 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     @Query("select promotion from Promotion promotion left join fetch promotion.products where promotion.id =:id")
     Optional<Promotion> findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("select distinct promotion from Promotion promotion where " + " :instant between promotion.startDate and promotion.endDate")
+    @Query(
+        "select distinct promotion from Promotion promotion left join fetch promotion.products where " +
+        " :instant between promotion.startDate and promotion.endDate"
+    )
     List<Promotion> findActiveWithEagerRelationships(@Param("instant") Instant instant);
 
     @Query(
@@ -37,4 +40,11 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
         " and :product in (promotion.products)"
     )
     List<Promotion> findActiveForProduct(@Param("instant") Instant instant, @Param("product") Product product);
+
+    @Query(
+        "select distinct promotion from Promotion promotion left join fetch promotion.products prds where " +
+        " :instant between promotion.startDate and promotion.endDate " +
+        " and prds in (:products)"
+    )
+    List<Promotion> findActiveForProducts(@Param("instant") Instant instant, @Param("products") List<Product> products);
 }

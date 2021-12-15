@@ -34,6 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productCart.quantity">Quantity</span></th>
+          <th scope="col"><span jhiTranslate="ecomApp.productCart.creationDatetime">Creation Datetime</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productCart.product">Product</span></th>
           <th scope="col"><span jhiTranslate="ecomApp.productCart.cart">Cart</span></th>
           <th scope="col"></th>
@@ -45,6 +46,7 @@
             <a [routerLink]="['/product-cart', productCart.id, 'view']">{{ productCart.id }}</a>
           </td>
           <td>{{ productCart.quantity }}</td>
+          <td>{{ productCart.creationDatetime | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="productCart.product">
               <a [routerLink]="['/product', productCart.product?.id, 'view']">{{ productCart.product?.name }}</a>

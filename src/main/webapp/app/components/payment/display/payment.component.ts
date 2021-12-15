@@ -13,6 +13,7 @@ import { IPromotionalCode } from '../../../entities/promotional-code/promotional
 import { ReductionType } from '../../../entities/enumerations/reduction-type.model';
 import { IProductOrder, ProductOrder } from '../../../entities/product-order/product-order.model';
 import { PromotionService } from '../../services/promotion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-payment',
@@ -23,6 +24,7 @@ export class PaymentComponent implements OnInit {
   promoCode?: IPromotionalCode | null;
   totalPrice = 0;
   totalSaved = 0;
+  promoCodeSavings = 0;
   codeUsed = '';
   isLoadingCart = true;
   isLoadingPromoCode = false;
@@ -43,6 +45,7 @@ export class PaymentComponent implements OnInit {
     protected cartService: CartService,
     protected modalService: NgbModal,
     public promotionService: PromotionService,
+    public router: Router,
     private fb: FormBuilder
   ) {}
 
@@ -72,12 +75,22 @@ export class PaymentComponent implements OnInit {
   }
 
   calcTotal(): void {
-    this.totalPrice = getTotalCartPrice(this.cart, this.promotionService);
+    if (this.promotionService.getPromotions() != null) {
+      const results: number[] = getTotalCartPrice(this.cart, this.promotionService);
+      this.totalSaved = results[1] + this.promoCodeSavings;
+      this.totalPrice = results[0] - this.promoCodeSavings;
+    } else {
+      this.promotionService.promotionsObs.subscribe(() => {
+        const results: number[] = getTotalCartPrice(this.cart, this.promotionService);
+        this.totalSaved = results[1] + this.promoCodeSavings;
+        this.totalPrice = results[0] - this.promoCodeSavings;
+      });
+    }
   }
 
   calcTotalSaved(): void {
     if (this.promoCode == null || this.cart == null) {
-      this.totalSaved = 0;
+      this.promoCodeSavings = 0;
       return;
     }
     let total = 0;
@@ -91,23 +104,20 @@ export class PaymentComponent implements OnInit {
         total += p.price! * percentage * getProductQuantity(this.cart, p.id!);
       });
     }
-    this.totalSaved = total;
+    this.promoCodeSavings = total;
+    this.calcTotal();
   }
 
   generateOrder(): void {
     this.isSaving = true;
     const order = this.createFromForm();
-    console.log('Generated order', order);
     this.paymentService.create(order).subscribe(
-      res => {
+      () => {
         this.isSaving = false;
-        const savedOrder: IOrder | null = res.body ?? null;
-        console.log('Received order', savedOrder);
-        // TODO Rediriger vers la page "Historique des commandes".
-        window.history.go(-2);
+        this.cartService.calcTotal();
+        this.router.navigate(['/orders']);
       },
-      err => {
-        console.log('Error :', err);
+      () => {
         this.isSaving = false;
       }
     );
@@ -122,11 +132,9 @@ export class PaymentComponent implements OnInit {
       (res: HttpResponse<IPromotionalCode>) => {
         this.isLoadingPromoCode = false;
         this.promoCode = res.body ?? null;
-        console.log(this.promoCode);
         this.calcTotalSaved();
       },
-      err => {
-        console.log('Error :', err);
+      () => {
         this.isLoadingPromoCode = false;
         // TODO Afficher une alerte indiquant que le tag est invalide.
       }
@@ -149,7 +157,7 @@ export class PaymentComponent implements OnInit {
             DATE_TIME_FORMAT
           )
         : undefined,
-      totalPrice: +(+this.totalPrice - +this.totalSaved).toFixed(2),
+      totalPrice: +(+this.totalPrice).toFixed(2),
       promotionalCode: this.promoCode,
       lines: this.generateOrderLinesFromCart(),
     };
@@ -162,7 +170,9 @@ export class PaymentComponent implements OnInit {
 
     const orderLines: IProductOrder[] = [];
     for (const line of this.cart.lines!) {
-      orderLines.push(new ProductOrder(NaN, line.quantity, line.product!.price! * line.quantity!, line.product, null));
+      orderLines.push(
+        new ProductOrder(NaN, line.quantity, line.product!.price! * line.quantity!, null, null, null, null, line.product, null)
+      );
     }
 
     return orderLines;

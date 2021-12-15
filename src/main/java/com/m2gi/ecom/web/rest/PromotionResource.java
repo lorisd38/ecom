@@ -6,6 +6,7 @@ import com.m2gi.ecom.service.PromotionService;
 import com.m2gi.ecom.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -142,6 +143,17 @@ public class PromotionResource {
     public List<Promotion> getAllPromotions(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Promotions");
         return promotionService.findAll();
+    }
+
+    /**
+     * {@code GET  /promotions/active} : get all the active promotions.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of promotions in body.
+     */
+    @GetMapping("/promotions/active")
+    public List<Promotion> getAllPromotions() {
+        log.debug("REST request to get all Promotions");
+        return promotionService.findActiveWithEagerRelationships(Instant.now());
     }
 
     /**

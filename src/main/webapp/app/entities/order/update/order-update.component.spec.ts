@@ -11,6 +11,8 @@ import { OrderService } from '../service/order.service';
 import { IOrder, Order } from '../order.model';
 import { IPromotionalCode } from 'app/entities/promotional-code/promotional-code.model';
 import { PromotionalCodeService } from 'app/entities/promotional-code/service/promotional-code.service';
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 
 import { OrderUpdateComponent } from './order-update.component';
 
@@ -20,6 +22,7 @@ describe('Order Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let orderService: OrderService;
   let promotionalCodeService: PromotionalCodeService;
+  let userDetailsService: UserDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -34,6 +37,7 @@ describe('Order Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     orderService = TestBed.inject(OrderService);
     promotionalCodeService = TestBed.inject(PromotionalCodeService);
+    userDetailsService = TestBed.inject(UserDetailsService);
 
     comp = fixture.componentInstance;
   });
@@ -61,16 +65,38 @@ describe('Order Management Update Component', () => {
       expect(comp.promotionalCodesSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call UserDetails query and add missing value', () => {
+      const order: IOrder = { id: 456 };
+      const user: IUserDetails = { id: 95442 };
+      order.user = user;
+
+      const userDetailsCollection: IUserDetails[] = [{ id: 55391 }];
+      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
+      const additionalUserDetails = [user];
+      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
+      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ order });
+      comp.ngOnInit();
+
+      expect(userDetailsService.query).toHaveBeenCalled();
+      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(userDetailsCollection, ...additionalUserDetails);
+      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const order: IOrder = { id: 456 };
       const promotionalCode: IPromotionalCode = { id: 52710 };
       order.promotionalCode = promotionalCode;
+      const user: IUserDetails = { id: 60405 };
+      order.user = user;
 
       activatedRoute.data = of({ order });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(order));
       expect(comp.promotionalCodesSharedCollection).toContain(promotionalCode);
+      expect(comp.userDetailsSharedCollection).toContain(user);
     });
   });
 
@@ -143,6 +169,14 @@ describe('Order Management Update Component', () => {
       it('Should return tracked PromotionalCode primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackPromotionalCodeById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackUserDetailsById', () => {
+      it('Should return tracked UserDetails primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackUserDetailsById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

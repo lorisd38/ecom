@@ -32,6 +32,12 @@
             <a [routerLink]="['/promotional-code', order.promotionalCode?.id, 'view']">{{ order.promotionalCode?.id }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="ecomApp.order.user">User</span></dt>
+        <dd>
+          <div *ngIf="order.user">
+            <a [routerLink]="['/user-details', order.user?.id, 'view']">{{ order.user?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

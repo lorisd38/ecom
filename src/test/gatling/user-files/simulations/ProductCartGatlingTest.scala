@@ -72,6 +72,7 @@ class ProductCartGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "quantity":"0"
+                , "creationDatetime":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_productCart_url"))).exitHereIfFailed

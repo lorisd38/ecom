@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Category, ICategory } from '../../../entities/category/category.model';
+import { ICategory } from '../../../entities/category/category.model';
 import { HttpResponse } from '@angular/common/http';
 import { CategoriesService } from '../../services/categories.service';
 import { Router } from '@angular/router';
@@ -10,11 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './categories.component.html',
 })
 export class CategoriesComponent implements OnInit {
-  listCategory: Category[];
-
-  constructor(protected categoriesService: CategoriesService, protected modalService: NgbModal, public router: Router) {
-    this.listCategory = [];
-  }
+  constructor(public categoriesService: CategoriesService, protected modalService: NgbModal, public router: Router) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -22,7 +18,7 @@ export class CategoriesComponent implements OnInit {
 
   loadAll(): void {
     this.categoriesService.query().subscribe((res: HttpResponse<ICategory[]>) => {
-      this.listCategory = res.body ?? [];
+      this.categoriesService.listCategory = res.body ?? [];
     });
   }
 
