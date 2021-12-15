@@ -34,6 +34,61 @@
               >{{ getPricePromo(this.promotionService.getPromotion(product), product.price) }} €</span
             >
           </div>
+          <div class="ecom-detail-product-addcart">
+            <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
+              <button
+                class="ecom-product-button-add ecom-button"
+                type="submit"
+                (click)="addToCart(product)"
+                data-cy="entityAddTodCartButton"
+                title="Ajouter au panier"
+              >
+                <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
+                <fa-icon icon="plus"></fa-icon>
+              </button>
+            </div>
+            <ng-template #elseBlock>
+              <div>
+                <button
+                  class="ecom-product-button-minus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
+                  data-cy="entityDecreaseProductCartButton"
+                  title="Diminuer la quantite"
+                >
+                  <fa-icon icon="minus"></fa-icon>
+                </button>
+                <input
+                  class="ecom-product-button-text"
+                  type="number"
+                  pattern="[0-9]*"
+                  (change)="updateQuantityProductByText(product, $event)"
+                  [value]="quantityProduct(product)"
+                  title="Définir la quantite"
+                />
+                <button
+                  class="ecom-product-button-plus ecom-button"
+                  type="submit"
+                  (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
+                  data-cy="entityIncreaseProductCartButton"
+                  title="Augmenter la quantite"
+                  [disabled]="this.product.quantity! <= 0"
+                >
+                  <fa-icon icon="plus"></fa-icon>
+                </button>
+              </div>
+            </ng-template>
+          </div>
+          <div>
+            <button
+              class="ecom-button ecom-button-next ecom-shadow-button"
+              *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              type="button"
+              [routerLink]="['/product', product.id, 'edit']"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+          </div>
         </div>
         <div>
           <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
@@ -101,59 +156,6 @@
             </span>
           </div>
         </div>
-      </div>
-      <div>
-        <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
-          <button
-            class="ecom-product-button-add ecom-button"
-            type="submit"
-            (click)="addToCart(product)"
-            data-cy="entityAddTodCartButton"
-            title="Ajouter au panier"
-          >
-            <span jhiTranslate="ecomApp.product.addToCart">Ajouter</span>
-            <fa-icon icon="plus"></fa-icon>
-          </button>
-        </div>
-        <ng-template #elseBlock>
-          <div>
-            <button
-              class="ecom-product-button-minus ecom-button"
-              type="submit"
-              (click)="updateQuantityProduct(product, quantityProduct(product) - 1)"
-              data-cy="entityDecreaseProductCartButton"
-              title="Diminuer la quantite"
-            >
-              <fa-icon icon="minus"></fa-icon>
-            </button>
-            <input
-              class="ecom-product-button-text"
-              type="number"
-              pattern="[0-9]*"
-              (change)="updateQuantityProductByText(product, $event)"
-              [value]="quantityProduct(product)"
-              title="Définir la quantite"
-            />
-            <button
-              class="ecom-product-button-plus ecom-button"
-              type="submit"
-              (click)="updateQuantityProduct(product, quantityProduct(product) + 1)"
-              data-cy="entityIncreaseProductCartButton"
-              title="Augmenter la quantite"
-              [disabled]="this.product.quantity! <= 0"
-            >
-              <fa-icon icon="plus"></fa-icon>
-            </button>
-          </div>
-        </ng-template>
-        <button
-          class="ecom-button ecom-button-next ecom-shadow-button"
-          *jhiHasAnyAuthority="'ROLE_ADMIN'"
-          type="button"
-          [routerLink]="['/product', product.id, 'edit']"
-        >
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-        </button>
       </div>
     </div>
   </div>

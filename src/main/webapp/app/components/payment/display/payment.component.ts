@@ -112,12 +112,12 @@ export class PaymentComponent implements OnInit {
     this.isSaving = true;
     const order = this.createFromForm();
     this.paymentService.create(order).subscribe(
-      res => {
+      () => {
         this.isSaving = false;
         this.cartService.calcTotal();
         this.router.navigate(['/orders']);
       },
-      err => {
+      () => {
         this.isSaving = false;
       }
     );
@@ -134,7 +134,7 @@ export class PaymentComponent implements OnInit {
         this.promoCode = res.body ?? null;
         this.calcTotalSaved();
       },
-      err => {
+      () => {
         this.isLoadingPromoCode = false;
         // TODO Afficher une alerte indiquant que le tag est invalide.
       }

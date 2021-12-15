@@ -1040,3 +1040,7 @@ Payment
 .ecom-detail-product-oldprice > span:nth-child(3) {
   color: red;
 }
+
+.ecom-detail-product-addcart {
+  text-align: right;
+}
