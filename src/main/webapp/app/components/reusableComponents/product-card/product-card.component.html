@@ -57,8 +57,8 @@
       <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.name }}</a>
     </span>
   </div>
-  <div class="ecom-product-button">
-    <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)) && this.product.quantity! > 0; else elseBlock">
+  <div class="ecom-product-button" *ngIf="this.product.quantity! > 0">
+    <div *ngIf="(!this.accountService.isAuthenticated() || !isPresent(product.id)); else elseBlock">
       <button
         class="ecom-product-button-add ecom-button"
         type="submit"
